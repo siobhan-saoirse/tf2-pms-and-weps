@@ -195,10 +195,10 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
     self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
     if (!self.ReloadingFirst) then
-        self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_PRIMARY)
+        self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND)
         self.ReloadingFirst = true
     else
-        self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_PRIMARY_LOOP)
+        self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_LOOP)
     end
     self.Weapon:SetClip1( self.Weapon:Clip1() + 1 )
     self.Owner:RemoveAmmo( 1, self.Primary.Ammo, false )
@@ -208,7 +208,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     end
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() == self.Primary.ClipSize then
     self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
-    self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_PRIMARY_END)
+    self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
     self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -219,7 +219,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     end
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() > 0 and self.Weapon:Ammo1() <= 0 then
     self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
-    self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_PRIMARY_END) 
+    self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END) 
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
     self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -230,7 +230,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     end
     if self.Reloading == 2 and self.ReloadingTimer <= CurTime() then
     self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH ) 
-    self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_PRIMARY_END)
+    self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
     self:SetNextSecondaryFire( CurTime() + 0.5 )
