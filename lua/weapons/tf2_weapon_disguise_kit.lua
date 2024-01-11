@@ -30,7 +30,7 @@ SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
-SWEP.Base = "weapon_base"
+SWEP.Base = "tf2_weaponbase"
 
 SWEP.WalkSpeed = 300
 SWEP.RunSpeed = 428
