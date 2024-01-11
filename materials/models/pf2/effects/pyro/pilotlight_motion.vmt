@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/pf2/effects/pyro/pilotlight_motion"
+	"$surfaceprop"	"default"
+}

@@ -1,0 +1,37 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/pf2/player/civilian/dm_base"
+	"$bumpmap"     "models/pf2/player/shared/shared_normal"
+	"$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost" "0"	
+	"$lightwarptexture" "models/pf2/player/pyro/pyro_lightwarp"
+	"$phongfresnelranges"	"[.3 1 8]"
+	"$halflambert" "0"
+
+	// Rim lighting parameters
+	"$rimlight" "1"												// To enable rim lighting (requires phong)
+	"$rimlightexponent" "4"										// Exponent for phong component of rim lighting	
+	"$rimlightboost" "2"										// Boost for ambient cube component of rim lighting
+
+	// Infection
+	"$yellow" "0"
+	
+	"$cloakPassEnabled" "1"
+	"Proxies"
+	{
+		"spy_invis"
+		{
+		}
+		
+		"YellowLevel"
+        {
+            "resultVar" "$yellow"
+        }
+        "Equals"
+        {
+            "srcVar1" "$yellow"
+            "resultVar" "$color2"
+        }
+	}
+}

@@ -1,0 +1,6 @@
+"UnLitGeneric"
+{
+	"$basetexture"	"models/pf2/player/shared/eyeball_invun"
+	"$surfaceprop"	"flesh"
+	"$model"		1
+}

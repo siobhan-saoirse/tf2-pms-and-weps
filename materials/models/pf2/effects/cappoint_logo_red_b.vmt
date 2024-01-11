@@ -1,0 +1,23 @@
+"UnLitTwoTexture"
+{
+	"$basetexture"	"models/pf2/effects/cappoint_logo_red_b"
+	"$texture2"	"models/pf2/effects/cappoint_logo_scanlines_red"
+	"$additive" "1"
+	"$model" "1"
+	"Proxies"
+	{
+        "TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" .2
+			"texturescrollangle" 90
+		}
+		"Sine"
+		{
+			"Sineperiod" "1"
+			"SineMax" "1"
+			"SineMin" "1"
+			"resultVar" "$color"
+		}
+	}
+}

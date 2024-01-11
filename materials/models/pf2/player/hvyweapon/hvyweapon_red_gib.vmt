@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\pf2\player\hvyweapon\hvyweapon_red_gib"
+	"$bumpmap" "models\pf2\player\hvyweapon\hvyweapon_normal"
+
+	"$phong" "1"
+	"$phongexponenttexture" "models\pf2\player\hvyweapon\hvyweapon_exponent"
+	"$phongboost" "5"	
+	"$lightwarptexture" "models/pf2/player/pyro/pyro_lightwarp"
+	"$phongfresnelranges"	"[0.007 0.4 5]"
+	"$halflambert" "1"
+
+}

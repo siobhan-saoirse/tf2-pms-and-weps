@@ -1,0 +1,24 @@
+"UnLitTwoTexture"
+{
+	"$basetexture"	"models/pf2/effects/cappoint_logo_neutral_live"
+	"$texture2"	"models/pf2/effects/cappoint_beam_lines_n_live"
+	"$additive" "1"
+	"$model" "1"
+//	"$nocull" "1"
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" .1
+			"texturescrollangle" 90
+		}
+		"Sine"
+		{
+			"Sineperiod" "2"
+			"SineMax" "1"
+			"SineMin" ".6"
+			"resultVar" "$color"
+		}
+	}
+}

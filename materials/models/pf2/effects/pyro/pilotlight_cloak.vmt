@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models\pf2\effects\black"
+ 	"$model" 1
+	"$nodecal" 1
+	"$additive" 1
+}
+
