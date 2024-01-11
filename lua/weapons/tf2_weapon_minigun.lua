@@ -201,7 +201,7 @@ self.Owner:SetWalkSpeed( 74 )
 self.Owner:SetRunSpeed( 148 )
 self.Weapon:SetHoldType( "deployed" )
 end
-if self.Spin == 2 then
+if self.Spin == 2 then 
 if SERVER then
 self.Owner:StopSound( self.Secondary.Sound )
 self.Owner:EmitSound( self.Secondary.Sound )

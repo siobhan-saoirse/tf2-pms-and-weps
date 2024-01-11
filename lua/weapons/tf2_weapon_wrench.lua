@@ -132,7 +132,7 @@ self.Owner:StopSound( "player/engineer_no.wav", 95, 100, 1, CHAN_VOICE )
 self.Owner:EmitSound( "player/engineer_no.wav", 95, 100, 1, CHAN_VOICE )
 end
 self:SetNextSecondaryFire( CurTime() + 1 )
-end
+end 
 end
 
 function SWEP:Reload()

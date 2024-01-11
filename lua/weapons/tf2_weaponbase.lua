@@ -7,7 +7,6 @@ if CLIENT then
 
 		local WorldModel2 = ClientsideModel("models/empty.mdl")
 		-- Settings...
-		WorldModel2:SetSkin(1)
 		WorldModel2:SetNoDraw(true)
 	function SWEP:DrawWorldModel()
 		local _Owner = self:GetOwner()
@@ -16,6 +15,7 @@ if CLIENT then
 		elseif (self.WModel != nil) then
 			self.WorldModel = "models/empty.mdl"
 		end
+		WorldModel2:SetSkin(self:GetOwner():GetSkin())
 		WorldModel2:SetModel(self.WModel)
 		if (IsValid(_Owner)) then
             -- Specify a good position

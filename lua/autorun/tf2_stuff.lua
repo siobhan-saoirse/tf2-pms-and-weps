@@ -95,6 +95,8 @@ player_manager.AddValidModel( "pf2_engineer",			"models/pf2/player/engineer.mdl"
 player_manager.AddValidHands( "pf2_engineer",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
 player_manager.AddValidModel( "pf2_pyro",			"models/pf2/player/pyro.mdl" )
 player_manager.AddValidHands( "pf2_pyro",			"models/weapons/c_arms_combine.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_civilian",			"models/pf2/player/civilian.mdl" )
+player_manager.AddValidHands( "pf2_civilian",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
 
 -- special thanks to the competitive addon creator for suggesting a lot of things!
 
@@ -116,6 +118,7 @@ list.Set( "PlayerOptionsAnimations", "pf2_engineer", { "selectionmenu_anim01", "
 list.Set( "PlayerOptionsAnimations", "pf2_medic", { "selectionmenu_anim01", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "pf2_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "pf2_spy", { "selectionmenu_anim01", "stand_secondary" } )
+list.Set( "PlayerOptionsAnimations", "pf2_civilian", { "selectionmenu_anim01", "taunt" } )
 list.Set( "PlayerOptionsAnimations", "hwm_tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "hwm_tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "hwm_tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
@@ -1047,10 +1050,10 @@ elseif ( holdtype == "backstab" ) then
                 ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
 			end
 			return ActivityTranslateFixTF2[act] or act
-		end
-	elseif (pl:GetModel() == "models/player/civilian.mdl") then
+		end	
+	elseif (pl:GetModel() == "models/player/civilian.mdl" || pl:GetModel() == "models/pf2/player/civilian.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
-			if (holdtype == "normal") then
+			if (holdtype == "normal") then 	
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
                 ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
                 ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
@@ -1156,6 +1159,7 @@ elseif ( holdtype == "backstab" ) then
                 ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
                 ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
 			end
+			return ActivityTranslateFixTF2[act] or act
 		end
 	elseif (pl:GetModel() == "models/player/hwm/scout.mdl" || pl:GetModel() == "models/player/hwm/engineer.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
@@ -4559,7 +4563,20 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 					"models/player/engineer.mdl",
 					"models/player/medic.mdl",
 					"models/player/sniper.mdl",
-					"models/player/spy.mdl"
+					"models/player/spy.mdl",
+					"models/pf2/player/scout.mdl",
+					"models/pf2/player/soldier.mdl",
+					"models/pf2/player/pyro.mdl",
+					"models/pf2/player/demo.mdl",
+					"models/pf2/player/heavy.mdl",
+					"models/pf2/player/engineer.mdl",
+					"models/pf2/player/medic.mdl",
+					"models/pf2/player/sniper.mdl",
+					"models/pf2/player/spy.mdl",
+					"models/pf2/player/civilian.mdl",
+					"models/player/mercenary.mdl",
+					"models/player/merc_deathmatch.mdl",
+					"models/player/civilian.mdl"
 				}))
 			end
 		end)

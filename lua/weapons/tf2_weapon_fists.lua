@@ -104,7 +104,7 @@ self.Owner:SetRunSpeed( 400 )
 return true
 end
 
-function SWEP:PrimaryAttack()
+function SWEP:PrimaryAttack() 
 self:EmitSound( self.Primary.Sound )
 if (math.random(1,6) == 1) then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )

@@ -165,7 +165,7 @@ if !IsValid( attacker ) then
 attacker = self
 end
 dmg:SetAttacker( attacker )
-dmg:SetInflictor( self )
+dmg:SetInflictor( self ) 
 dmg:SetDamage( self.Primary.Damage )
 dmg:SetDamageType( bit.bor(DMG_CLUB,DMG_SLASH) )
 dmg:SetDamageForce( self.Owner:GetAimVector() * self.Primary.Force * 8 )

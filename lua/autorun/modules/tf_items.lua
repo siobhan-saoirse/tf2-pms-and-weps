@@ -3217,10 +3217,12 @@ if SERVER then
 				class = "tf2_weapon_bat"
 			elseif (string.find(self:GetModel(),"/soldier")) then
 				class = "tf2_weapon_shovel"
-			elseif (string.find(self:GetModel(),"/pyro") || string.find(self:GetModel(),"/heavy")) then
+			elseif (string.find(self:GetModel(),"/pyro")) then
 				class = "tf2_weapon_fireaxe"
 			elseif (string.find(self:GetModel(),"/demo")) then
 				class = "tf2_weapon_bottle"
+			elseif (string.find(self:GetModel(),"/heavy")) then
+				class = "tf2_weapon_fists"
 			elseif (string.find(self:GetModel(),"/engineer")) then
 				class = "tf2_weapon_wrench"
 			elseif (string.find(self:GetModel(),"/medic")) then
