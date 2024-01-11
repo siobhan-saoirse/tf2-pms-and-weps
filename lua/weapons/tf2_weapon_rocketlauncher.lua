@@ -31,7 +31,7 @@ SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
-SWEP.Base = "tf2_weaponbase"
+SWEP.Base = "weapon_base"
 
 SWEP.WalkSpeed = 240
 SWEP.RunSpeed = 320
@@ -49,7 +49,7 @@ SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "RPG_Round"
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.8
-SWEP.Primary.Force = 1100
+SWEP.Primary.Force = 500
 
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
@@ -137,20 +137,13 @@ if IsValid( entity ) then
 local Forward = self.Owner:EyeAngles():Forward()
 local Right = self.Owner:EyeAngles():Right()
 local Up = self.Owner:EyeAngles():Up()
-if (self.WModel and self.WModel == "models/workshop_partner/weapons/c_models/c_bet_rocketlauncher/c_bet_rocketlauncher.mdl") then
-    entity:SetPos( self.Owner:GetShootPos() + Up * -9 )
-else
-    entity:SetPos( self.Owner:GetShootPos() + Forward * 8 + Right * 8 + Up * -2 )
-end
+entity:SetPos( self.Owner:GetShootPos() + Forward * 8 + Right * 8 + Up * -2 )
 entity:SetAngles( self.Owner:EyeAngles() )
 entity:Spawn()
 local phys = entity:GetPhysicsObject()
 phys:SetMass( 1 )
 phys:EnableGravity( false )
 phys:ApplyForceCenter( entity:GetForward() * self.Primary.Force )
-if (self:GetItemData() and self:GetItemData().visuals and self:GetItemData().visuals.sound_special1) then
-    entity.ExplosionSound = self:GetItemData().visuals.sound_special1
-end
 timer.Create( "Flight"..entity:EntIndex(), 0, 0, function()
 if !IsValid( phys ) then
 timer.Stop( "Flight" )
@@ -196,11 +189,7 @@ end
 end
 
 function SWEP:Think()
-self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
-
-		if (self.WModel) then
-	self.WorldModel = "models/empty.mdl"
-		end
+self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.HoldType = self:GetNWString("HoldType2",self.HoldType)

@@ -30,7 +30,7 @@ SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
-SWEP.Base = "tf2_weaponbase"
+SWEP.Base = "weapon_base"
 
 SWEP.WalkSpeed = 300
 SWEP.RunSpeed = 400
@@ -139,11 +139,7 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
-
-		if (self.WModel) then
-	self.WorldModel = "models/empty.mdl"
-		end
+self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.HoldType = self:GetNWString("HoldType2",self.HoldType)
