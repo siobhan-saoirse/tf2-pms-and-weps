@@ -137,7 +137,7 @@ if !IsValid( attacker ) then
 attacker = self
 end
 dmg:SetAttacker( attacker )
-dmg:SetInflictor( self )
+dmg:SetInflictor( self ) 
 local angle = self.Owner:GetAngles().y - tr.Entity:GetAngles().y
 if angle < -180 then
 angle = 360 + angle
