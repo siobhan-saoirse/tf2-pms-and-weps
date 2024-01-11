@@ -1,3 +1,4 @@
+
 -- now it's killing time
 -- tf_items
 if !file.Exists("scripts/items/items_game.txt", "GAME") then
@@ -4481,4 +4482,3 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 			end
 		end)
 	end
-end)
