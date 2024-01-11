@@ -3193,15 +3193,75 @@ if SERVER then
 		if (item.item_class == "tf_weapon_shotgun") then
 			if (string.find(self:GetModel(),"/heavy")) then
 				item.item_slot = "secondary"
-				class = "tf_weapon_shotgun_hwg"
 			elseif (string.find(self:GetModel(),"/soldier")) then
 				item.item_slot = "secondary"
-				class = "tf_weapon_shotgun_soldier"
 			elseif (string.find(self:GetModel(),"/pyro")) then
 				item.item_slot = "secondary"
-				class = "tf_weapon_shotgun_pyro"
-			else
-				class = "tf_weapon_shotgun_primary"
+			end
+		end
+		if (item.item_slot == "primary") then
+			if (string.find(self:GetModel(),"/heavy")) then
+				class = "tf2_weapon_minigun"
+			elseif (string.find(self:GetModel(),"/engineer")) then
+				class = "tf2_weapon_shotgun_primary"
+			elseif (string.find(self:GetModel(),"/soldier")) then
+				class = "tf2_weapon_rocketlauncher"
+			elseif (string.find(self:GetModel(),"/pyro")) then
+				class = "tf2_weapon_flamethrower"
+			elseif (string.find(self:GetModel(),"/scout")) then
+				class = "tf2_weapon_scattergun"
+			elseif (string.find(self:GetModel(),"/medic")) then
+				class = "tf2_weapon_syringegun_medic"
+			elseif (string.find(self:GetModel(),"/sniper")) then
+				class = "tf2_weapon_sniperrifle"
+			elseif (string.find(self:GetModel(),"/spy")) then
+				class = "tf2_weapon_sapper"
+			elseif (string.find(self:GetModel(),"/demo")) then
+				class = "tf2_weapon_grenadelauncher"
+			end
+		elseif (item.item_slot == "secondary") then
+			if (string.find(self:GetModel(),"/heavy")) then
+				class = "tf2_weapon_shotgun_hwg"
+			elseif (string.find(self:GetModel(),"/engineer")) then
+				class = "tf2_weapon_pistol"
+			elseif (string.find(self:GetModel(),"/soldier")) then
+				class = "tf2_weapon_shotgun_soldier"
+			elseif (string.find(self:GetModel(),"/pyro")) then
+				class = "tf2_weapon_shotgun_pyro"
+			elseif (string.find(self:GetModel(),"/scout")) then
+				class = "tf2_weapon_pistol_scout"
+			elseif (string.find(self:GetModel(),"/medic")) then
+				class = "tf2_weapon_medigun"
+			elseif (string.find(self:GetModel(),"/sniper")) then
+				class = "tf2_weapon_smg"
+			elseif (string.find(self:GetModel(),"/spy")) then
+				class = "tf2_weapon_revolver"
+			elseif (string.find(self:GetModel(),"/demo")) then
+				class = "tf2_weapon_pipebomblauncher"
+			end
+		elseif (item.item_slot == "melee") then
+			if (string.find(self:GetModel(),"/heavy")) then
+				class = "tf2_weapon_fists"
+			elseif (string.find(self:GetModel(),"/engineer")) then
+				class = "tf2_weapon_wrench"
+			elseif (string.find(self:GetModel(),"/soldier")) then
+				class = "tf2_weapon_shovel"
+			elseif (string.find(self:GetModel(),"/pyro")) then
+				class = "tf2_weapon_fireaxe"
+			elseif (string.find(self:GetModel(),"/scout")) then
+				class = "tf2_weapon_bat"
+			elseif (string.find(self:GetModel(),"/medic")) then
+				class = "tf2_weapon_bonesaw"
+			elseif (string.find(self:GetModel(),"/sniper")) then
+				class = "tf2_weapon_club"
+			elseif (string.find(self:GetModel(),"/spy")) then
+				class = "tf2_weapon_knife"
+			elseif (string.find(self:GetModel(),"/demo")) then
+				class = "tf2_weapon_bottle"
+			end
+		elseif (item.item_slot == "building") then
+			if (string.find(self:GetModel(),"/spy")) then
+				class = "tf2_weapon_sapper"
 			end
 		end
 		
@@ -3329,34 +3389,7 @@ if SERVER then
 		if (item.visuals and (item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)) then
 			weapon:SetNWString("PrimarySound2",item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)
 		end
-        
-		if (item.item_slot == "head") then
-			self:SetBodygroup(self:FindBodygroupByName("hat"), 1)
-		end 
-		local visuals = item.visuals or {}
-		if visuals and visuals.player_bodygroups then
-			for _,group in ipairs(visuals.player_bodygroups) do
-				if visuals.player_bodygroups == "hat" then
-					self:SetBodygroup(self:FindBodygroupByName("hat"), 1)
-				elseif visuals.player_bodygroups == "head" then
-					self:SetBodygroup(self:FindBodygroupByName("head"), 1)
-				elseif visuals.player_bodygroups == "headphones" then
-					self:SetBodygroup(self:FindBodygroupByName("headphones"), 1)
-				elseif visuals.player_bodygroups == "grenades" then
-					self:SetBodygroup(self:FindBodygroupByName("grenades"), 1)
-				elseif visuals.player_bodygroups == "bullets" then
-					self:SetBodygroup(self:FindBodygroupByName("bullets"), 1)
-				elseif visuals.player_bodygroups == "arrows" then
-					self:SetBodygroup(self:FindBodygroupByName("arrows"), 1)
-				elseif visuals.player_bodygroups == "shoes_socks" then
-					self:SetBodygroup(self:FindBodygroupByName("shoes_socks"), 1)
-				elseif visuals.player_bodygroups == "medal" then
-					self:SetBodygroup(self:FindBodygroupByName("medal"), 1)
-				elseif visuals.player_bodygroups == "hands" then
-					self:SetBodygroup(self:FindBodygroupByName("hands"), 1)
-				end
-			end
-		end
+            
         if not item.attributes then
             weapon.Attributes = {}
         else
@@ -3497,18 +3530,6 @@ if SERVER then
 		end
 		
 		pl:GiveItem(name, prop)
-		local visuals = item.visuals or {}
-		if visuals and visuals.player_bodygroups then
-			for _,group in ipairs(visuals.player_bodygroups) do
-				if visuals.player_bodygroups == "hat" then
-					self:SetBodygroup("hat", 1)
-				elseif visuals.player_bodygroups == "head" then
-					self:SetBodygroup("head", 1)
-				elseif visuals.player_bodygroups == "headphones" then
-					self:SetBodygroup("headphones", 1)
-				end
-			end
-		end
 		--pl:EquipInLoadout(name, prop)
 	end
 	

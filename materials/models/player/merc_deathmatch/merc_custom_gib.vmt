@@ -1,0 +1,53 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\player\merc_deathmatch/merc_custom_gib"
+	"$basemapalphaphongmask" "1"
+	"$phongexponent" "8"
+//	"$phong" "1"
+//	"$phongboost" "1"	
+	"$lightwarptexture" "models/player/pyro/pyro_lightwarp"
+	"$phongfresnelranges"	"[.3 1 3]"
+	"$halflambert" "1"
+
+	
+	
+	"$blendtintbybasealpha"		"1"
+	"$blendtintcoloroverbase"		"1"
+	"$colortint_base"		"{180 180 180}"
+	"$color2"		"{180 180 180}"
+	"$colortint_tmp"		"[0 0 0]"
+	"$yellow" "0"
+	
+	
+	
+	
+	// Rim lighting parameters
+	"$rimlight" "2"												// To enable rim lighting (requires phong)
+	"$rimlightexponent" "4"										// Exponent for phong component of rim lighting	
+	"$rimlightboost" "1"										// Boost for ambient cube component of rim lighting
+	"$cloakPassEnabled" "1"
+
+	"Proxies"
+	{
+		"PlayerTintColor"
+		{
+			"resultVar"		"$colortint_tmp"
+		}
+		"SelectFirstIfNonZero"
+		{
+			"srcVar1"		"$colortint_tmp"
+			"srcVar2"		"$colortint_base"
+			"resultVar"		"$color2"
+		}
+		"YellowLevel"
+		{
+			"resultVar"		"$yellow"
+		}
+		"Multiply"
+		{
+			"srcVar1"		"$color2"
+			"srcVar2"		"$yellow"
+			"resultVar"		"$color2"
+		}
+	}
+}
