@@ -17,7 +17,7 @@ SWEP.WorldModel = "models/weapons/c_models/c_scattergun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
-
+ 
 SWEP.AutoSwitchTo = false
 SWEP.AutoSwitchFrom = false
 SWEP.Weight = 3
@@ -183,7 +183,7 @@ end
 function SWEP:Think()
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
-		if (self.WModel) then
+		if (self:GetItemData().model_player != nil and self.WModel) then
 	self.WorldModel = "models/empty.mdl"
 		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
