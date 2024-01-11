@@ -650,7 +650,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
                 ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
                 ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
                 ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_REVOLVER_MERCENARY"))		
-			elseif (holdtype == "smg") then
+			elseif (holdtype == "smg" || holdtype == "smg1") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_SMG_MERCENARY"))
                 ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
                 ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
