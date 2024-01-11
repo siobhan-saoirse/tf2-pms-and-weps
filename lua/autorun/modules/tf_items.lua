@@ -3007,6 +3007,10 @@ local function GiveItemAutoComplete(cmd, args, slotfilter)
 	classname = "scout"
 	if (string.find(pl:GetModel(),"soldier")) then
 		classname = "soldier"
+	elseif (string.find(pl:GetModel(),"merc")) then
+		classname = "soldier"
+	elseif (string.find(pl:GetModel(),"civilian")) then
+		classname = "soldier"
 	elseif (string.find(pl:GetModel(),"pyro")) then
 		classname = "pyro"
 	elseif (string.find(pl:GetModel(),"demo")) then
@@ -3197,11 +3201,34 @@ if SERVER then
 			elseif (string.find(self:GetModel(),"/soldier")) then
 				item.item_slot = "secondary"
 				class = "tf_weapon_shotgun_soldier"
+			elseif (string.find(self:GetModel(),"/merc")) then
+				item.item_slot = "secondary" 
+				class = "tf_weapon_shotgun_soldier"
 			elseif (string.find(self:GetModel(),"/pyro")) then
 				item.item_slot = "secondary"
 				class = "tf_weapon_shotgun_pyro"
 			else
 				class = "tf_weapon_shotgun_primary"
+			end
+		end
+		if (item.item_class == "saxxy") then
+
+			if (string.find(self:GetModel(),"/scout")) then
+				class = "tf2_weapon_bat"
+			elseif (string.find(self:GetModel(),"/soldier")) then
+				class = "tf2_weapon_shovel"
+			elseif (string.find(self:GetModel(),"/pyro") || string.find(self:GetModel(),"/heavy")) then
+				class = "tf2_weapon_fireaxe"
+			elseif (string.find(self:GetModel(),"/demo")) then
+				class = "tf2_weapon_bottle"
+			elseif (string.find(self:GetModel(),"/engineer")) then
+				class = "tf2_weapon_wrench"
+			elseif (string.find(self:GetModel(),"/medic")) then
+				class = "tf2_weapon_bonesaw"
+			elseif (string.find(self:GetModel(),"/sniper")) then
+				class = "tf2_weapon_club"
+			elseif (string.find(self:GetModel(),"/spy")) then
+				class = "tf2_weapon_knife"
 			end
 		end
 		
@@ -3210,12 +3237,17 @@ if SERVER then
 		end
 		class = string.Replace(class,"tf_weapon","tf2_weapon")
 		class = string.Replace(class,"saxxy","tf2_weapon_bat")
+		class = string.Replace(class,"katana","sword")
 		local classname
 		if (string.find(self:GetModel(),"/heavy")) then
 			classname = "heavy"
 		elseif (string.find(self:GetModel(),"/engineer")) then
 			classname = "engineer"
 		elseif (string.find(self:GetModel(),"/soldier")) then
+			classname = "soldier"
+		elseif (string.find(self:GetModel(),"/merc")) then
+			classname = "soldier"	
+		elseif (string.find(self:GetModel(),"/civilian")) then
 			classname = "soldier"
 		elseif (string.find(self:GetModel(),"/pyro")) then
 			classname = "pyro"
@@ -3224,6 +3256,8 @@ if SERVER then
 		elseif (string.find(self:GetModel(),"/medic")) then
 			classname = "medic"
 		elseif (string.find(self:GetModel(),"/sniper")) then
+			classname = "sniper"
+		elseif (string.find(self:GetModel(),"/skeleton")) then
 			classname = "sniper"
 		elseif (string.find(self:GetModel(),"/spy")) then
 			classname = "spy"

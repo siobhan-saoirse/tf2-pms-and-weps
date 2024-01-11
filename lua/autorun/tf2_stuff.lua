@@ -4476,6 +4476,7 @@ hook.Add("UpdateAnimation", "TF2UpdateAnim", function(pl, velocity, maxseqground
 	|| pl:GetModel() == "models/player/sniper.mdl"
 		|| pl:GetModel() == "models/player/spy.mdl"
 		|| pl:GetModel() == "models/player/mercenary.mdl"
+		|| pl:GetModel() == "models/player/merc_deathmatch.mdl"
 		|| pl:GetModel() == "models/player/civilian.mdl"
 		|| pl:GetModel() == "models/player/scientist.mdl"
 	|| pl:GetModel() == "models/pf2/player/scout.mdl"

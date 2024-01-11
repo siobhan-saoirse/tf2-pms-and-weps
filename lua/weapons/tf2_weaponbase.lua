@@ -13,7 +13,7 @@ if CLIENT then
 		local _Owner = self:GetOwner()
 		if (!self.WModel) then
 			self.WModel = self.WorldModel
-		else
+		elseif (self.WModel != nil) then
 			self.WorldModel = "models/empty.mdl"
 		end
 		WorldModel2:SetModel(self.WModel)

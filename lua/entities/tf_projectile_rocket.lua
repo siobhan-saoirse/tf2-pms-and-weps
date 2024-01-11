@@ -51,7 +51,16 @@ local explode = ents.Create( "env_explosion" )
 explode:SetOwner( self.Owner )
 explode:SetPos( self:GetPos() )
 explode:Spawn()
-explode:Fire( "Explode", 0, 0 )
+if (!self:IsOnGround()) then
+    ParticleEffect("ExplosionCore_MidAir",self:GetPos(),self:GetAngles())
+else
+    ParticleEffect("ExplosionCore_Wall",self:GetPos(),self:GetAngles())
+end
+if (self.ExplosionSound) then
+    self:EmitSound(self.ExplosionSound)
+else
+    self:EmitSound("BaseExplosionEffect.Sound")
+end
 self.RocketTrail:Fire( "kill", "", 0 )
 end
 util.BlastDamage( self, self.Owner, self:GetPos(), 146, 90 )
