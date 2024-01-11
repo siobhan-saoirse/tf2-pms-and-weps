@@ -1,4 +1,3 @@
-
 -- now it's killing time
 -- tf_items
 if !file.Exists("scripts/items/items_game.txt", "GAME") then
@@ -78,6 +77,24 @@ player_manager.AddValidModel( "of_mercenary",			"models/player/mercenary.mdl" )
 player_manager.AddValidHands( "of_mercenary",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
 player_manager.AddValidModel( "tf_mercenary",			"models/player/merc_deathmatch.mdl" )
 player_manager.AddValidHands( "tf_mercenary",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_heavy",			"models/pf2/player/heavy.mdl" )
+player_manager.AddValidHands( "pf2_heavy",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_scout",			"models/pf2/player/scout.mdl" )
+player_manager.AddValidHands( "pf2_scout",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_soldier",			"models/pf2/player/soldier.mdl" )
+player_manager.AddValidHands( "pf2_soldier",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_sniper",			"models/pf2/player/sniper.mdl" )
+player_manager.AddValidHands( "pf2_sniper",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_spy",			"models/pf2/player/spy.mdl" )
+player_manager.AddValidHands( "pf2_spy",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_medic",			"models/pf2/player/medic.mdl" )
+player_manager.AddValidHands( "pf2_medic",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_demoman",			"models/pf2/player/demo.mdl" )
+player_manager.AddValidHands( "pf2_demoman",			"models/weapons/c_arms_citizen.mdl",			1, "0000000" )
+player_manager.AddValidModel( "pf2_engineer",			"models/pf2/player/engineer.mdl" )
+player_manager.AddValidHands( "pf2_engineer",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "pf2_pyro",			"models/pf2/player/pyro.mdl" )
+player_manager.AddValidHands( "pf2_pyro",			"models/weapons/c_arms_combine.mdl",			0, "0000000" )
 
 -- special thanks to the competitive addon creator for suggesting a lot of things!
 
@@ -90,6 +107,15 @@ list.Set( "PlayerOptionsAnimations", "tf_engineer", { "selectionmenu_anim01", "l
 list.Set( "PlayerOptionsAnimations", "tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "tf_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "tf_spy", { "selectionmenu_anim01", "stand_secondary" } )
+list.Set( "PlayerOptionsAnimations", "pf2_scout", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_medic", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "pf2_spy", { "selectionmenu_anim01", "stand_secondary" } )
 list.Set( "PlayerOptionsAnimations", "hwm_tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "hwm_tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
 list.Set( "PlayerOptionsAnimations", "hwm_tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
@@ -115,6 +141,15 @@ list.Set( "PlayerOptionsAnimations", "tf_mercenary", { "stand_crowbar", "selecti
 
 local ActivityTranslateFixTF2 = {}  
 
+sound.Add( {
+	name = "BaseExplosionEffect.Sound",
+	volume = 1.0,
+	level = 150, 
+	pitch = { 95, 105 },
+	channel = CHAN_ITEM,
+	sound = { "^weapons/explode3.wav", "^weapons/explode4.wav", "^weapons/explode5.wav" } 
+} ) 
+
 hook.Add("PlayerFootstep", "RoboStep", function( ply, pos, foot, sound, volume, rf)
 
 	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
@@ -136,7 +171,7 @@ end)
 if CLIENT then
 	
 	hook.Add("PlayerFireAnimationEvent","OnStepEventPlayStepSound",function( pl, pos, ang, event, name )
-		if (event == 7001 and ((string.find(pl:GetModel(),"models/player") || string.find(pl:GetModel(),"models/bots/")) and pl:LookupBone("bip_head") != -1)) then
+		if (event == 7001 and ((string.find(pl:GetModel(),"models/player") || string.find(pl:GetModel(),"models/pf2/player") || string.find(pl:GetModel(),"models/bots/")) and pl:LookupBone("bip_head") != -1)) then
 			
 			local tr = util.TraceLine( {
 				start = pl:GetPos() + Vector(0,0,72),
@@ -335,7 +370,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
     if (IsValid(pl:GetActiveWeapon())) then
        holdtype = pl:GetActiveWeapon().HoldType or pl:GetActiveWeapon():GetHoldType() 
     end
-	if (pl:GetModel() == "models/player/scout.mdl" || pl:GetModel() == "models/player/engineer.mdl") then
+	if (pl:GetModel() == "models/player/scout.mdl" || pl:GetModel() == "models/pf2/player/scout.mdl" || pl:GetModel() == "models/player/engineer.mdl" || pl:GetModel() == "models/pf2/player/engineer.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -429,7 +464,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end
-	elseif (pl:GetModel() == "models/player/soldier.mdl") then
+	elseif (pl:GetModel() == "models/player/soldier.mdl" || pl:GetModel() == "models/pf2/player/soldier.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -541,7 +576,682 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end
-	elseif (pl:GetModel() == "models/player/heavy.mdl") then
+	elseif (pl:GetModel() == "models/player/mercenary.mdl") then
+		if (IsValid(pl:GetActiveWeapon())) then
+			if (holdtype == "normal") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
+			elseif (holdtype == "pistol") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_PISTOL_MERCENARY"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_PISTOL_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_PISTOL_MERCENARY"))		
+			elseif (holdtype == "dual") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_PISTOL_AKIMBO"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_PISTOL_AKIMBO"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_PISTOL_AKIMBO"))		
+			elseif (holdtype == "revolver") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_REVOLVER_MERCENARY"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_REVOLVER_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_REVOLVER_MERCENARY"))		
+			elseif (holdtype == "smg") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SMG_MERCENARY"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SMG_MERCENARY"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SMG_MERCENARY"))
+			elseif (holdtype == "ar2") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_ASSAULT_RIFLE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_ASSAULT_RIFLE"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_ASSAULT_RIFLE"))
+
+			elseif (holdtype == "crossbow") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_RAILGUN"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_RAILGUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_RAILGUN"))
+
+				elseif (holdtype == "scoped" ) then
+     			ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("Stand_RAILGUN_DEPLOYED"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("DeployedRun_RAILGUN"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("DeployedRun_RAILGUN"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("Swim_RAILGUN_DEPLOYED"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("Crouch_RAILGUN_DEPLOYED"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("Crouch_Walk_RAILGUN_DEPLOYED"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackStand_RAILGUN_DEPLOYED"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackCrouch_RAILGUN_DEPLOYED"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("DeployedRun_RAILGUN"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_PRIMARY
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_PRIMARY	
+
+			elseif (holdtype == "supershotgun") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SUPERSHOTGUN"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SUPERSHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SUPERSHOTGUN"))
+
+			elseif (holdtype == "physgun") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_LIGHTNING_GUN"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_LIGHTNING_GUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LIGHTNING_GUN"))
+
+elseif (holdtype == "deployed" ) then
+     			  ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_CHAINGUN"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_CHAINGUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+				ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpLand_CHAINGUN"))
+
+			elseif (holdtype == "rpg" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_ROCKETLAUNCHER"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_ROCKETLAUNCHER"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_ROCKETLAUNCHER_loop"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_ROCKETLAUNCHER_end"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadCrouch_ROCKETLAUNCHER"))
+           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_ROCKETLAUNCHER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_ROCKETLAUNCHER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_ROCKETLAUNCHER"))
+			elseif (holdtype == "shotgun" || holdtype == "crossbow" || holdtype == "physgun" || holdtype == "smg" || holdtype == "ar2" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SHOTGUN"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_loop"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_end"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SHOTGUN_LOOP"))
+           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_SHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SHOTGUN"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SHOTGUN"))
+			elseif (holdtype == "melee" || holdtype == "melee2" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_MELEE_ALLCLASS"))
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_MELEE
+			elseif (holdtype == "knife" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_COMBATKNIFE"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_COMBATKNIFE"))
+           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_COMBATKNIFE"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_COMBATKNIFE"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_COMBATKNIFE"))
+
+elseif ( holdtype == "backstab" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_COMBATKNIFE"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("combatknife_fire_backstab"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("combatknife_fire_backstab"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_COMBATKNIFE"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_COMBATKNIFE"))
+           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_COMBATKNIFE"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_COMBATKNIFE"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_COMBATKNIFE"))
+
+			elseif (holdtype == "grenade" || holdtype == "tools" || holdtype == "slam" || holdtype == "pda" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_DYNAMITE"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_DYNAMITE"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_DYNAMITE"))
+           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_DYNAMITE"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_DYNAMITE"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_DYNAMITE"))
+			elseif (holdtype == "fist" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_BERSERK"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_BERSERK"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_BERSERK"))
+           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_BERSERK"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_BERSERK"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_BERSERK"))
+			else 
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
+			end
+			return ActivityTranslateFixTF2[act] or act
+		end
+	elseif (pl:GetModel() == "models/player/merc_deathmatch.mdl") then
+		if (IsValid(pl:GetActiveWeapon())) then
+			if (holdtype == "normal") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
+			elseif (holdtype == "pistol" || holdtype == "revolver") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("Stand_PISTOL"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_PISTOL"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_PISTOL"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_PISTOL"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SECONDARY2"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SECONDARY2"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SECONDARY2"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackStand_PISTOL"))
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SECONDARY2"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_PISTOL"))
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SECONDARY2"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("jump_start_SECONDARY2"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_SECONDARY2"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SECONDARY2"))				
+			elseif (holdtype == "rpg" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= ACT_MP_RUN_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_PRIMARY
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_PRIMARY
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_PRIMARY				
+			elseif (holdtype == "shotgun" || holdtype == "crossbow" || holdtype == "physgun" || holdtype == "smg" || holdtype == "ar2" || holdtype == "dual" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						=  pl:GetSequenceActivity(pl:LookupSequence("Stand_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_shotgun"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("Crouch_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SHOTGUN"))
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackStand_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackCrouch_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_loop"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_end"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadCrouch_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("Jump_Start_shotgun"))
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SHOTGUN"))
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= pl:GetSequenceActivity(pl:LookupSequence("Jump_Start_shotgun"))
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= pl:GetSequenceActivity(pl:LookupSequence("Jump_Start_shotgun"))
+				ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpLand_shotgun"))
+			elseif (holdtype == "melee" || holdtype == "melee2" || holdtype == "grenade" || holdtype == "fist" || holdtype == "knife" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_MELEE_ALLCLASS"))
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_MELEE
+			else 
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
+			end
+			return ActivityTranslateFixTF2[act] or act
+		end
+	elseif (pl:GetModel() == "models/player/civilian.mdl") then
+		if (IsValid(pl:GetActiveWeapon())) then
+			if (holdtype == "normal") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER 
+                ActivityTranslateFixTF2[ACT_LAND] = pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))		
+			elseif (holdtype == "rpg" || holdtype == "crossbow" || holdtype == "shotgun" || holdtype == "physgun" || holdtype == "pistol" || holdtype == "revolver" || holdtype == "smg" || holdtype == "ar2" || holdtype == "dual" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= ACT_MP_RUN_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_SECONDARY
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_SECONDARY
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_SECONDARY	
+			elseif ( holdtype == "knife") then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_MELEE
+			elseif ( holdtype == "slam") then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_BUILDING
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_GRENADE_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_GRENADE_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_BUILDING
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_BUILDING
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_BUILDING
+			elseif ( holdtype == "melee" || holdtype == "melee2" || holdtype == "grenade" || holdtype == "fist" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("MELEE_swing"))
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("MELEE_crouch_swing"))
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
+				ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_MELEE"))
+			else 
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
+			end
+		end
+	elseif (pl:GetModel() == "models/player/hwm/scout.mdl" || pl:GetModel() == "models/player/hwm/engineer.mdl") then
+		if (IsValid(pl:GetActiveWeapon())) then
+			if (holdtype == "normal") then
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER 
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
+			elseif (holdtype == "shotgun" || holdtype == "crossbow" || holdtype == "physgun" || holdtype == "rpg" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= ACT_MP_RUN_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_PRIMARY
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_PRIMARY
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_PRIMARY				
+			elseif (holdtype == "pistol" || holdtype == "revolver" || holdtype == "smg" || holdtype == "ar2" || holdtype == "dual" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= ACT_MP_RUN_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_SECONDARY
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_SECONDARY
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_SECONDARY	
+			elseif (holdtype == "melee" || holdtype == "melee2" || holdtype == "grenade" || holdtype == "fist" ) then
+				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
+				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
+				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
+
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
+				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
+				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
+				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_MELEE
+			else 
+                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
+
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
+                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
+                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
+                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
+                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
+                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
+			end
+			return ActivityTranslateFixTF2[act] or act
+		end
+	elseif (pl:GetModel() == "models/player/heavy.mdl" || pl:GetModel() == "models/pf2/player/heavy.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -670,7 +1380,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end
-	elseif (pl:GetModel() == "models/player/sniper.mdl" || pl:GetModel() == "models/bots/skeleton_sniper/skeleton_sniper.mdl") then
+	elseif (pl:GetModel() == "models/player/sniper.mdl" || pl:GetModel() == "models/pf2/player/sniper.mdl" || pl:GetModel() == "models/bots/skeleton_sniper/skeleton_sniper.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -799,7 +1509,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end
-	elseif (pl:GetModel() == "models/player/demo.mdl") then
+	elseif (pl:GetModel() == "models/player/demo.mdl" || pl:GetModel() == "models/pf2/player/demo.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -831,8 +1541,6 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_PRIMARY_LOOP
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= ACT_MP_RELOAD_STAND_PRIMARY_END
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_PRIMARY
@@ -851,8 +1559,6 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_SECONDARY_LOOP
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= ACT_MP_RELOAD_STAND_SECONDARY_END
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_SECONDARY
@@ -914,7 +1620,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end
-	elseif (pl:GetModel() == "models/player/medic.mdl") then
+	elseif (pl:GetModel() == "models/player/medic.mdl" || pl:GetModel() == "models/pf2/player/medic.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -1025,7 +1731,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end
-	elseif (pl:GetModel() == "models/player/pyro.mdl") then
+	elseif (pl:GetModel() == "models/player/pyro.mdl" || pl:GetModel() == "models/pf2/player/pyro.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -1136,7 +1842,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end
-	elseif (pl:GetModel() == "models/player/spy.mdl") then
+	elseif (pl:GetModel() == "models/player/spy.mdl" || pl:GetModel() == "models/pf2/player/spy.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
                 ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -1188,7 +1894,7 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_SECONDARY
+				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_SECONDARY 
 				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_SECONDARY
 				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_SECONDARY	
@@ -1264,588 +1970,6 @@ hook.Add("TranslateActivity", "TF2PMStuff", function(pl, act)
 			end
 			return ActivityTranslateFixTF2[act] or act
 		end 
-elseif (pl:GetModel() == "models/player/civilian.mdl") then
-		if (IsValid(pl:GetActiveWeapon())) then
-			if (holdtype == "normal") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER 
-                ActivityTranslateFixTF2[ACT_LAND] = pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))									
-			elseif (holdtype == "rpg" || holdtype == "crossbow" || holdtype == "shotgun" || holdtype == "physgun" || holdtype == "pistol" || holdtype == "revolver" || holdtype == "smg" || holdtype == "ar2" || holdtype == "dual" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= ACT_MP_RUN_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_SECONDARY
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_SECONDARY
-				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_SECONDARY	
-			elseif ( holdtype == "knife") then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
-				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_MELEE
-			elseif ( holdtype == "slam") then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_BUILDING
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_GRENADE_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_GRENADE_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_BUILDING
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_BUILDING
-				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_BUILDING
-			elseif ( holdtype == "melee" || holdtype == "melee2" || holdtype == "grenade" || holdtype == "fist" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("MELEE_swing"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("MELEE_crouch_swing"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
-				ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_MELEE"))
-			else 
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
-			end
-			return ActivityTranslateFixTF2[act] or act
-		end 
-elseif (pl:GetModel() == "models/player/mercenary.mdl") then
-		if (IsValid(pl:GetActiveWeapon())) then
-			if (holdtype == "normal") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
-			elseif (holdtype == "pistol") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_PISTOL_MERCENARY"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_PISTOL_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_PISTOL_MERCENARY"))		
-			elseif (holdtype == "dual") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_PISTOL_AKIMBO"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_PISTOL_AKIMBO"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_PISTOL_AKIMBO"))		
-			elseif (holdtype == "revolver") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_REVOLVER_MERCENARY"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_REVOLVER_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_REVOLVER_MERCENARY"))		
-			elseif (holdtype == "smg") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SMG_MERCENARY"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SMG_MERCENARY"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SMG_MERCENARY"))
-			elseif (holdtype == "ar2") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_ASSAULT_RIFLE"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_ASSAULT_RIFLE"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_ASSAULT_RIFLE"))
-				
-			elseif (holdtype == "crossbow") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_RAILGUN"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_RAILGUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_RAILGUN"))
-
-				elseif (holdtype == "scoped" ) then
-     			ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("Stand_RAILGUN_DEPLOYED"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("DeployedRun_RAILGUN"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("DeployedRun_RAILGUN"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("Swim_RAILGUN_DEPLOYED"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("Crouch_RAILGUN_DEPLOYED"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("Crouch_Walk_RAILGUN_DEPLOYED"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackStand_RAILGUN_DEPLOYED"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackCrouch_RAILGUN_DEPLOYED"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("DeployedRun_RAILGUN"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_PRIMARY
-				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_PRIMARY	
-				
-			elseif (holdtype == "supershotgun") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SUPERSHOTGUN"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SUPERSHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SUPERSHOTGUN"))
-				
-			elseif (holdtype == "physgun") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_LIGHTNING_GUN"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_LIGHTNING_GUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LIGHTNING_GUN"))
-
-elseif (holdtype == "deployed" ) then
-     			  ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_CHAINGUN"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_CHAINGUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-				ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpLand_CHAINGUN"))
-
-			elseif (holdtype == "rpg" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_ROCKETLAUNCHER"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_ROCKETLAUNCHER"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_ROCKETLAUNCHER_loop"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_ROCKETLAUNCHER_end"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadCrouch_ROCKETLAUNCHER"))
-           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_ROCKETLAUNCHER"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_ROCKETLAUNCHER"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_ROCKETLAUNCHER"))
-			elseif (holdtype == "shotgun" || holdtype == "crossbow" || holdtype == "physgun" || holdtype == "smg" || holdtype == "ar2" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SHOTGUN"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_loop"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_end"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SHOTGUN_LOOP"))
-           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_SHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SHOTGUN"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SHOTGUN"))
-			elseif (holdtype == "melee" || holdtype == "melee2" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_MELEE_ALLCLASS"))
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
-				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_MELEE
-			elseif (holdtype == "knife" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_COMBATKNIFE"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_COMBATKNIFE"))
-           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_COMBATKNIFE"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_COMBATKNIFE"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_COMBATKNIFE"))
-
-elseif ( holdtype == "backstab" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_COMBATKNIFE"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("combatknife_fire_backstab"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("combatknife_fire_backstab"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_COMBATKNIFE"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_COMBATKNIFE"))
-           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_COMBATKNIFE"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_COMBATKNIFE"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_COMBATKNIFE"))
-
-			elseif (holdtype == "grenade" || holdtype == "tools" || holdtype == "slam" || holdtype == "pda" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_DYNAMITE"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_DYNAMITE"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_DYNAMITE"))
-           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_DYNAMITE"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_DYNAMITE"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_DYNAMITE"))
-			elseif (holdtype == "fist" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_BERSERK"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackstand_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadstand_BERSERK"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_BERSERK"))
-           ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("a_jumpStart_BERSERK"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_BERSERK"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_BERSERK"))
-			else 
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
-			end
-			return ActivityTranslateFixTF2[act] or act
-		end
-elseif (pl:GetModel() == "models/player/merc_deathmatch.mdl") then
-		if (IsValid(pl:GetActiveWeapon())) then
-			if (holdtype == "normal") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
-			elseif (holdtype == "pistol" || holdtype == "revolver") then
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("Stand_PISTOL"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_PISTOL"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_PISTOL"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_PISTOL"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_SECONDARY2"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_SECONDARY2"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SECONDARY2"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackStand_PISTOL"))
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("attackcrouch_SECONDARY2"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_PISTOL"))
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("reloadcrouch_SECONDARY2"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("jump_start_SECONDARY2"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_SECONDARY2"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_SECONDARY2"))				
-			elseif (holdtype == "rpg" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= ACT_MP_RUN_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_PRIMARY
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_PRIMARY
-				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_PRIMARY				
-			elseif (holdtype == "shotgun" || holdtype == "crossbow" || holdtype == "physgun" || holdtype == "smg" || holdtype == "ar2" || holdtype == "dual" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						=  pl:GetSequenceActivity(pl:LookupSequence("Stand_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("Run_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_shotgun"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("Crouch_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_SHOTGUN"))
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackStand_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= pl:GetSequenceActivity(pl:LookupSequence("AttackCrouch_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_loop"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadStand_SHOTGUN_end"))
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= pl:GetSequenceActivity(pl:LookupSequence("ReloadCrouch_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= pl:GetSequenceActivity(pl:LookupSequence("Jump_Start_shotgun"))
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("Swim_SHOTGUN"))
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= pl:GetSequenceActivity(pl:LookupSequence("Jump_Start_shotgun"))
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= pl:GetSequenceActivity(pl:LookupSequence("Jump_Start_shotgun"))
-				ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpLand_shotgun"))
-			elseif (holdtype == "melee" || holdtype == "melee2" || holdtype == "grenade" || holdtype == "fist" || holdtype == "knife" ) then
-				ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= ACT_MP_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RUN] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_WALK] 							= ACT_MP_RUN_MELEE
-				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK
-				ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= ACT_MP_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_MELEE
-				
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_MELEE
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_MELEE_ALLCLASS"))
-				ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_MELEE
-				ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_MELEE
-				ActivityTranslateFixTF2[ACT_LAND] 						= ACT_MP_JUMP_LAND_MELEE
-			else 
-                ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_RUN] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_WALK] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 							= pl:GetSequenceActivity(pl:LookupSequence("run_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= pl:GetSequenceActivity(pl:LookupSequence("airwalk_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCH_IDLE] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= pl:GetSequenceActivity(pl:LookupSequence("crouch_walk_MELEE"))
-
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARYFIRE
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_RELOAD
-                ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_MELEE
-                ActivityTranslateFixTF2[ACT_MP_SWIM] 						= pl:GetSequenceActivity(pl:LookupSequence("swim_LOSER"))
-                ActivityTranslateFixTF2[ACT_MP_JUMP_START] 						= ACT_MP_JUMP_START_LOSER
-                ActivityTranslateFixTF2[ACT_MP_JUMP_FLOAT] 						= ACT_MP_JUMP_FLOAT_LOSER
-                ActivityTranslateFixTF2[ACT_LAND] 						= pl:GetSequenceActivity(pl:LookupSequence("jumpland_LOSER"))				
-			end
-			return ActivityTranslateFixTF2[act] or act
-		end
 	elseif (pl:GetModel() == "models/player/hwm/scout.mdl" || pl:GetModel() == "models/player/hwm/engineer.mdl") then
 		if (IsValid(pl:GetActiveWeapon())) then
 			if (holdtype == "normal") then
@@ -2342,8 +2466,6 @@ elseif (pl:GetModel() == "models/player/merc_deathmatch.mdl") then
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_PRIMARY_LOOP
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= ACT_MP_RELOAD_STAND_PRIMARY_END
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_PRIMARY
@@ -2362,8 +2484,6 @@ elseif (pl:GetModel() == "models/player/merc_deathmatch.mdl") then
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_SECONDARY_LOOP
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= ACT_MP_RELOAD_STAND_SECONDARY_END
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_CROUCH_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_SWIM] 						= ACT_MP_SWIM_SECONDARY
@@ -3271,8 +3391,6 @@ elseif (pl:GetModel() == "models/player/merc_deathmatch.mdl") then
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_PRIMARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_PRIMARY_LOOP
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= ACT_MP_RELOAD_STAND_PRIMARY_END
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_STAND_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK_PRIMARY
@@ -3291,8 +3409,6 @@ elseif (pl:GetModel() == "models/player/merc_deathmatch.mdl") then
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_SECONDARY_LOOP
-				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_END] 						= ACT_MP_RELOAD_STAND_SECONDARY_END
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_CROUCH] 						= ACT_MP_RELOAD_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_JUMP] 						= ACT_MP_JUMP_START_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_AIRWALK] 						= ACT_MP_AIRWALK_SECONDARY
@@ -3775,11 +3891,6 @@ hook.Add("Think", "TF2PhonemesFix", function()
 					pl:SetupPhonemeMappings("player/spy/phonemes/phonemes")
 				end
 			end
-			if (pl:GetModel() == "models/player/civilian.mdl") then
-				if (CLIENT) then
-					pl:SetupPhonemeMappings("player/hwm/civilian_phonemes.pre")
-				end
-			end
 		end
 		if (pl:GetModel() == "models/player/scout.mdl") then
 			if (CLIENT) then
@@ -3835,12 +3946,18 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		end
 	end
 	-- inb4 pedo accusation from bonziworld.org
-	for k,v in ipairs(ply:GetChildren()) do
-		if (IsValid(v) and v:GetClass() == "gmod_button" and string.find(v:GetModel(),"player")) then
-			v:Remove()
+	timer.Simple(0.1, function()
+	
+		for k,v in ipairs(ply:GetChildren()) do
+			if (IsValid(v)) then
+				if (v:GetClass() == "gmod_button" and v:GetModel() != nil and string.find(v:GetModel(),"player")) then
+					v:SetParent(ply:GetRagdollEntity())
+				end
+			end
 		end
-	end
-	if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
+		ply:SetBodyGroups("")
+	end)
+	if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/scout_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3850,7 +3967,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/scout_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/soldier_paincrticialdeath0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3860,7 +3977,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/soldier_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl") then
+	elseif (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/pf2/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/pyro_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3870,7 +3987,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/pyro_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/demo.mdl" || ply:GetModel() == "models/player/hwm/demo.mdl") then
+	elseif (ply:GetModel() == "models/player/demo.mdl" || ply:GetModel() == "models/pf2/player/demo.mdl" || ply:GetModel() == "models/player/hwm/demo.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/demoman_paincrticialdeath0"..math.random(1,5)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3880,7 +3997,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/demoman_painsevere0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
+	elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/heavy_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3890,7 +4007,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/heavy_painsevere0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl") then
+	elseif (ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/pf2/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/engineer_paincrticialdeath0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3900,7 +4017,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/engineer_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl") then
+	elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/pf2/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/medic_paincrticialdeath0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3910,7 +4027,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/medic_painsevere0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/sniper.mdl" || ply:GetModel() == "models/player/hwm/sniper.mdl") then
+	elseif (ply:GetModel() == "models/player/sniper.mdl" || ply:GetModel() == "models/pf2/player/sniper.mdl" || ply:GetModel() == "models/player/hwm/sniper.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/sniper_paincrticialdeath0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3920,7 +4037,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/sniper_painsevere0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/spy.mdl" || ply:GetModel() == "models/player/hwm/spy.mdl") then
+	elseif (ply:GetModel() == "models/player/spy.mdl" || ply:GetModel() == "models/pf2/player/spy.mdl" || ply:GetModel() == "models/player/hwm/spy.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/spy_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3950,7 +4067,7 @@ elseif (ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/soldier_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
+elseif (ply:GetModel() == "models/bots/pyro/bot_mvm_pyro.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -3960,7 +4077,7 @@ elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/demo/bot_demo.mdl") then
+elseif (ply:GetModel() == "models/bots/hwm/demo.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/demoman_mvm_paincrticialdeath0"..math.random(1,5)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4041,7 +4158,7 @@ elseif (ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/soldier_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
+elseif (ply:GetModel() == "models/bots/pyro/bot_mvm_pyro.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4051,7 +4168,7 @@ elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/demo/bot_demo.mdl") then
+elseif (ply:GetModel() == "models/bots/hwm/demo.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/demoman_mvm_paincrticialdeath0"..math.random(1,5)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4357,10 +4474,19 @@ hook.Add("UpdateAnimation", "TF2UpdateAnim", function(pl, velocity, maxseqground
 	|| pl:GetModel() == "models/player/engineer.mdl"
 	|| pl:GetModel() == "models/player/medic.mdl"
 	|| pl:GetModel() == "models/player/sniper.mdl"
-	|| pl:GetModel() == "models/player/spy.mdl"
-	|| pl:GetModel() == "models/player/civilian.mdl"
-	|| pl:GetModel() == "models/player/mercenary.mdl"
-	|| pl:GetModel() == "models/player/merc_deathmatch.mdl"
+		|| pl:GetModel() == "models/player/spy.mdl"
+		|| pl:GetModel() == "models/player/mercenary.mdl"
+		|| pl:GetModel() == "models/player/civilian.mdl"
+		|| pl:GetModel() == "models/player/scientist.mdl"
+	|| pl:GetModel() == "models/pf2/player/scout.mdl"
+	|| pl:GetModel() == "models/pf2/player/soldier.mdl"
+	|| pl:GetModel() == "models/pf2/player/pyro.mdl"
+	|| pl:GetModel() == "models/pf2/player/demo.mdl"
+	|| pl:GetModel() == "models/pf2/player/heavy.mdl"
+	|| pl:GetModel() == "models/pf2/player/engineer.mdl"
+	|| pl:GetModel() == "models/pf2/player/medic.mdl"
+	|| pl:GetModel() == "models/pf2/player/sniper.mdl"
+	|| pl:GetModel() == "models/pf2/player/spy.mdl"
 	|| pl:GetModel() == "models/player/hwm/scout.mdl"
 	|| pl:GetModel() == "models/player/hwm/soldier.mdl"
 	|| pl:GetModel() == "models/player/hwm/pyro.mdl"
@@ -4418,6 +4544,7 @@ hook.Add("UpdateAnimation", "TF2UpdateAnim", function(pl, velocity, maxseqground
 end) 
 
 hook.Add("PlayerSpawn", "TF2BotModels", function(ply) 
+	ply.TempAttributes = {}
 	if (!ply.TFBot and !ply.LeadBot) then
 		
 		timer.Simple(0.01, function()
@@ -4431,7 +4558,7 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 					"models/player/engineer.mdl",
 					"models/player/medic.mdl",
 					"models/player/sniper.mdl",
-					"models/player/spy.mdl",
+					"models/player/spy.mdl"
 				}))
 			end
 		end)
@@ -4439,14 +4566,6 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 				if (ply:IsBot()) then
 
-					for k,v in ipairs(ply:GetWeapons()) do
-						if (string.StartWith(v:GetClass(),"weapon_")) then
-							v:Remove()
-						end
-					end
-					RandomWeapon2(ply, "primary")
-					RandomWeapon2(ply, "secondary")
-					RandomWeapon2(ply, "melee")
 					RandomCosmetic(ply, "hat")
 					RandomCosmetic(ply, "misc")
 				end
@@ -4462,7 +4581,7 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 				|| ply:GetModel() == "models/bots/spy/bot_spy.mdl") then
 				ply:SetHealth(125)
 				ply:SetMaxHealth(125)
-			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl" || ply:GetModel() == "models/player/civilian.mdl"
+			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl"
 				|| ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
 				ply:SetHealth(200)
 				ply:SetMaxHealth(200)
@@ -4475,10 +4594,11 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 				|| ply:GetModel() == "models/bots/heavy/bot_heavy.mdl") then
 				ply:SetHealth(300)
 				ply:SetMaxHealth(300)
-			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl" 
+			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl"
 				|| ply:GetModel() == "models/bots/medic/bot_medic.mdl") then
 				ply:SetHealth(150)
 				ply:SetMaxHealth(150)
 			end
 		end)
 	end
+end)
