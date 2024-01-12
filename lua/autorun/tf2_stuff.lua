@@ -3979,7 +3979,7 @@ hook.Add("Think", "TF2PhonemesFix", function()
 	end
 end)
 hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo) 
-	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 		if (dmginfo:IsExplosionDamage()) then
 			ply:PrecacheGibs()
 			ply:GibBreakClient(dmginfo:GetDamageForce() * 0.009)
