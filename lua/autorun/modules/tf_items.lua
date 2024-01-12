@@ -137,6 +137,9 @@ for k, v in pairs(items_game["items"]) do
         v.item_class = "tf_wearable_item"
 		v.item_quality = "collectors"
 	end
+	if (v.name == "The Force-a-Nature" || v.name == "The Soda Popper") then
+		v.item_class = "tf_weapon_scattergun_noreload"
+	end
 	if (string.find(v.name,"Gloves of Running Urgently MvM")) then
 		v.item_name = v.name
 		v.item_quality = "collectors"
