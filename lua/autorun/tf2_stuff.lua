@@ -4116,7 +4116,7 @@ elseif (ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/soldier_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
+elseif (ply:GetModel() == "models/bots/pyro/bot_mvm_pyro.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4126,7 +4126,7 @@ elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/demo/bot_demo.mdl") then
+elseif (ply:GetModel() == "models/bots/hwm/demo.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/demoman_mvm_paincrticialdeath0"..math.random(1,5)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4207,7 +4207,7 @@ elseif (ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/soldier_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
+elseif (ply:GetModel() == "models/bots/pyro/bot_mvm_pyro.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4217,7 +4217,7 @@ elseif (ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
 	else
 		ply:EmitSound("vo/mvm/norm/pyro_mvm_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 	end
-elseif (ply:GetModel() == "models/bots/demo/bot_demo.mdl") then
+elseif (ply:GetModel() == "models/bots/hwm/demo.mdl") then
 	if (dmginfo:IsDamageType(DMG_CLUB)) then
 		ply:EmitSound("vo/mvm/norm/demoman_mvm_paincrticialdeath0"..math.random(1,5)..".mp3",80,100,1,CHAN_STATIC)
 	elseif (dmginfo:IsDamageType(DMG_ACID)) then
