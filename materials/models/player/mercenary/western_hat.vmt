@@ -41,7 +41,7 @@
 		{
 			"resultVar"		"$detailblendfactor"
 		}
-		"ItemTintColor"
+		"PlayerColor"
 		{
 			"resultVar"		"$colortint_tmp"
 		}
