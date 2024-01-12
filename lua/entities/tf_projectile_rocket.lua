@@ -2,6 +2,7 @@ AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Base = "base_anim"
 ENT.Spawnable = false
+ENT.BaseDamage = 95
 
 function ENT:Draw()
 self.Entity:DrawModel()
@@ -51,8 +52,17 @@ local explode = ents.Create( "env_explosion" )
 explode:SetOwner( self.Owner )
 explode:SetPos( self:GetPos() )
 explode:Spawn()
-explode:Fire( "Explode", 0, 0 )
+if (!self:IsOnGround()) then
+    ParticleEffect("ExplosionCore_MidAir",self:GetPos(),self:GetAngles())
+else
+    ParticleEffect("ExplosionCore_Wall",self:GetPos(),self:GetAngles())
+end
+if (self.ExplosionSound) then
+    self:EmitSound(self.ExplosionSound)
+else
+    self:EmitSound("BaseExplosionEffect.Sound")
+end
 self.RocketTrail:Fire( "kill", "", 0 )
 end
-util.BlastDamage( self, self.Owner, self:GetPos(), 146, 90 )
+util.BlastDamage( self, self.Owner, self:GetPos(), 146, self.BaseDamage )
 end
