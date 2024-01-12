@@ -146,7 +146,7 @@ end
 function SWEP:Think()
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
-		if (self.WModel) then
+		if (self:GetItemData().model_player != nil and self.WModel) then
 	self.WorldModel = "models/empty.mdl"
 		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
@@ -156,14 +156,14 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
 if self.Attack == 1 and self.AttackTimer <= CurTime() then
 local tr = util.TraceLine( {
 start = self.Owner:GetShootPos(),
-endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * 64,
+endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * 72,
 filter = self.Owner,
 mask = MASK_SHOT_HULL,
 } )
 if !IsValid( tr.Entity ) then
 tr = util.TraceHull( {
 start = self.Owner:GetShootPos(),
-endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * 64,
+endpos = self.Owner:GetShootPos() + self.Owner:GetAimVector() * 72,
 filter = self.Owner,
 mins = Vector( -16, -16, 0 ),
 maxs = Vector( 16, 16, 0 ),
@@ -198,12 +198,16 @@ if SERVER then
 			if visuals.sound_melee_hit then
 				self.HitFlesh = Sound(visuals.sound_melee_hit)
                 self.Owner:EmitSound( self.HitFlesh )
+            else
+                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitFlesh" )
 			end
         end
         if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
             if visuals.sound_melee_hit_world then
                 self.HitWorld = Sound(visuals.sound_melee_hit_world)
                 self.Owner:EmitSound( self.HitWorld )
+            else
+                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitWorld" )
             end
         end
 

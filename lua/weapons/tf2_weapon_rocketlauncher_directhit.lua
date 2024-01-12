@@ -8,13 +8,13 @@ end
 
 SWEP.PrintName = "Rocket Launcher"
 SWEP.Category = "Team Fortress 2"
-SWEP.Spawnable= true
+SWEP.Spawnable= false
 SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
 SWEP.ViewModel = "models/weapons/v_models/v_rocketlauncher_soldier.mdl"
-SWEP.WorldModel = "models/weapons/w_models/w_rocketlauncher.mdl"
+SWEP.WorldModel = "models/weapons/w_models/w_rocketlauncher.mdl" 
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
@@ -147,6 +147,8 @@ phys:EnableGravity( false )
 phys:ApplyForceCenter( entity:GetForward() * self.Primary.Force )
 if (self:GetItemData() and self:GetItemData().visuals and self:GetItemData().visuals.sound_special1) then
     entity.ExplosionSound = self:GetItemData().visuals.sound_special1
+else
+    entity.ExplosionSound = self.ExplosionSound
 end
 timer.Create( "Flight"..entity:EntIndex(), 0, 0, function()
 if !IsValid( phys ) then
@@ -195,7 +197,7 @@ end
 function SWEP:Think()
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
-		if (self.WModel) then
+		if (self:GetItemData().model_player != nil and self.WModel) then
 	self.WorldModel = "models/empty.mdl"
 		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)

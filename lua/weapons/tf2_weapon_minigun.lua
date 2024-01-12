@@ -29,7 +29,7 @@ SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
-SWEP.Base = "weapon_base"
+SWEP.Base = "tf2_weaponbase"
 
 SWEP.WalkSpeed = 230
 SWEP.RunSpeed = 308
@@ -120,7 +120,7 @@ end
 function SWEP:PrimaryAttack()
 if self.Spin == 0 and self.SpinTimer <= CurTime() and self.Owner:KeyDown( IN_ATTACK ) then
 if SERVER then
-self.Owner:EmitSound( "Weapon_Minigun.WindUp" )
+self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindUp") )
 end
 self.Weapon:SendWeaponAnim( ACT_DEPLOY )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_PREFIRE, true)
@@ -139,8 +139,8 @@ self.Owner:StopSound( self.Primary.Sound )
 self.Owner:StopSound( self.Secondary.Sound )
 end
 if SERVER then
-self.Owner:StopSound( "Weapon_Minigun.ClipEmpty" )
-self.Owner:EmitSound( "Weapon_Minigun.ClipEmpty" )
+	self.Owner:StopSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
+	self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
 end
 self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
 self:SetNextPrimaryFire( CurTime() + 0.2 )
@@ -151,8 +151,8 @@ self.Owner:StopSound( self.Primary.Sound )
 self.Owner:StopSound( self.Secondary.Sound )
 end
 if SERVER then
-self.Owner:StopSound( "Weapon_Minigun.ClipEmpty" )
-self.Owner:EmitSound( "Weapon_Minigun.ClipEmpty" )
+self.Owner:StopSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
+self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
 end
 self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
 self:SetNextPrimaryFire( CurTime() + 0.2 )
@@ -189,7 +189,7 @@ function SWEP:SecondaryAttack()
 if self.Owner:KeyDown( IN_ATTACK ) then return end
 if self.Spin == 0 and self.SpinTimer <= CurTime() and self.Owner:KeyDown( IN_ATTACK2 ) then
 if SERVER then
-self.Owner:EmitSound( "Weapon_Minigun.WindUp" )
+	self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindUp") )
 end
 self.Weapon:SendWeaponAnim( ACT_DEPLOY )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_PREFIRE, true)
@@ -201,10 +201,15 @@ self.Owner:SetWalkSpeed( 74 )
 self.Owner:SetRunSpeed( 148 )
 self.Weapon:SetHoldType( "deployed" )
 end
-if self.Spin == 2 then
+if self.Spin == 2 then 	
 if SERVER then
-self.Owner:StopSound( self.Secondary.Sound )
-self.Owner:EmitSound( self.Secondary.Sound )
+	if self.Sound == 0 then
+		if SERVER then
+			self.Owner:StopSound( self.Secondary.Sound )
+			self.Owner:EmitSound( self.Secondary.Sound )
+		end
+		self.Sound = 1
+	end
 end
 self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
 self.Idle = 1
@@ -217,9 +222,14 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
+self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
+
+		if (self:GetItemData().model_player != nil and self.WModel) then
+	self.WorldModel = "models/empty.mdl"
+		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
+self.Secondary.Sound = string.Replace(self:GetNWString("PrimarySound2",self.Primary.Sound),"Fire","Spin")
 self.HoldType = self:GetNWString("HoldType2",self:GetHoldType())
 if self.Spin == 1 and self.SpinTimer <= CurTime() then
 self.Spin = 2
@@ -236,7 +246,7 @@ if SERVER then
 self.Owner:StopSound( self.Primary.Sound )
 self.Owner:StopSound( self.Secondary.Sound )
 self.Owner:StopSound( "Weapon_Minigun.ClipEmpty" )
-self.Owner:EmitSound( "Weapon_Minigun.WindDown" )
+self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindDown") )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_POSTFIRE, true)
 end
 self.Weapon:SetHoldType( "rpg" )

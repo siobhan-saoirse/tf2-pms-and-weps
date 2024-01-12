@@ -30,7 +30,7 @@ SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
-SWEP.Base = "weapon_base"
+SWEP.Base = "tf2_weaponbase"
 
 SWEP.WalkSpeed = 300
 SWEP.RunSpeed = 400
@@ -132,7 +132,11 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
+self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
+
+		if (self:GetItemData().model_player != nil and self.WModel) then
+	self.WorldModel = "models/empty.mdl"
+		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.HoldType = self:GetNWString("HoldType2",self.HoldType)
@@ -161,7 +165,7 @@ if !IsValid( attacker ) then
 attacker = self
 end
 dmg:SetAttacker( attacker )
-dmg:SetInflictor( self )
+dmg:SetInflictor( self ) 
 dmg:SetDamage( self.Primary.Damage )
 dmg:SetDamageType( bit.bor(DMG_CLUB,DMG_SLASH) )
 dmg:SetDamageForce( self.Owner:GetAimVector() * self.Primary.Force * 8 )

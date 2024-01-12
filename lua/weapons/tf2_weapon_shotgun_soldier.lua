@@ -30,7 +30,7 @@ SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
-SWEP.Base = "weapon_base"
+SWEP.Base = "tf2_weaponbase"
 
 SWEP.WalkSpeed = 240
 SWEP.RunSpeed = 300
@@ -41,7 +41,7 @@ SWEP.Idle = 0
 SWEP.IdleTimer = CurTime()
 SWEP.Recoil = 0
 SWEP.RecoilTimer = CurTime()
-
+ 
 SWEP.Primary.Sound = Sound( "weapons/shotgun_shoot.wav" )
 SWEP.Primary.ClipSize = 6
 SWEP.Primary.DefaultClip = 38
@@ -180,7 +180,11 @@ end
 end 
 
 function SWEP:Think()
-self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
+self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
+
+		if (self:GetItemData().model_player != nil and self.WModel) then
+	self.WorldModel = "models/empty.mdl"
+		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.HoldType = self:GetNWString("HoldType2",self.HoldType)
