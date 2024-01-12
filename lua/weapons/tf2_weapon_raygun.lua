@@ -46,13 +46,12 @@ SWEP.Primary.Sound = Sound( "Weapon_Bison.Single" )
 SWEP.Primary.ClipSize = 4
 SWEP.Primary.DefaultClip = 38
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "Pistol"
 SWEP.Primary.Damage = 15
-SWEP.Primary.Spread = 0.0675
+SWEP.Primary.Spread = 0.0
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.NumberofShots = 1
-SWEP.Primary.Delay = 0.625
-SWEP.Primary.Force = 1 
+SWEP.Primary.Delay = 0.8
+SWEP.Primary.Force = 1100
 
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
@@ -84,6 +83,9 @@ surface.DrawTexturedRect( x - 16, y - 16, 32, 32 )
 end
 end
 
+function SWEP:CanPrimaryAttack()
+    return true
+end
 function SWEP:Deploy()
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
@@ -137,16 +139,19 @@ self:Reload()
 end
 if self.Weapon:Clip1() <= 0 then return end
 if self.FiresUnderwater == false and self.Owner:WaterLevel() == 3 then return end
-local bullet = {}
-bullet.Num = self.Primary.NumberofShots
-bullet.Src = self.Owner:GetShootPos()
-bullet.Dir = self.Owner:GetAimVector()
-bullet.Spread = Vector( 1 * self.Primary.Spread, 1 * self.Primary.Spread, 0 )
-bullet.Tracer = 1
-bullet.Force = self.Primary.Force
-bullet.Damage = self.Primary.Damage
-bullet.AmmoType = self.Primary.Ammo
-self.Owner:FireBullets( bullet )
+if SERVER then
+    local entity = ents.Create( "tf_projectile_energy_ring" )
+    entity:SetOwner( self.Owner )
+    if IsValid( entity ) then
+    local Forward = self.Owner:EyeAngles():Forward()
+    local Right = self.Owner:EyeAngles():Right()
+    local Up = self.Owner:EyeAngles():Up()
+    entity:SetPos( self.Owner:GetShootPos() + Forward * 8 + Right * 4 + Up * -4 )
+    entity:SetAngles( self.Owner:EyeAngles() )
+    entity:SetVelocity( self.Owner:GetAimVector() * self.Primary.Force )
+    entity:Spawn()
+    end
+    end
 if SERVER then
 self.Owner:EmitSound( self.Primary.Sound, 94, 100, 1, CHAN_WEAPON )
 end
@@ -158,9 +163,8 @@ self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Recoil = 1
-self.RecoilTimer = CurTime() + 0.2
-self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -3, 0, 0 ) )
+self.Recoil = 0
+self.RecoilTimer = CurTime()
 end
 end
 
@@ -217,7 +221,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self:SetNextPrimaryFire( CurTime() + 0.5 )
     self:SetNextSecondaryFire( CurTime() + 0.5 )
     self.Reloading = 0
-    self.ReloadingTimer = CurTime() + 0.5
+    self.ReloadingTimer = CurTime() + 0.4
     self.Idle = 0
     self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
     end
@@ -225,10 +229,10 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END) 
     self.ReloadingFirst = false
-    self:SetNextPrimaryFire( CurTime() + 0.5 )
-    self:SetNextSecondaryFire( CurTime() + 0.5 )
+    self:SetNextPrimaryFire( CurTime() + 0.4 )
+    self:SetNextSecondaryFire( CurTime() + 0.4 )
     self.Reloading = 0
-    self.ReloadingTimer = CurTime() + 0.5
+    self.ReloadingTimer = CurTime() + 0.4
     self.Idle = 0
     self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
     end
@@ -236,10 +240,10 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH ) 
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
-    self:SetNextPrimaryFire( CurTime() + 0.5 )
-    self:SetNextSecondaryFire( CurTime() + 0.5 )
+    self:SetNextPrimaryFire( CurTime() + 0.4 )
+    self:SetNextSecondaryFire( CurTime() + 0.4 )
     self.Reloading = 3
-    self.ReloadingTimer = CurTime() + 0.5
+    self.ReloadingTimer = CurTime() + 0.4
     self.Idle = 0
     self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
     end
@@ -251,8 +255,5 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
     end
     self.Idle = 1
-    end
-    if self.Weapon:Ammo1() > self.Primary.MaxAmmo then
-    self.Owner:SetAmmo( self.Primary.MaxAmmo, self.Primary.Ammo )
     end
 end
