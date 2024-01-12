@@ -90,8 +90,8 @@ function SWEP:Deploy()
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
-self:SetNextPrimaryFire( CurTime() + 0.5 )
-self:SetNextSecondaryFire( CurTime() + 0.5 )
+self:SetNextPrimaryFire( CurTime() + 0.4 )
+self:SetNextSecondaryFire( CurTime() + 0.4 )
 self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
@@ -218,8 +218,8 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
-    self:SetNextPrimaryFire( CurTime() + 0.5 )
-    self:SetNextSecondaryFire( CurTime() + 0.5 )
+    self:SetNextPrimaryFire( CurTime() + 0.4 )
+    self:SetNextSecondaryFire( CurTime() + 0.4 )
     self.Reloading = 0
     self.ReloadingTimer = CurTime() + 0.4
     self.Idle = 0
