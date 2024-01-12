@@ -43,9 +43,24 @@ function ITEM:GetItemData()
 	return item or {}
 end
 
+function ITEM:GetAttributes()
+	return self.Attributes or self:GetItemData().attributes or {}
+end
+
+function ITEM:GetAttribute(class)
+	for _,a in pairs(self.Attributes or self:GetItemData().attributes or {}) do
+		if a.attribute_class == class then return a end
+	end
+end
+
 function ITEM:SetupDataTables()
 	self:DTVar("Int", 0, "ItemID")
 	if SERVER then self.dt.ItemID = -1 end
+end
+
+function ITEM:InitProjectileAttributes(proj)
+	proj.Attributes = self:GetAttributes()
+	ApplyAttributesFromEntity(self, "projectile_fired", proj, self, self.Owner)
 end
 
 function InitializeAsBaseItem(tbl)
@@ -3067,7 +3082,27 @@ if SERVER then
     function META:ClearItemSetAttributes()
         self.ItemSetAttributes = nil
     end
-    
+		
+	function META:GetTFItems()
+		local t = self:GetWeapons()
+		if self.PlayerItemList then
+			table.Add(t, self.PlayerItemList)
+		end
+		return t
+	end
+
+	function META:HasTFItem(name)
+		if not name then return false end
+		
+		for _,v in ipairs(self:GetTFItems()) do
+			if v.IsTFItem and v:GetItemData().name == name then
+				return true
+			end
+		end
+		
+		return false
+	end
+
     function META:GiveItemSetAttributes()
         local item_set
         if not self.ItemLoadout then return end

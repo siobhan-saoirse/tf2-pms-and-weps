@@ -1333,7 +1333,7 @@ function ApplyAttributesFromEntity(ent, act, ...)
 end
 
 function ApplyGlobalAttributesFromPlayer(pl, act, ...)
-	CURRENT_PLAYER = pl
+	CURRENT_PLAYER = pl 
 	for _,w in pairs(pl:GetTFItems()) do
 		if not w.OnlyProvideAttributesOnActive or pl:GetActiveWeapon() == w then
 			local c = ApplyAttributesFromEntity(w, "_global_"..act, ...)
@@ -1354,3 +1354,30 @@ function ApplyGlobalAttributesFromPlayer(pl, act, ...)
 	
 	CURRENT_PLAYER = NULL
 end
+
+hook.Add("PreScaleDamage", "TF2PreAttributeHook", function( ent, hitgroup, dmginfo )
+	local inf, att = dmginfo:GetInflictor(), dmginfo:GetAttacker()
+	ApplyAttributesFromEntity(dmginfo:GetInflictor(), "pre_damage", ent, hitgroup, dmginfo)
+	
+	if att:IsPlayer() then
+		ApplyGlobalAttributesFromPlayer(att, "pre_damage", ent, hitgroup, dmginfo)
+	end
+
+	if ent:IsPlayer() then
+		ApplyAttributesFromEntity(ent:GetActiveWeapon(), "pre_damage_received", ent, hitgroup, dmginfo)
+		ApplyGlobalAttributesFromPlayer(ent, "pre_damage_received", ent, hitgroup, dmginfo)
+	end
+end)
+hook.Add("PostScaleDamage", "TF2PostAttributeHook", function( ent, hitgroup, dmginfo )
+	local inf, att = dmginfo:GetInflictor(), dmginfo:GetAttacker()
+	ApplyAttributesFromEntity(dmginfo:GetInflictor(), "post_damage", ent, hitgroup, dmginfo)
+	
+	if att:IsPlayer() then
+		ApplyGlobalAttributesFromPlayer(att, "post_damage", ent, hitgroup, dmginfo)
+	end
+
+	if ent:IsPlayer() then
+		ApplyAttributesFromEntity(ent:GetActiveWeapon(), "post_damage_received", ent, hitgroup, dmginfo)
+		ApplyGlobalAttributesFromPlayer(ent, "post_damage_received", ent, hitgroup, dmginfo)
+	end
+end)

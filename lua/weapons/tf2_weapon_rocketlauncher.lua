@@ -144,6 +144,10 @@ else
 end
 entity:SetAngles( self.Owner:EyeAngles() )
 entity:Spawn()
+if (self.ProjectileDamageMultiplier) then
+    entity.OldBaseDamage = entity.BaseDamage
+    entity.BaseDamage = entity.OldBaseDamage * self.ProjectileDamageMultiplier
+end   
 local phys = entity:GetPhysicsObject()
 phys:SetMass( 1 )
 phys:EnableGravity( false )
@@ -151,6 +155,8 @@ phys:ApplyForceCenter( entity:GetForward() * self.Primary.Force )
 if (self:GetItemData() and self:GetItemData().visuals and self:GetItemData().visuals.sound_special1) then
     entity.ExplosionSound = self:GetItemData().visuals.sound_special1
 end
+
+self:InitProjectileAttributes(entity)
 timer.Create( "Flight"..entity:EntIndex(), 0, 0, function()
 if !IsValid( phys ) then
 timer.Stop( "Flight" )

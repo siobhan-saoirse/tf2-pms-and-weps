@@ -2,6 +2,7 @@ AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Base = "base_anim"
 ENT.Spawnable = false
+ENT.BaseDamage = 95
 
 function ENT:Draw()
 self.Entity:DrawModel()
@@ -63,5 +64,5 @@ else
 end
 self.RocketTrail:Fire( "kill", "", 0 )
 end
-util.BlastDamage( self, self.Owner, self:GetPos(), 146, 90 )
+util.BlastDamage( self, self.Owner, self:GetPos(), 146, self.BaseDamage )
 end

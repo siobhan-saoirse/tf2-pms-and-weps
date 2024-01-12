@@ -144,6 +144,8 @@ list.Set( "PlayerOptionsAnimations", "of_mercenary", { "loadout_idle", "layer_ta
 list.Set( "PlayerOptionsAnimations", "tf_mercenary", { "stand_crowbar", "selectionMenu_Anim0l", "winscreen_first", "winscreen_first_2", "winscreen_first_3", "winscreen_second",  } )
 
 local ActivityTranslateFixTF2 = {}  
+local BlastForceMultiplier = 16
+local BlastForceToVelocityMultiplier = (0.015 / BlastForceMultiplier)
 
 sound.Add( {
 	name = "BaseExplosionEffect.Sound",
@@ -4277,35 +4279,10 @@ elseif (ply:GetModel() == "models/bots/spy/bot_spy.mdl") then
 	end
 	end
 end)
-hook.Add("PreScaleDamage", "PreAttributeHook", function( ent, hitgroup, dmginfo )
-	local inf, att = dmginfo:GetInflictor(), dmginfo:GetAttacker()
-	ApplyAttributesFromEntity(dmginfo:GetInflictor(), "pre_damage", ent, hitgroup, dmginfo)
-	
-	if att:IsPlayer() then
-		ApplyGlobalAttributesFromPlayer(att, "pre_damage", ent, hitgroup, dmginfo)
-	end
-
-	if ent:IsPlayer() then
-		ApplyAttributesFromEntity(ent:GetActiveWeapon(), "pre_damage_received", ent, hitgroup, dmginfo)
-		ApplyGlobalAttributesFromPlayer(ent, "pre_damage_received", ent, hitgroup, dmginfo)
-	end
-end)
-hook.Add("PostScaleDamage", "PostAttributeHook", function( ent, hitgroup, dmginfo )
-	local inf, att = dmginfo:GetInflictor(), dmginfo:GetAttacker()
-	ApplyAttributesFromEntity(dmginfo:GetInflictor(), "post_damage", ent, hitgroup, dmginfo)
-	
-	if att:IsPlayer() then
-		ApplyGlobalAttributesFromPlayer(att, "post_damage", ent, hitgroup, dmginfo)
-	end
-
-	if ent:IsPlayer() then
-		ApplyAttributesFromEntity(ent:GetActiveWeapon(), "post_damage_received", ent, hitgroup, dmginfo)
-		ApplyGlobalAttributesFromPlayer(ent, "post_damage_received", ent, hitgroup, dmginfo)
-	end
-end)
 hook.Add("ScalePlayerDamage", "TF2CritOnHeadshot", function( ply, hitgroup, dmginfo )
-	
-	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+	 
+	hook.Run("PreScaleDamage", ply, hitgroup, dmginfo)
+	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 
 		if ( hitgroup == HITGROUP_HEAD ) then
 			dmginfo:SetDamageType(bit.bor(dmginfo:GetDamageType(),DMG_ACID))
@@ -4320,9 +4297,24 @@ end)
 hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo) 
 
 	local attacker = dmginfo:GetAttacker()
+	local inflictor = dmginfo:GetInflictor()
 	if (ply:IsPlayer()) then
 
+		hook.Run("PostScaleDamage", ply, 0, dmginfo)
 		if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+			if (dmginfo:IsExplosionDamage()) then
+				if (dmginfo:GetAttacker():EntIndex() == ply:EntIndex()) then
+					ply:SetGroundEntity(nil)
+					local force = dmginfo:GetDamageForce() * (BlastForceToVelocityMultiplier * 0.5)
+					
+					local dist = (ply:GetPos() - inflictor:GetPos()):Length()
+					local fraction = math.Clamp(dist / 50, 0.3, 2)
+					
+					force = force * fraction * 2.0
+					ply:SetVelocity(ply:GetVelocity() + force)
+					dmginfo:ScaleDamage(0.4)
+				end
+			end
 			if (dmginfo:IsDamageType(DMG_ACID)) then
 				
 				if (!ply.WasHitInHead) then
