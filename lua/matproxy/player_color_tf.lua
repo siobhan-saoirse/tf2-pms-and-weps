@@ -6,7 +6,7 @@
 -----------------------------------------------------------]]
 
 local clrFallback = Vector( 62 / 255, 88 / 255, 106 / 255 )
-
+ 
 matproxy.Add( {
 	name = "PlayerColor",
 
@@ -100,3 +100,4 @@ matproxy.Add( {
 		end
 	end
 } )
+ 
