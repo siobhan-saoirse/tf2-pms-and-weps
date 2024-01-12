@@ -14,7 +14,7 @@
 		
 		"Proxies"
 		{
-			"ItemTintColor"
+			"PlayerColor"
 			{
 				"resultVar"		"$colortint_tmp"
 			}
