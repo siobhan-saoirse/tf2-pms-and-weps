@@ -4312,6 +4312,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 					
 					force = force * fraction * 2.0
 					ply:SetVelocity(ply:GetVelocity() + force)
+					ply:SetLocalVelocity(ply:GetVelocity() + Vector(0,0,300))
 					dmginfo:ScaleDamage(0.4)
 				end
 			end
