@@ -4635,7 +4635,7 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 				|| ply:GetModel() == "models/bots/spy/bot_spy.mdl") then
 				ply:SetHealth(125)
 				ply:SetMaxHealth(125)
-			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl"
+			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/civilian.mdl" || ply:GetModel() == "models/pf2/player/civilian.mdl"
 				|| ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
 				ply:SetHealth(200)
 				ply:SetMaxHealth(200)
@@ -4648,7 +4648,7 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 				|| ply:GetModel() == "models/bots/heavy/bot_heavy.mdl") then
 				ply:SetHealth(300)
 				ply:SetMaxHealth(300)
-			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl" || ply:GetModel() == "models/pf2/player/medic.mdl"
+			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl" || ply:GetModel() == "models/pf2/player/medic.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl"
 				|| ply:GetModel() == "models/bots/medic/bot_medic.mdl") then
 				ply:SetHealth(150)
 				ply:SetMaxHealth(150)
