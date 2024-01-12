@@ -3533,6 +3533,9 @@ if SERVER then
 		end
 		
 		pl:GiveItem(name, prop)
+		if (item.item_slot == "head") then
+			self:SetBodygroup(self:FindBodygroupByName("hat"), 1)
+		end 
 		local visuals = item.visuals or {}
 		if visuals and visuals.player_bodygroups then
 			for _,group in ipairs(visuals.player_bodygroups) do

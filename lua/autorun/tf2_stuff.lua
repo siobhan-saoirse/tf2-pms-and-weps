@@ -3990,6 +3990,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		end
 	end
 	-- inb4 pedo accusation from bonziworld.org
+	ply:SetBodyGroups("0000000000000") 
 	timer.Simple(0.1, function()
 	
 		for k,v in ipairs(ply:GetChildren()) do
@@ -3999,9 +4000,8 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 				end
 			end
 		end
-		ply:SetBodyGroups("")
 	end)
-	if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
+	if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" || ply:GetModel() == "models/pf2/player/civilian.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/scout_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4319,7 +4319,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 	local attacker = dmginfo:GetAttacker()
 	if (ply:IsPlayer()) then
 
-		if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+		if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 			if (dmginfo:IsDamageType(DMG_ACID)) then
 				
 				if (!ply.WasHitInHead) then
@@ -4357,7 +4357,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 			ply.NextFlinch = CurTime() + 0.5
 		end
 		if (!ply.NextPainSound or CurTime() > ply.NextPainSound) then
-			if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
+			if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" || ply:GetModel() == "models/pf2/player/civilian.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Scout.Death\")")
@@ -4365,7 +4365,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Scout.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Soldier.Death\")")
@@ -4373,7 +4373,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Soldier.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl") then
+			elseif (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/pf2/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Pyro.Death\")")
@@ -4381,7 +4381,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Pyro.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/demo.mdl" || ply:GetModel() == "models/player/hwm/demo.mdl") then
+			elseif (ply:GetModel() == "models/player/demo.mdl" || ply:GetModel() == "models/pf2/player/demo.mdl" || ply:GetModel() == "models/player/hwm/demo.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Demoman.Death\")")
@@ -4389,7 +4389,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Demoman.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
+			elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Heavy.Death\")")
@@ -4397,7 +4397,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Heavy.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl") then
+			elseif (ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/pf2/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Engineer.Death\")")
@@ -4405,7 +4405,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Engineer.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl") then
+			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/pf2/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Medic.Death\")")
@@ -4413,7 +4413,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Medic.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/sniper.mdl" || ply:GetModel() == "models/player/hwm/sniper.mdl") then
+			elseif (ply:GetModel() == "models/player/sniper.mdl" || ply:GetModel() == "models/pf2/player/sniper.mdl" || ply:GetModel() == "models/player/hwm/sniper.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Sniper.Death\")")
@@ -4421,7 +4421,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Sniper.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/spy.mdl" || ply:GetModel() == "models/player/hwm/spy.mdl") then
+			elseif (ply:GetModel() == "models/player/spy.mdl" || ply:GetModel() == "models/pf2/player/spy.mdl" || ply:GetModel() == "models/player/hwm/spy.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Spy.Death\")")
@@ -4629,30 +4629,30 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 				end
 				ply:SetViewOffset(Vector(0,0,72))
 			end
-			if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl"
-				|| ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl"
-				|| ply:GetModel() == "models/player/sniper.mdl" || ply:GetModel() == "models/player/hwm/sniper.mdl"
-				|| ply:GetModel() == "models/player/spy.mdl" || ply:GetModel() == "models/player/hwm/spy.mdl" 
+			if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" 
+				|| ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl" || ply:GetModel() == "models/pf2/player/engineer.mdl" 
+				|| ply:GetModel() == "models/player/sniper.mdl" || ply:GetModel() == "models/player/hwm/sniper.mdl" || ply:GetModel() == "models/pf2/player/sniper.mdl" 
+				|| ply:GetModel() == "models/player/spy.mdl" || ply:GetModel() == "models/player/hwm/spy.mdl" || ply:GetModel() == "models/pf2/player/spy.mdl" 
 				|| ply:GetModel() == "models/bots/scout/bot_scout.mdl"
 				|| ply:GetModel() == "models/bots/engineer/bot_engineer.mdl"
 				|| ply:GetModel() == "models/bots/sniper/bot_sniper.mdl"
 				|| ply:GetModel() == "models/bots/spy/bot_spy.mdl") then
 				ply:SetHealth(125)
 				ply:SetMaxHealth(125)
-			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl"
+			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl"
 				|| ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
 				ply:SetHealth(200)
 				ply:SetMaxHealth(200)
-			elseif (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl"
-					|| ply:GetModel() == "models/player/demo.mdl" || ply:GetModel() == "models/player/hwm/demo.mdl"
+			elseif (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl" || ply:GetModel() == "models/pf2/player/pyro.mdl"
+					|| ply:GetModel() == "models/player/demo.mdl" || ply:GetModel() == "models/player/hwm/demo.mdl" || ply:GetModel() == "models/pf2/player/demo.mdl"
 					|| ply:GetModel() == "models/bots/demo/bot_demo.mdl" || ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
 				ply:SetHealth(175)
 				ply:SetMaxHealth(175)
-			elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl"
+			elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl"
 				|| ply:GetModel() == "models/bots/heavy/bot_heavy.mdl") then
 				ply:SetHealth(300)
 				ply:SetMaxHealth(300)
-			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl"
+			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl" || ply:GetModel() == "models/pf2/player/medic.mdl"
 				|| ply:GetModel() == "models/bots/medic/bot_medic.mdl") then
 				ply:SetHealth(150)
 				ply:SetMaxHealth(150)
