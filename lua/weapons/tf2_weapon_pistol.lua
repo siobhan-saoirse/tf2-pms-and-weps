@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/v_models/v_pistol_engineer.mdl"
+SWEP.ViewModel = "models/weapons/v_models/v_pistol_scout.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_pistol/c_pistol.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
