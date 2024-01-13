@@ -3985,6 +3985,9 @@ hook.Add("Think", "TF2PhonemesFix", function()
 end)
 hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo) 
 	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+		if (IsValid(attacker:GetActiveWeapon()) and (attacker:GetActiveWeapon():GetClass() == "tf2_weapon_sword" or attacker:GetActiveWeapon():GetClass() == "tf2_weapon_katana")) then
+			ply:EmitSound("TFPlayer.Decapitated")
+		end
 		if (dmginfo:IsExplosionDamage()) then
 			ply:PrecacheGibs()
 			ply:GibBreakClient(dmginfo:GetDamageForce() * 0.009)
@@ -4311,8 +4314,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 					local fraction = math.Clamp(dist / 50, 0.3, 2)
 					
 					force = force * fraction * 2.0
-					ply:SetVelocity(ply:GetVelocity() + force)
-					ply:SetLocalVelocity(ply:GetVelocity() + Vector(0,0,300))
+					ply:SetLocalVelocity((ply:GetVelocity() * 2) + force + (Vector(0,0,90) * 5))
 					dmginfo:ScaleDamage(0.4)
 				end
 			end
