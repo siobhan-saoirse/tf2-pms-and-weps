@@ -311,7 +311,7 @@ end
 function RandomWeapon2(ply, wepslot)
 	local weps = tf_items.ReturnItems()
 	local class = "scout"
-	if (string.find(ply:GetModel(),"soldier")) then
+	if (string.find(ply:GetModel(),"soldier") || string.find(ply:GetModel(),"merc")) then
 		class = "soldier"
 	elseif (string.find(ply:GetModel(),"pyro")) then
 		class = "pyro"
