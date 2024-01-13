@@ -3277,7 +3277,6 @@ if SERVER then
 		end
 		class = string.Replace(class,"tf_weapon","tf2_weapon")
 		class = string.Replace(class,"saxxy","tf2_weapon_bat")
-		class = string.Replace(class,"katana","sword")
 		local classname
 		if (string.find(self:GetModel(),"/heavy")) then
 			classname = "heavy"
