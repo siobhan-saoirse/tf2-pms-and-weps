@@ -1,3 +1,7 @@
+AddCSLuaFile()
+if SERVER then
+	resource.AddWorkshop(2762448732)
+end
 -- now it's killing time
 -- tf_items
 if !file.Exists("scripts/items/items_game.txt", "GAME") then
@@ -7,7 +11,7 @@ end
 include("modules/tf_lang.lua")  
 include("modules/tf_items.lua")  
 include("modules/tf_attributes.lua")  
-sound.AddSoundOverrides("lua/sounds/game_sounds_player.lua")
+sound.AddSoundOverrides("lua/sounds/game_sounds_player.lua") 
 game.AddParticles( "particles/crit.pcf" )
 game.AddParticles( "particles/explosion.pcf" )
 game.AddParticles( "particles/flamethrower.pcf" )
@@ -19,7 +23,7 @@ game.AddParticles( "particles/stickybomb.pcf" )
 player_manager.AddValidModel( "tf_heavy",			"models/player/heavy.mdl" )
 player_manager.AddValidHands( "tf_heavy",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
 player_manager.AddValidModel( "tf_scout",			"models/player/scout.mdl" )
-player_manager.AddValidHands( "tf_scout",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidHands( "tf_scout",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )	
 player_manager.AddValidModel( "tf_soldier",			"models/player/soldier.mdl" )
 player_manager.AddValidHands( "tf_soldier",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
 player_manager.AddValidModel( "tf_sniper",			"models/player/sniper.mdl" )
