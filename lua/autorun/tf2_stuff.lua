@@ -3869,7 +3869,7 @@ elseif ( holdtype == "backstab" ) then
 			return ActivityTranslateFixTF2[act] or act
 		end
 	end
-	if (string.find(pl:GetModel(),"models/player") || string.find(pl:GetModel(),"models/bots/")) and pl:LookupBone("bip_head") != -1 then
+	if (string.find(pl:GetModel(),"models/player") || string.find(pl:GetModel(),"models/pf2/player") || string.find(pl:GetModel(),"models/bots/")) and pl:LookupBone("bip_head") != -1 then
 		if (!IsValid(pl:GetActiveWeapon())) then
 
 			ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -3998,7 +3998,6 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		end
 	end
 	-- inb4 pedo accusation from bonziworld.org
-	ply:SetBodyGroups("0000000000000") 
 	timer.Simple(0.1, function()
 	
 		for k,v in ipairs(ply:GetChildren()) do
@@ -4590,7 +4589,8 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 	ply.TempAttributes = {}
 	if (!ply.TFBot and !ply.LeadBot) then
 		
-		timer.Simple(0.01, function()
+		ply:SetBodyGroups("0000000000000") 
+		timer.Simple(0.001, function()
 			if (ply:IsBot()) then
 				ply:SetModel(table.Random({
 					"models/player/scout.mdl",
@@ -4620,6 +4620,7 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 					"models/player/merc_deathmatch.mdl",
 					"models/player/civilian.mdl"
 				}))
+				ply:SetSkin(math.random(0,1))
 			end
 		end)
 		timer.Simple(0.1, function()

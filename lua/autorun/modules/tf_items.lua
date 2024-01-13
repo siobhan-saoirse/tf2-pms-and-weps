@@ -3305,10 +3305,17 @@ if SERVER then
 			classname = "demo"
 		end
 		weapon = ents.Create(class)
+		if (!IsValid(weapon)) then return end
 		weapon.Owner = self
 		weapon:SetOwner(self)
 		weapon:SetPos(self:GetPos())
 		weapon:SetAngles(self:GetAngles())
+		weapon:SetNWString("WorldModel2",tostring(item.model_world or item.model_player))
+		weapon:SetNWString("PrintName2",tf_lang.GetRaw(item.item_name) or item.name)
+		weapon:SetNW2Var("ItemData",item)
+		if (item.visuals and (item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)) then
+			weapon:SetNWString("PrimarySound2",item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)
+		end
 		if (class != "gmod_button") then
 			weapon:SetItemIndex(item.id)
 		end
@@ -3396,12 +3403,6 @@ if SERVER then
 			weapon:AddEffects(bit.bor(EF_BONEMERGE,EF_BONEMERGE_FASTCULL))
 		else
 			weapon:Spawn()
-		end
-		weapon:SetNWString("WorldModel2",tostring(item.model_world or item.model_player))
-		weapon:SetNWString("PrintName2",tf_lang.GetRaw(item.item_name) or item.name)
-		weapon:SetNW2Var("ItemData",item)
-		if (item.visuals and (item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)) then
-			weapon:SetNWString("PrimarySound2",item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)
 		end
         
 		if (item.item_slot == "head") then

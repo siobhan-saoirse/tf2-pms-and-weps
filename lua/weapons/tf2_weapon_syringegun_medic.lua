@@ -168,10 +168,9 @@ end
 
 function SWEP:Think()
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
+--self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
 
-		if (self:GetItemData().model_player != nil and self.WModel) then
-	self.WorldModel = "models/empty.mdl"
-		end
+
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.HoldType = self:GetNWString("HoldType2",self.HoldType)

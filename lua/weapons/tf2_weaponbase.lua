@@ -9,13 +9,13 @@ if CLIENT then
 		-- Settings...
 		WorldModel2:SetNoDraw(true)
 	function SWEP:DrawWorldModel()
-		if (self:GetItemData().model_player != nil) then
+			self.WModel = self:GetNWString("WorldModel2",self.OldWorldModel)
 			local _Owner = self:GetOwner()
-			if (!self.WModel) then
-				self.WModel = self.WorldModel 
-			elseif (self.WModel != nil) then
+			if (!self.OldWorldModel) then
+				self.OldWorldModel = self.WorldModel
+			else
 				self.WorldModel = "models/empty.mdl"
-			end 
+			end
 			WorldModel2:SetSkin(self:GetOwner():GetSkin())
 			WorldModel2:SetModel(self.WModel or self.WorldModel)
 			if (IsValid(_Owner)) then
@@ -49,6 +49,5 @@ if CLIENT then
 			end
 
 			WorldModel2:DrawModel()
-		end
 	end
 end
