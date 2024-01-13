@@ -62,7 +62,7 @@ SWEP.Secondary.Ammo = "none"
 tf_items.InitializeAsBaseItem(SWEP)
 
 function SWEP:Initialize()
-self.Weapon:SetHoldType( "rpg" )
+self.Weapon:SetHoldType( "minigun" )
 self.Idle = 0
 self.IdleTimer = CurTime() + 1
 end
@@ -85,7 +85,7 @@ end
 end
 
 function SWEP:Deploy()
-self.Weapon:SetHoldType( "rpg" )
+self.Weapon:SetHoldType( "minigun" )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -223,9 +223,10 @@ end
 
 function SWEP:Think()
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
---self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
 
-
+		if (self:GetItemData().model_player != nil and self.WModel) then
+	self.WorldModel = "models/empty.mdl"
+		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.Secondary.Sound = string.Replace(self:GetNWString("PrimarySound2",self.Primary.Sound),"Fire","Spin")
@@ -248,7 +249,7 @@ self.Owner:StopSound( "Weapon_Minigun.ClipEmpty" )
 self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindDown") )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_POSTFIRE, true)
 end
-self.Weapon:SetHoldType( "rpg" )
+self.Weapon:SetHoldType( "minigun" )
 self.Weapon:SendWeaponAnim( ACT_UNDEPLOY )
 self.Sound = 0
 self.Spin = 0

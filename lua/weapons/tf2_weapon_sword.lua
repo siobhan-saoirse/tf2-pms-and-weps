@@ -145,9 +145,10 @@ end
 
 function SWEP:Think()
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
---self.WorldModel = self:GetNWString("WorldModel2",self.WorldModel)
 
-
+		if (self:GetItemData().model_player != nil and self.WModel) then
+	self.WorldModel = "models/empty.mdl"
+		end
 self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.HoldType = self:GetNWString("HoldType2",self.HoldType)
@@ -198,7 +199,7 @@ if SERVER then
 				self.HitFlesh = Sound(visuals.sound_melee_hit)
                 self.Owner:EmitSound( self.HitFlesh )
             else
-                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitFlesh" )
+                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitFlesh" )
 			end
         end
         if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
@@ -206,16 +207,16 @@ if SERVER then
                 self.HitWorld = Sound(visuals.sound_melee_hit_world)
                 self.Owner:EmitSound( self.HitWorld )
             else
-                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitWorld" )
+                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitWorld" )
             end
         end
 
     else
         if tr.Entity:IsNPC() || tr.Entity:IsPlayer() then
-            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitFlesh" )
+            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitFlesh" )
         end
         if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
-            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitWorld" )
+            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitWorld" )
         end
     end
 end
