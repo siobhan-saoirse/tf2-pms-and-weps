@@ -1,11 +1,11 @@
 "Patch"
 {
 	include "materials/models/player/mercenary/mercenary_base.vmt"
-	
+
 	insert
 	{
 			"$baseTexture" "models/player/mercenary/mercenary_custom"
-		
+
 		"$blendtintbybasealpha"		"1"
 		//"$blendtintcoloroverbase"		"1"
 		"$colortint_base"		"{0 0 0}"

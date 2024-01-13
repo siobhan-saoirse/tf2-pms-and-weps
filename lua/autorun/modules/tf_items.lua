@@ -137,6 +137,9 @@ for k, v in pairs(items_game["items"]) do
         v.item_class = "tf_wearable_item"
 		v.item_quality = "collectors"
 	end
+	if (v.name == "The Force-a-Nature" || v.name == "The Soda Popper") then
+		v.item_class = "tf_weapon_scattergun_noreload"
+	end
 	if (string.find(v.name,"Gloves of Running Urgently MvM")) then
 		v.item_name = v.name
 		v.item_quality = "collectors"
@@ -3076,31 +3079,31 @@ function AC_GiveItem(cmd, args)
 	return GiveItemAutoComplete(cmd, args, filter_all)
 end
 
-if SERVER then
-	local META = FindMetaTable("Player")
+local META = FindMetaTable("Player")
 
-    function META:ClearItemSetAttributes()
-        self.ItemSetAttributes = nil
-    end
-		
-	function META:GetTFItems()
-		local t = self:GetWeapons()
-		if self.PlayerItemList then
-			table.Add(t, self.PlayerItemList)
-		end
-		return t
+function META:GetTFItems()
+	local t = self:GetWeapons()
+	if self.PlayerItemList then
+		table.Add(t, self.PlayerItemList)
 	end
+	return t
+end
 
-	function META:HasTFItem(name)
-		if not name then return false end
-		
-		for _,v in ipairs(self:GetTFItems()) do
-			if v.IsTFItem and v:GetItemData().name == name then
-				return true
-			end
+function META:HasTFItem(name)
+	if not name then return false end
+	
+	for _,v in ipairs(self:GetTFItems()) do
+		if v.IsTFItem and v:GetItemData().name == name then
+			return true
 		end
-		
-		return false
+	end
+	
+	return false
+end
+if SERVER then
+
+	function META:ClearItemSetAttributes()
+		self.ItemSetAttributes = nil
 	end
 
     function META:GiveItemSetAttributes()
@@ -3274,7 +3277,6 @@ if SERVER then
 		end
 		class = string.Replace(class,"tf_weapon","tf2_weapon")
 		class = string.Replace(class,"saxxy","tf2_weapon_bat")
-		class = string.Replace(class,"katana","sword")
 		local classname
 		if (string.find(self:GetModel(),"/heavy")) then
 			classname = "heavy"
@@ -3302,10 +3304,18 @@ if SERVER then
 			classname = "demo"
 		end
 		weapon = ents.Create(class)
+		if (!IsValid(weapon)) then return end
 		weapon.Owner = self
 		weapon:SetOwner(self)
 		weapon:SetPos(self:GetPos())
 		weapon:SetAngles(self:GetAngles())
+		weapon:SetNWString("WorldModel2",tostring(item.model_world or item.model_player))
+		weapon:SetNWString("PrintName2",tf_lang.GetRaw(item.item_name) or item.name)
+		weapon:SetNW2Var("ItemData",item)
+		weapon.WorldModel = "models/empty.mdl"
+		if (item.visuals and (item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)) then
+			weapon:SetNWString("PrimarySound2",item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)
+		end
 		if (class != "gmod_button") then
 			weapon:SetItemIndex(item.id)
 		end
@@ -3393,12 +3403,6 @@ if SERVER then
 			weapon:AddEffects(bit.bor(EF_BONEMERGE,EF_BONEMERGE_FASTCULL))
 		else
 			weapon:Spawn()
-		end
-		weapon:SetNWString("WorldModel2",tostring(item.model_world or item.model_player))
-		weapon:SetNWString("PrintName2",tf_lang.GetRaw(item.item_name) or item.name)
-		weapon:SetNW2Var("ItemData",item)
-		if (item.visuals and (item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)) then
-			weapon:SetNWString("PrimarySound2",item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)
 		end
         
 		if (item.item_slot == "head") then

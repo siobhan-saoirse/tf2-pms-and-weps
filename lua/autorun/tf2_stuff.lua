@@ -158,7 +158,7 @@ sound.Add( {
 
 hook.Add("PlayerFootstep", "RoboStep", function( ply, pos, foot, sound, volume, rf)
 
-	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 		if ((CLIENT and LocalPlayer():ShouldDrawLocalPlayer())) then
 			if (SERVER) then
 				return false
@@ -311,7 +311,7 @@ end
 function RandomWeapon2(ply, wepslot)
 	local weps = tf_items.ReturnItems()
 	local class = "scout"
-	if (string.find(ply:GetModel(),"soldier")) then
+	if (string.find(ply:GetModel(),"soldier") || string.find(ply:GetModel(),"merc")) then
 		class = "soldier"
 	elseif (string.find(ply:GetModel(),"pyro")) then
 		class = "pyro"
@@ -3869,7 +3869,7 @@ elseif ( holdtype == "backstab" ) then
 			return ActivityTranslateFixTF2[act] or act
 		end
 	end
-	if (string.find(pl:GetModel(),"models/player") || string.find(pl:GetModel(),"models/bots/")) and pl:LookupBone("bip_head") != -1 then
+	if (string.find(pl:GetModel(),"models/player") || string.find(pl:GetModel(),"models/pf2/player") || string.find(pl:GetModel(),"models/bots/")) and pl:LookupBone("bip_head") != -1 then
 		if (!IsValid(pl:GetActiveWeapon())) then
 
 			ActivityTranslateFixTF2[ACT_MP_STAND_IDLE] 						= pl:GetSequenceActivity(pl:LookupSequence("stand_LOSER"))
@@ -3985,6 +3985,9 @@ hook.Add("Think", "TF2PhonemesFix", function()
 end)
 hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo) 
 	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+		if (IsValid(attacker:GetActiveWeapon()) and (attacker:GetActiveWeapon():GetClass() == "tf2_weapon_sword" or attacker:GetActiveWeapon():GetClass() == "tf2_weapon_katana")) then
+			ply:EmitSound("TFPlayer.Decapitated")
+		end
 		if (dmginfo:IsExplosionDamage()) then
 			ply:PrecacheGibs()
 			ply:GibBreakClient(dmginfo:GetDamageForce() * 0.009)
@@ -3995,9 +3998,8 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		end
 	end
 	-- inb4 pedo accusation from bonziworld.org
-	ply:SetBodyGroups("0000000000000") 
 	timer.Simple(0.1, function()
-	
+		
 		for k,v in ipairs(ply:GetChildren()) do
 			if (IsValid(v)) then
 				if (v:GetClass() == "gmod_button" and v:GetModel() != nil and string.find(v:GetModel(),"player")) then
@@ -4016,7 +4018,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/scout_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/soldier_paincrticialdeath0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4311,8 +4313,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 					local fraction = math.Clamp(dist / 50, 0.3, 2)
 					
 					force = force * fraction * 2.0
-					ply:SetVelocity(ply:GetVelocity() + force)
-					ply:SetLocalVelocity(ply:GetVelocity() + Vector(0,0,300))
+					ply:SetLocalVelocity((ply:GetVelocity() * 2) + force + (Vector(0,0,90) * 5))
 					dmginfo:ScaleDamage(0.4)
 				end
 			end
@@ -4361,7 +4362,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Scout.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Soldier.Death\")")
@@ -4588,7 +4589,8 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 	ply.TempAttributes = {}
 	if (!ply.TFBot and !ply.LeadBot) then
 		
-		timer.Simple(0.01, function()
+		ply:SetBodyGroups("0000000000000") 
+		timer.Simple(0.001, function()
 			if (ply:IsBot()) then
 				ply:SetModel(table.Random({
 					"models/player/scout.mdl",
@@ -4612,16 +4614,28 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 					"models/pf2/player/civilian.mdl",
 					"models/player/mercenary.mdl",
 					"models/player/merc_deathmatch.mdl",
+					"models/player/mercenary.mdl",
+					"models/player/merc_deathmatch.mdl",
+					"models/player/mercenary.mdl",
+					"models/player/merc_deathmatch.mdl",
 					"models/player/civilian.mdl"
 				}))
+				ply:SetSkin(math.random(0,1))
 			end
 		end)
 		timer.Simple(0.1, function()
-			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 				if (ply:IsBot()) then
 
 					RandomCosmetic(ply, "hat")
 					RandomCosmetic(ply, "misc")
+					timer.Simple(0.5, function()
+						ply:StripWeapons()	
+						RandomWeapon2(ply, "primary")
+						RandomWeapon2(ply, "secondary")
+						RandomWeapon2(ply, "melee")
+						ply:SelectWeapon(ply:GetWeapons()[0]:GetClass())
+					end)
 				end
 				ply:SetViewOffset(Vector(0,0,72))
 			end

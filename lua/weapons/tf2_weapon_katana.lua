@@ -5,7 +5,7 @@ SWEP.BounceWeaponIcon = false
 killicon.Add( "tf2_weapon_bottle", "hud/dneg_image_bottle", Color( 255, 255, 255, 255 ) )
 end
 
-SWEP.PrintName = "Demo's Sword"
+SWEP.PrintName = "Demo's Katana"
 SWEP.Category = "Team Fortress 2"
 SWEP.Spawnable= false
 SWEP.AdminSpawnable= true 
@@ -41,7 +41,7 @@ SWEP.AttackTimer = CurTime()
 SWEP.Idle = 0
 SWEP.IdleTimer = CurTime()
 
-SWEP.Primary.Sound = Sound( "Weapon_Sword.Swing" )
+SWEP.Primary.Sound = Sound( "Weapon_Katana.Miss" )
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Automatic = true
@@ -82,6 +82,7 @@ end
 end
 
 function SWEP:Deploy()
+self.Owner:EmitSound("Weapon_Katana.Draw")
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
@@ -198,7 +199,7 @@ if SERVER then
 				self.HitFlesh = Sound(visuals.sound_melee_hit)
                 self.Owner:EmitSound( self.HitFlesh )
             else
-                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitFlesh" )
+                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitFlesh" )
 			end
         end
         if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
@@ -206,16 +207,16 @@ if SERVER then
                 self.HitWorld = Sound(visuals.sound_melee_hit_world)
                 self.Owner:EmitSound( self.HitWorld )
             else
-                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitWorld" )
+                self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitWorld" )
             end
         end
 
     else
         if tr.Entity:IsNPC() || tr.Entity:IsPlayer() then
-            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitFlesh" )
+            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitFlesh" )
         end
         if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
-            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Swing","").."HitWorld" )
+            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitWorld" )
         end
     end
 end
