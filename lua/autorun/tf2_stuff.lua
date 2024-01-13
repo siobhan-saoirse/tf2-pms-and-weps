@@ -4019,7 +4019,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/scout_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/soldier_paincrticialdeath0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4363,7 +4363,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Scout.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Soldier.Death\")")
@@ -4612,6 +4612,10 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 					"models/pf2/player/sniper.mdl",
 					"models/pf2/player/spy.mdl",
 					"models/pf2/player/civilian.mdl",
+					"models/player/mercenary.mdl",
+					"models/player/merc_deathmatch.mdl",
+					"models/player/mercenary.mdl",
+					"models/player/merc_deathmatch.mdl",
 					"models/player/mercenary.mdl",
 					"models/player/merc_deathmatch.mdl",
 					"models/player/civilian.mdl"
