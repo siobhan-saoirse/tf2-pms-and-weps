@@ -158,7 +158,7 @@ sound.Add( {
 
 hook.Add("PlayerFootstep", "RoboStep", function( ply, pos, foot, sound, volume, rf)
 
-	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 		if ((CLIENT and LocalPlayer():ShouldDrawLocalPlayer())) then
 			if (SERVER) then
 				return false
@@ -4619,11 +4619,18 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 			end
 		end)
 		timer.Simple(0.1, function()
-			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 				if (ply:IsBot()) then
 
 					RandomCosmetic(ply, "hat")
 					RandomCosmetic(ply, "misc")
+					timer.Simple(0.5, function()
+						ply:StripWeapons()	
+						RandomWeapon2(ply, "primary")
+						RandomWeapon2(ply, "secondary")
+						RandomWeapon2(ply, "melee")
+						ply:SelectWeapon(ply:GetWeapons()[0]:GetClass())
+					end)
 				end
 				ply:SetViewOffset(Vector(0,0,72))
 			end
