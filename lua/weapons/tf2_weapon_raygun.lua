@@ -199,7 +199,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.Recoil = 0
     end
     if self.Recoil == 1 then
-    self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( 0.23, 0, 0 ) )
+    self.Owner:SetViewPunchAngles( Angle( 0.23, 0, 0 ) )
     end
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
     self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
