@@ -11,13 +11,17 @@ if CLIENT then
 	function SWEP:DrawWorldModel()
 			self.WModel = self:GetNWString("WorldModel2",self.OldWorldModel)
 			local _Owner = self:GetOwner()
-			if (!self.OldWorldModel) then
+			if (self.OldWorldModel == nil) then
 				self.OldWorldModel = self.WorldModel
 			else
 				self.WorldModel = "models/empty.mdl"
 			end
-			WorldModel2:SetSkin(self:GetOwner():GetSkin())
-			WorldModel2:SetModel(self.WModel or self.WorldModel)
+			local skin = self:GetSkin()
+			if (IsValid(_Owner)) then
+				skin = self:GetOwner():GetSkin()
+			end
+			WorldModel2:SetSkin(skin)
+			WorldModel2:SetModel(self.WModel or self.OldWorldModel)
 			if (IsValid(_Owner)) then
 				-- Specify a good position
 				local offsetVec = Vector(5, -2.7, -3.4)
@@ -47,7 +51,6 @@ if CLIENT then
 				WorldModel2:SetPos(self:GetPos())
 				WorldModel2:SetAngles(self:GetAngles())
 			end
-
 			WorldModel2:DrawModel()
 	end
 end

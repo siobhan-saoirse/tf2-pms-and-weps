@@ -3079,31 +3079,31 @@ function AC_GiveItem(cmd, args)
 	return GiveItemAutoComplete(cmd, args, filter_all)
 end
 
-if SERVER then
-	local META = FindMetaTable("Player")
+local META = FindMetaTable("Player")
 
-    function META:ClearItemSetAttributes()
-        self.ItemSetAttributes = nil
-    end
-		
-	function META:GetTFItems()
-		local t = self:GetWeapons()
-		if self.PlayerItemList then
-			table.Add(t, self.PlayerItemList)
-		end
-		return t
+function META:GetTFItems()
+	local t = self:GetWeapons()
+	if self.PlayerItemList then
+		table.Add(t, self.PlayerItemList)
 	end
+	return t
+end
 
-	function META:HasTFItem(name)
-		if not name then return false end
-		
-		for _,v in ipairs(self:GetTFItems()) do
-			if v.IsTFItem and v:GetItemData().name == name then
-				return true
-			end
+function META:HasTFItem(name)
+	if not name then return false end
+	
+	for _,v in ipairs(self:GetTFItems()) do
+		if v.IsTFItem and v:GetItemData().name == name then
+			return true
 		end
-		
-		return false
+	end
+	
+	return false
+end
+if SERVER then
+
+	function META:ClearItemSetAttributes()
+		self.ItemSetAttributes = nil
 	end
 
     function META:GiveItemSetAttributes()
@@ -3312,6 +3312,7 @@ if SERVER then
 		weapon:SetNWString("WorldModel2",tostring(item.model_world or item.model_player))
 		weapon:SetNWString("PrintName2",tf_lang.GetRaw(item.item_name) or item.name)
 		weapon:SetNW2Var("ItemData",item)
+		weapon.WorldModel = "models/empty.mdl"
 		if (item.visuals and (item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)) then
 			weapon:SetNWString("PrimarySound2",item.visuals.sound_double_shot or item.visuals.sound_melee_miss or item.visuals.sound_single_shot)
 		end

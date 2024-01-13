@@ -3999,7 +3999,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 	end
 	-- inb4 pedo accusation from bonziworld.org
 	timer.Simple(0.1, function()
-	
+		
 		for k,v in ipairs(ply:GetChildren()) do
 			if (IsValid(v)) then
 				if (v:GetClass() == "gmod_button" and v:GetModel() != nil and string.find(v:GetModel(),"player")) then
