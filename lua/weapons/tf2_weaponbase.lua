@@ -1,4 +1,3 @@
-SWEP.RenderGroup = RENDERGROUP_BOTH
 SWEP.Base = "weapon_base"
 SWEP.ViewModel = "models/weapons/v_models/v_bat_scout.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_bat.mdl"
