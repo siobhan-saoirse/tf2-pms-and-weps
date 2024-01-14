@@ -4554,6 +4554,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 			end
 		end
 	end)
+	-- community classes will use tf2 class sounds as a placeholder
 	if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" || ply:GetModel() == "models/pf2/player/civilian.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/scout_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
@@ -4564,7 +4565,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/scout_painsevere0"..math.random(1,6)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+	elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/soldier_paincrticialdeath0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4594,7 +4595,7 @@ hook.Add("DoPlayerDeath", "TF2DeathSoundMoment", function(ply,attacker,dmginfo)
 		else
 			ply:EmitSound("vo/demoman_painsevere0"..math.random(1,4)..".mp3",80,100,1,CHAN_STATIC)
 		end
-	elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
+	elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/player/civilian.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
 		if (dmginfo:IsDamageType(DMG_CLUB)) then
 			ply:EmitSound("vo/heavy_paincrticialdeath0"..math.random(1,3)..".mp3",80,100,1,CHAN_STATIC)
 		elseif (dmginfo:IsDamageType(DMG_ACID)) then
@@ -4873,7 +4874,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == ply:EntIndex()) then
 						if (!ply.NextCritPainSound or CurTime() > ply.NextPainSound) then
-							v:SendLua("Entity("..ply:EntIndex().."):NextCritund(\"TFPlayer.CritPain\")")
+							v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"TFPlayer.CritPain\")")
 							ply.NextCritPainSound = CurTime() + 1.0
 						end
 					end
@@ -4885,12 +4886,12 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == ply:EntIndex()) then
 						if (!ply.NextCritPainSound or CurTime() > ply.NextPainSound) then
-							v:SendLua("Entity("..ply:EntIndex().."):NextCritund(\"TFPlayer.CritPain\")")
+							v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"TFPlayer.CritPain\")")
 							ply.NextCritPainSound = CurTime() + 1.0
 						end
 					else
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"TFPlayer.CritHitMini\")")
-					end
+					end	
 				end
 
 			end
@@ -4901,6 +4902,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 			ply.NextFlinch = CurTime() + 0.5
 		end
 		if (!ply.NextPainSound or CurTime() > ply.NextPainSound) then
+			-- community classes will use placeholder sounds until we import the sound effects
 			if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" || ply:GetModel() == "models/pf2/player/civilian.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
@@ -4909,7 +4911,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Scout.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
+			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/mercenary.mdl" || ply:GetModel() == "models/player/merc_deathmatch.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Soldier.Death\")")
@@ -4933,7 +4935,7 @@ hook.Add("EntityTakeDamage", "TF2PainSounds", function(ply, dmginfo)
 						v:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Demoman.ExplosionDeath\")")
 					end
 				end
-			elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
+			elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/player/civilian.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl") then
 				for k,v in ipairs(player.GetAll()) do
 					if (v:EntIndex() == attacker:EntIndex()) then
 						attacker:SendLua("Entity("..ply:EntIndex().."):EmitSound(\"Heavy.Death\")")
@@ -5170,9 +5172,10 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 		timer.Simple(0.1, function()
 			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 				if (ply:IsBot()) then
-
-					RandomCosmetic(ply, "hat")
-					RandomCosmetic(ply, "misc")
+					ply:StripWeapons()
+					RandomWeapon2(ply, "primary")
+					RandomWeapon2(ply, "secondary")
+					RandomWeapon2(ply, "melee")
 				end
 				ply:SetViewOffset(Vector(0,0,72))
 			end
