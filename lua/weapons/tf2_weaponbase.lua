@@ -8,9 +8,10 @@ if CLIENT then
 		-- Settings...
 		WorldModel2:SetNoDraw(true)
 	function SWEP:DrawWorldModel()
+		self:DrawShadow(false)
 			self.WModel = self:GetNWString("WorldModel2",self.OldWorldModel)
 			local _Owner = self:GetOwner()
-			if (self.OldWorldModel == nil) then
+			if (self.OldWorldModel == nil and self.WorldModel != "models/empty.mdl") then
 				self.OldWorldModel = self.WorldModel
 			else
 				self.WorldModel = "models/empty.mdl"
@@ -51,5 +52,6 @@ if CLIENT then
 				WorldModel2:SetAngles(self:GetAngles())
 			end
 			WorldModel2:DrawModel()
+			WorldModel2:DrawShadow(true)
 	end
 end
