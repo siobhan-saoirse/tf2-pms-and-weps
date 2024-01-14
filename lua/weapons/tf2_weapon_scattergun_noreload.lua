@@ -153,9 +153,7 @@ self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Recoil = 1
-self.RecoilTimer = CurTime() + 0.2
-self.Owner:SetEyeAngles( self.Owner:EyeAngles() + Angle( -3, 0, 0 ) )
+self.Owner:SetViewPunchAngles( Angle( -3, 0, 0 ) )
 end
 end
 
