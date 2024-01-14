@@ -4,9 +4,37 @@ SWEP.WorldModel = "models/weapons/c_models/c_bat.mdl"
 
 if CLIENT then
 
-		local WorldModel2 = ClientsideModel("models/empty.mdl")
+	local WorldModel2 = ClientsideModel("models/empty.mdl")
+	local ViewModel2 = ClientsideModel("models/empty.mdl")
 		-- Settings...
 		WorldModel2:SetNoDraw(true)
+		ViewModel2:SetNoDraw(true)
+	function SWEP:PostDrawViewModel()
+		local _Owner = self:GetOwner()
+		if (self.OldWorldModel == nil and self.WorldModel != "models/empty.mdl") then
+			self.OldWorldModel = self.WorldModel
+		else
+			self.WorldModel = "models/empty.mdl"
+		end
+		local skin = self:GetSkin()
+		if (IsValid(_Owner)) then
+			skin = self:GetOwner():GetSkin()
+		end
+		ViewModel2:SetSkin(skin)
+		ViewModel2:SetModel(self.WModel or self.OldWorldModel)
+		if (IsValid(_Owner)) then
+			ViewModel2:SetParent(_Owner:GetViewModel())
+			ViewModel2:AddEffects(bit.bor(EF_BONEMERGE,EF_BONEMERGE_FASTCULL))
+			ViewModel2:SetPos(self:GetPos())
+			ViewModel2:SetAngles(self:GetAngles())
+		else
+			ViewModel2:SetPos(self:GetPos())
+			ViewModel2:SetAngles(self:GetAngles())
+		end
+		ViewModel2:DrawModel()
+		ViewModel2:DrawShadow(true)
+	end
+
 	function SWEP:DrawWorldModel()
 		self:DrawShadow(false)
 			self.WModel = self:GetNWString("WorldModel2",self.OldWorldModel)

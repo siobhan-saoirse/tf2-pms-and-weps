@@ -62,7 +62,8 @@ self.Idle = 0
 self.IdleTimer = CurTime() + 1
 end
 
-function SWEP:Deploy() 
+function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self) 
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)

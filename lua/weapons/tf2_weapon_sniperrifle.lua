@@ -106,6 +106,7 @@ return self.Weapon:GetNWString( "MouseSensitivity", 1 )
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "crossbow" )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)

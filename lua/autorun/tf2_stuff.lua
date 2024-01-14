@@ -8,6 +8,7 @@ if !file.Exists("scripts/items/items_game.txt", "GAME") then
     Error("ERROR: items_game.txt NOT FOUND!\nLIVE TF WEAPONS WILL NOT BE LOADED!\n")
 end
 
+include("modules/tf_util.lua")  
 include("modules/tf_lang.lua")  
 include("modules/tf_items.lua")  
 include("modules/tf_attributes.lua")  
@@ -1890,6 +1891,7 @@ elseif ( holdtype == "backstab" ) then
 				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_PRIMARY
 				
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_SECONDARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_SECONDARY_LOOP
@@ -5134,9 +5136,9 @@ end)
 hook.Add("PlayerSpawn", "TF2BotModels", function(ply) 
 	ply.TempAttributes = {}
 	if (!ply.TFBot and !ply.LeadBot) then
-		
 		ply:SetBodyGroups("0000000000000") 
 		timer.Simple(0.1, function()
+			tf_util.ReadActivitiesFromModel(ply)
 			if (ply:IsBot()) then
 				ply:SetModel(table.Random({
 					"models/player/scout.mdl",

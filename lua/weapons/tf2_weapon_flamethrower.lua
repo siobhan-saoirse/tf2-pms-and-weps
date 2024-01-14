@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
 
-SWEP.ViewModel = "models/weapons/v_models/v_flamethrower_pyro.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_pyro_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_flamethrower/c_flamethrower.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -90,11 +90,12 @@ end
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
 if SERVER then
 self.Owner:EmitSound( "Weapon_FlameThrower.PilotLoop" )
 end
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_DRAW"] )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -159,7 +160,7 @@ flame:Fire( "start", "", 0 )
 self.Flame = flame
 end
 self:EmitSound( self.Primary.Sound )
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_PRIMARYATTACK"] )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Sound = 1
 self.SoundTimer = CurTime() + 3.5
@@ -206,8 +207,8 @@ blast:Activate()
 blast:Fire( "start", "", 0 )
 end
 self:EmitSound( self.Secondary.Sound )
-self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
-self.Owner:SetAnimation( PLAYER_ATTACK1 )
+self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_SECONDARYATTACK"] )
+self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_SECONDARYFIRE)
 self:TakePrimaryAmmo( self.Secondary.TakeAmmo )
 self:SetNextPrimaryFire( CurTime() + self.Secondary.Delay )
 self:SetNextSecondaryFire( CurTime() + self.Secondary.Delay )
@@ -312,7 +313,7 @@ self.AttackTimer = CurTime() + 0.04
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
-self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+	self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_IDLE"] )
 end
 self.Idle = 1
 end

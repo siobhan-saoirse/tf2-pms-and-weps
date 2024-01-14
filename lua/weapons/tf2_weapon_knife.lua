@@ -80,6 +80,7 @@ end
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "knife" )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)

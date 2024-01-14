@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
 
-SWEP.ViewModel = "models/weapons/v_models/v_bottle_demoman.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_demo_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_bottle/c_bottle.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -82,8 +82,9 @@ end
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( _G["ACT_MELEE_VM_DRAW"] )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -121,10 +122,10 @@ if SERVER then
 if (math.random(1,6) == 1) then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )
     self.Crit = true
-    self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    self.Weapon:SendWeaponAnim( _G["ACT_MELEE_VM_SWINGHARD"] )
 else
     self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_VM_HITCENTER )
+    self.Weapon:SendWeaponAnim( _G["ACT_MELEE_VM_HITCENTER"] )
     self.Crit = false
 end
 end

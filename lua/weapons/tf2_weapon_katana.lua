@@ -82,6 +82,7 @@ end
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self.Owner:EmitSound("Weapon_Katana.Draw")
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
