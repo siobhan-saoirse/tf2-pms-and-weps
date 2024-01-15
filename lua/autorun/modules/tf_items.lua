@@ -3626,6 +3626,12 @@ if SERVER then
 			else
 				class = "tf_weapon_shotgun_primary"
 			end
+		elseif (item.item_class == "tf_weapon_pistol") then
+			if (string.find(self:GetModel(),"/scout")) then
+				class = "tf_weapon_pistol_scout"
+			else
+				class = "tf_weapon_pistol"
+			end
 		end
 		if (item.item_class == "saxxy") then
 

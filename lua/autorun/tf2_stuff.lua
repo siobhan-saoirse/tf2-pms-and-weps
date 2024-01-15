@@ -167,7 +167,7 @@ sound.Add( {
 
 hook.Add("PlayerFootstep", "RoboStep", function( ply, pos, foot, sound, volume, rf)
 
-	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 		if ((CLIENT and LocalPlayer():ShouldDrawLocalPlayer())) then
 			if (SERVER) then
 				return false

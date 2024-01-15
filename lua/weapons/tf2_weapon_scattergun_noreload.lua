@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/v_models/v_pistol_scout.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_scout_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_scattergun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -88,7 +88,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_ITEM2_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -114,6 +114,19 @@ self.Owner:SetWalkSpeed( 200 )
 self.Owner:SetRunSpeed( 400 )
 return true
 end
+
+function SWEP:Reload()
+    if self.Reloading == 0 and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
+    self.Weapon:SendWeaponAnim( ACT_ITEM2_VM_RELOAD )
+    self.Owner:SetAnimation( PLAYER_RELOAD )
+    self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+    self:SetNextSecondaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
+    self.Reloading = 1
+    self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+    self.Idle = 0
+    self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+    end
+    end
 
 function SWEP:PrimaryAttack()
 if self.Reloading == 1 then
@@ -146,8 +159,8 @@ bullet.Damage = self.Primary.Damage
 bullet.AmmoType = self.Primary.Ammo
 self.Owner:FireBullets( bullet )
 self:EmitSound( self.Primary.Sound )
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
+self:SendWeaponAnim(ACT_ITEM2_VM_PRIMARYATTACK)
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
 self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
@@ -167,3 +180,36 @@ end
 self:SetNextSecondaryFire( CurTime() + 5 )
 end
 end
+
+function SWEP:Think()
+	self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
+	
+			if (self:GetItemData().model_player != nil and self.WModel) then
+		self.WorldModel = "models/empty.mdl"
+			end
+	self.PrintName = self:GetNWString("PrintName2",self.PrintName)
+	self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
+	self.HoldType = self:GetNWString("HoldType2",self.HoldType)
+	self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
+	if self.Reloading == 1 and self.ReloadingTimer <= CurTime() then
+	if self.Weapon:Ammo1() > ( self.Primary.ClipSize - self.Weapon:Clip1() ) then
+	self.Owner:SetAmmo( self.Weapon:Ammo1() - self.Primary.ClipSize + self.Weapon:Clip1(), self.Primary.Ammo )
+	self.Weapon:SetClip1( self.Primary.ClipSize )
+	end
+	if ( self.Weapon:Ammo1() - self.Primary.ClipSize + self.Weapon:Clip1() ) + self.Weapon:Clip1() < self.Primary.ClipSize then
+	self.Weapon:SetClip1( self.Weapon:Clip1() + self.Weapon:Ammo1() )
+	self.Owner:SetAmmo( 0, self.Primary.Ammo )
+	end
+	self.Reloading = 0
+	end
+	if self.Idle == 0 and self.IdleTimer <= CurTime() then
+	if SERVER then
+	self.Weapon:SendWeaponAnim( ACT_ITEM2_VM_IDLE )
+    self.IdleTimer = CurTime() + self:SequenceDuration()
+	end
+	self.Idle = 0
+	end
+	if self.Weapon:Ammo1() > self.Primary.MaxAmmo then
+	self.Owner:SetAmmo( self.Primary.MaxAmmo, self.Primary.Ammo )
+	end
+	end

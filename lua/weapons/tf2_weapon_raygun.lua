@@ -178,7 +178,7 @@ self.Weapon:SendWeaponAnim( ACT_SECONDARY2_RELOAD_START )
 self:SetNextPrimaryFire( CurTime() + 0.9 )
 self:SetNextSecondaryFire( CurTime() + 0.9 )
 self.Reloading = 1 
-self.ReloadingTimer = CurTime() + 0.4
+self.ReloadingTimer = CurTime() + 0.5
 self.Idle = 1
 end
 end 
