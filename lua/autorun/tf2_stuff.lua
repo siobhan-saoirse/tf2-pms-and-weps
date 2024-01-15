@@ -109,48 +109,48 @@ player_manager.AddValidHands( "!of_camdroid",			"models/weapons/c_arms_combine.m
 
 -- special thanks to the competitive addon creator for suggesting a lot of things!
 
-list.Set( "PlayerOptionsAnimations", "tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
-list.Set( "PlayerOptionsAnimations", "pf2_scout", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_medic", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_spy", { "selectionmenu_anim01", "layer_taunt04" } )
-list.Set( "PlayerOptionsAnimations", "pf2_civilian", { "selectionmenu_anim01", "taunt", "cross_idle", "look_idle","wait_idle" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_sniper", { "selectionmenu_anim01", "taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
-list.Set( "PlayerOptionsAnimations", "tf_botscout", { "stand_melee", "taunt03" } )
-list.Set( "PlayerOptionsAnimations", "tf_botsoldier", { "stand_primary", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botpyro", { "stand_primary", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botdemoman", { "stand_item1", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botheavy", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botengineer", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botmedic", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botsniper", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botspy", { "stand_melee", "layer_taunt03" } )
-list.Set( "PlayerOptionsAnimations", "tf_skeleton", { "stand_melee", "spawn01", "spawn02", "spawn03", "spawn04", "spawn05", "spawn06", "spawn07" } )
-list.Set( "PlayerOptionsAnimations", "tf_civilian", { "selectionmenu_anim01", "layer_taunt01", "layer_taunt_sandvich"  } )
-list.Set( "PlayerOptionsAnimations", "of_mercenary", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first" } )
-list.Set( "PlayerOptionsAnimations", "tf_mercenary", { "stand_crowbar", "selectionMenu_Anim0l", "winscreen_first", "winscreen_first_2", "winscreen_first_3", "winscreen_second",  } )
-list.Set( "PlayerOptionsAnimations", "of_camdroid", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first", "camdroid_stand", "camdroid_crouch", "camdroid_shutdown" } )
+list.Set( "PlayerOptionsAnimations", "!tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_scout", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_medic", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_spy", { "selectionmenu_anim01", "layer_taunt04" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_civilian", { "selectionmenu_anim01", "taunt", "cross_idle", "look_idle","wait_idle" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_sniper", { "selectionmenu_anim01", "taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botscout", { "stand_melee", "taunt03" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botsoldier", { "stand_primary", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botpyro", { "stand_primary", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botdemoman", { "stand_item1", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botheavy", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botengineer", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botmedic", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botsniper", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botspy", { "stand_melee", "layer_taunt03" } )
+list.Set( "PlayerOptionsAnimations", "!tf_skeleton", { "stand_melee", "spawn01", "spawn02", "spawn03", "spawn04", "spawn05", "spawn06", "spawn07" } )
+list.Set( "PlayerOptionsAnimations", "!tf_civilian", { "selectionmenu_anim01", "layer_taunt01", "layer_taunt_sandvich"  } )
+list.Set( "PlayerOptionsAnimations", "!of_mercenary", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first" } )
+list.Set( "PlayerOptionsAnimations", "!tf_mercenary", { "stand_crowbar", "selectionMenu_Anim0l", "winscreen_first", "winscreen_first_2", "winscreen_first_3", "winscreen_second",  } )
+list.Set( "PlayerOptionsAnimations", "!of_camdroid", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first", "camdroid_stand", "camdroid_crouch", "camdroid_shutdown" } )
 
 local ActivityTranslateFixTF2 = {}  
 local BlastForceMultiplier = 16
@@ -5135,12 +5135,92 @@ hook.Add("UpdateAnimation", "TF2UpdateAnim", function(pl, velocity, maxseqground
     end
 end) 
 
+timer.Simple(0.5, function()
+	if SERVER then
+		local scouthands = ents.Create("gmod_button")
+		scouthands:SetModel("models/weapons/c_models/c_scout_arms.mdl")
+		tf_util.ReadActivitiesFromModel(scouthands)
+		local soldierhands = ents.Create("gmod_button")
+		soldierhands:SetModel("models/weapons/c_models/c_soldier_arms.mdl")
+		tf_util.ReadActivitiesFromModel(soldierhands)
+		local pyrohands = ents.Create("gmod_button")
+		pyrohands:SetModel("models/weapons/c_models/c_pyro_arms.mdl")
+		tf_util.ReadActivitiesFromModel(pyrohands)
+		local demohands = ents.Create("gmod_button")
+		demohands:SetModel("models/weapons/c_models/c_demo_arms.mdl")
+		tf_util.ReadActivitiesFromModel(demohands)
+		local heavyhands = ents.Create("gmod_button")
+		heavyhands:SetModel("models/weapons/c_models/c_heavy_arms.mdl")
+		tf_util.ReadActivitiesFromModel(heavyhands)
+		local engineerhands = ents.Create("gmod_button")
+		engineerhands:SetModel("models/weapons/c_models/c_engineer_arms.mdl")
+		tf_util.ReadActivitiesFromModel(engineerhands)
+		local medichands = ents.Create("gmod_button")
+		medichands:SetModel("models/weapons/c_models/c_medic_arms.mdl")
+		tf_util.ReadActivitiesFromModel(medichands)
+		local sniperhands = ents.Create("gmod_button")
+		sniperhands:SetModel("models/weapons/c_models/c_sniper_arms.mdl")
+		tf_util.ReadActivitiesFromModel(sniperhands)
+		local spyhands = ents.Create("gmod_button")
+		spyhands:SetModel("models/weapons/c_models/c_spy_arms.mdl")
+		tf_util.ReadActivitiesFromModel(spyhands)
+	elseif CLIENT then
+		local scouthands = ents.CreateClientside("gmod_button")
+		scouthands:SetModel("models/weapons/c_models/c_scout_arms.mdl")
+		tf_util.ReadActivitiesFromModel(scouthands)
+		local soldierhands = ents.CreateClientside("gmod_button")
+		soldierhands:SetModel("models/weapons/c_models/c_soldier_arms.mdl")
+		tf_util.ReadActivitiesFromModel(soldierhands)
+		local pyrohands = ents.CreateClientside("gmod_button")
+		pyrohands:SetModel("models/weapons/c_models/c_pyro_arms.mdl")
+		tf_util.ReadActivitiesFromModel(pyrohands)
+		local demohands = ents.CreateClientside("gmod_button")
+		demohands:SetModel("models/weapons/c_models/c_demo_arms.mdl")
+		tf_util.ReadActivitiesFromModel(demohands)
+		local heavyhands = ents.CreateClientside("gmod_button")
+		heavyhands:SetModel("models/weapons/c_models/c_heavy_arms.mdl")
+		tf_util.ReadActivitiesFromModel(heavyhands)
+		local engineerhands = ents.CreateClientside("gmod_button")
+		engineerhands:SetModel("models/weapons/c_models/c_engineer_arms.mdl")
+		tf_util.ReadActivitiesFromModel(engineerhands)
+		local medichands = ents.CreateClientside("gmod_button")
+		medichands:SetModel("models/weapons/c_models/c_medic_arms.mdl")
+		tf_util.ReadActivitiesFromModel(medichands)
+		local sniperhands = ents.CreateClientside("gmod_button")
+		sniperhands:SetModel("models/weapons/c_models/c_sniper_arms.mdl")
+		tf_util.ReadActivitiesFromModel(sniperhands)
+		local spyhands = ents.CreateClientside("gmod_button")
+		spyhands:SetModel("models/weapons/c_models/c_spy_arms.mdl")
+		tf_util.ReadActivitiesFromModel(spyhands)
+	end
+end)
+
 hook.Add("PlayerSpawn", "TF2BotModels", function(ply) 
 	ply.TempAttributes = {}
 	if (!ply.TFBot and !ply.LeadBot) then
 		ply:SetBodyGroups("0000000000000") 
 		timer.Simple(0.1, function()
 			tf_util.ReadActivitiesFromModel(ply)
+			local class = ""
+			if (string.find(ply:GetModel(),"scout")) then
+				class = "scout"
+			elseif (string.find(ply:GetModel(),"soldier")) then
+				class = "soldier"
+			elseif (string.find(ply:GetModel(),"pyro")) then
+				class = "pyro"
+			elseif (string.find(ply:GetModel(),"demo")) then
+				class = "demoman"
+			elseif (string.find(ply:GetModel(),"heavy")) then
+				class = "heavy"
+			elseif (string.find(ply:GetModel(),"engineer")) then
+				class = "engineer"
+			elseif (string.find(ply:GetModel(),"medic")) then
+				class = "medic"
+			elseif (string.find(ply:GetModel(),"sniper")) then
+				class = "sniper"
+			elseif (string.find(ply:GetModel(),"spy")) then
+				class = "spy"
+			end
 			if (ply:IsBot()) then
 				ply:SetModel(table.Random({
 					"models/player/scout.mdl",
