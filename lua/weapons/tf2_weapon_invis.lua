@@ -87,6 +87,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.CloakCostTimer = CurTime()
 self.Cloak = 0
 self.CloakTimer = CurTime()

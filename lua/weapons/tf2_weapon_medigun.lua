@@ -112,6 +112,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self:StopSound( self.Primary.Sound )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_POSTFIRE, true)
 if SERVER then

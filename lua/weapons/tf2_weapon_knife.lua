@@ -101,6 +101,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.Weapon:SetHoldType( "knife" )
 self.Backstab = 0
 self.Attack = 0

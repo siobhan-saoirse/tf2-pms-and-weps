@@ -106,6 +106,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.SpreadCooldown = CurTime()
 self.Reloading = 0
 self.ReloadingTimer = CurTime()

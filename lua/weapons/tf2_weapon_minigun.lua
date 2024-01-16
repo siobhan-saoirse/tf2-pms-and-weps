@@ -102,6 +102,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 if SERVER then
 self.Owner:StopSound( self.Primary.Sound )
 self.Owner:StopSound( self.Secondary.Sound )

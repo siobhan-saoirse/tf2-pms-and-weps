@@ -117,6 +117,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self:StopSound( self.Primary.Sound )
 if SERVER then
 self.Owner:StopSound( "Weapon_FlameThrower.FireLoop" )

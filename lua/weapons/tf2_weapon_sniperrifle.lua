@@ -127,6 +127,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.Weapon:SetHoldType( "crossbow" )
 self.Scope = 0
 self.Reloading = 0

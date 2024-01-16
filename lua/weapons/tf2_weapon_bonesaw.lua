@@ -100,6 +100,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
