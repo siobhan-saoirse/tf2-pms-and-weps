@@ -11,7 +11,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
-SWEP.ViewModel = "models/weapons/v_models/v_medigun_medic.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_medic_arms.mdl"
 SWEP.WorldModel = "models/weapons/w_models/w_medigun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -83,7 +83,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -339,10 +339,10 @@ end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
 if self.Attack == 0 then
-self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_IDLE )
 end
 if self.Attack == 1 then
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_PRIMARYATTACK )
 end
 end
 self.Idle = 1

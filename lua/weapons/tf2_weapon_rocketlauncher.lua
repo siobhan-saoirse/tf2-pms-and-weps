@@ -14,7 +14,7 @@ SWEP.AdminOnly = false
  
 
 SWEP.ViewModel = "models/weapons/c_models/c_soldier_arms.mdl"
-SWEP.WorldModel = "models/weapons/w_models/w_rocketlauncher.mdl"
+SWEP.WorldModel = "models/weapons/c_models/c_rocketlauncher/c_rocketlauncher.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
@@ -222,7 +222,7 @@ if (!self.ReloadingFirst) then
 else
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_LOOP)
 end
-self.Weapon:SetClip1( self.Weapon:Clip1() + 1 )
+self.Weapon:SetClip1( self.Weapon:Clip1() + 1 ) 
 self.Owner:RemoveAmmo( 1, self.Primary.Ammo, false )
 self.Reloading = 1
 self.ReloadingTimer = CurTime() + 0.85
