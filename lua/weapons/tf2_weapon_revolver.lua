@@ -171,6 +171,7 @@ end
 end
 
 function SWEP:Think()
+tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then
