@@ -13,14 +13,14 @@ SWEP.AdminOnly = false
 
 
 SWEP.ViewModel = "models/weapons/v_models/v_machete_sniper.mdl"
-SWEP.WorldModel = ""
+SWEP.WorldModel = "models/empty.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
 
 SWEP.AutoSwitchTo = false
 SWEP.AutoSwitchFrom = false
-SWEP.Weight = 1
+SWEP.Weight = 1 
 SWEP.Slot = 2
 SWEP.SlotPos = 0
 
