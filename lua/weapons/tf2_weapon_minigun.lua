@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
-SWEP.ViewModel = "models/weapons/c_models/c_heavy_arms.mdl"
+SWEP.ViewModel = "models/weapons/v_models/v_minigun_heavy.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_minigun/c_minigun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -87,7 +87,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "minigun" )
-self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -123,7 +123,7 @@ if self.Spin == 0 and self.SpinTimer <= CurTime() and self.Owner:KeyDown( IN_ATT
 if SERVER then
 self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindUp") )
 end
-self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_PREFIRE )
+self.Weapon:SendWeaponAnim( ACT_DEPLOY )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_PREFIRE, true)
 self.Spin = 1
 self.SpinTimer = CurTime() + 0.75
@@ -192,7 +192,7 @@ if self.Spin == 0 and self.SpinTimer <= CurTime() and self.Owner:KeyDown( IN_ATT
 if SERVER then
 	self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindUp") )
 end
-self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_PREFIRE )
+self.Weapon:SendWeaponAnim( ACT_DEPLOY )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_PREFIRE, true)
 self.Spin = 1
 self.SpinTimer = CurTime() + 0.75
@@ -223,7 +223,6 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then
@@ -252,7 +251,7 @@ self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindDown") )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_POSTFIRE, true)
 end
 self.Weapon:SetHoldType( "minigun" )
-self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_POSTFIRE )
+self.Weapon:SendWeaponAnim( ACT_UNDEPLOY )
 self.Sound = 0
 self.Spin = 0
 self.SpinTimer = CurTime() + 0.01
