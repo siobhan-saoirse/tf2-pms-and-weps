@@ -9,7 +9,7 @@ if CLIENT then
 		-- Settings...
 		WorldModel2:SetNoDraw(true)
 		ViewModel2:SetNoDraw(true)
-	function SWEP:PostDrawViewModel()
+	function SWEP:PreDrawViewModel()
 		local _Owner = self:GetOwner()
 		if (self.OldWorldModel == nil and self.WorldModel != "models/empty.mdl") then
 			self.OldWorldModel = self.WorldModel
