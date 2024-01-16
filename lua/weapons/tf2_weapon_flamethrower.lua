@@ -24,7 +24,7 @@ SWEP.Weight = 3
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "flamethrower"
 SWEP.FiresUnderwater = false
 SWEP.DrawCrosshair = false

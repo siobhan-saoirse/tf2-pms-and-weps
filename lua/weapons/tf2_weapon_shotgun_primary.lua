@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/v_models/v_shotgun_engineer.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_engineer_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_shotgun/c_shotgun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -24,7 +24,7 @@ SWEP.Weight = 3
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "shotgun"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
@@ -88,7 +88,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -152,7 +152,7 @@ self.Owner:FireBullets( bullet )
 if SERVER then
 self.Owner:EmitSound( self.Primary.Sound, 94, 100, 1, CHAN_WEAPON )
 end
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
@@ -171,7 +171,7 @@ end
 
 function SWEP:Reload()
 if self.Reloading == 0 and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-self.Weapon:SendWeaponAnim( ACT_RELOAD_START )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_RELOAD_START )
 self:SetNextPrimaryFire( CurTime() + 0.9 )
 self:SetNextSecondaryFire( CurTime() + 0.9 )
 self.Reloading = 1
@@ -201,7 +201,7 @@ if self.Recoil == 1 then
 self.Owner:SetViewPunchAngles( Angle( 0.23, 0, 0 ) )
 end
 if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_RELOAD )
 if (!self.ReloadingFirst) then
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND)
     self.ReloadingFirst = true
@@ -215,7 +215,7 @@ self.ReloadingTimer = CurTime() + 0.5
 self.Idle = 1
 end
 if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() == self.Primary.ClipSize then
-self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_RELOAD_FINISH )
 self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
 self.ReloadingFirst = false
 self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -226,7 +226,7 @@ self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() > 0 and self.Weapon:Ammo1() <= 0 then
-self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_RELOAD_FINISH )
 self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END) 
 self.ReloadingFirst = false
 self:SetNextPrimaryFire( CurTime() + 0.5 )

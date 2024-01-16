@@ -23,7 +23,7 @@ SWEP.Weight = 2
 SWEP.Slot = 4
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "knife"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false

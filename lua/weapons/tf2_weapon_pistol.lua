@@ -24,7 +24,7 @@ SWEP.Weight = 2
 SWEP.Slot = 1
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "pistol"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
@@ -175,7 +175,7 @@ self.ReloadingTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
-end
+end 
 
 function SWEP:Think()
 tf_util.ReadActivitiesFromModel(self)

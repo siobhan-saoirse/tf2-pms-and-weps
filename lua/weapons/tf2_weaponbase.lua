@@ -22,6 +22,7 @@ if CLIENT then
 			ViewModel2:AddEffects(bit.bor(EF_BONEMERGE,EF_BONEMERGE_FASTCULL))
 			ViewModel2:SetPos(self:GetPos())
 			ViewModel2:SetAngles(self:GetAngles())
+			_Owner:GetViewModel():SetMaterial("color")
 		else
 			ViewModel2:SetPos(self:GetPos())
 			ViewModel2:SetAngles(self:GetAngles())

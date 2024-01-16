@@ -24,7 +24,7 @@ if CLIENT then
 	SWEP.Slot = 1
 	SWEP.SlotPos = 0
 	
-	SWEP.UseHands = false
+	SWEP.UseHands = true
 	SWEP.HoldType = "pistol"
 	SWEP.FiresUnderwater = true
 	SWEP.DrawCrosshair = false
@@ -204,7 +204,7 @@ tf_util.ReadActivitiesFromModel(self)
 	self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_IDLE )
 	end
 	self.Idle = 1
-	end
+	end 
 	if self.Weapon:Ammo1() > self.Primary.MaxAmmo then
 	self.Owner:SetAmmo( self.Primary.MaxAmmo, self.Primary.Ammo )
 	end

@@ -25,7 +25,7 @@ SWEP.Weight = 4
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "ar2"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
