@@ -11,17 +11,12 @@ if CLIENT then
 		ViewModel2:SetNoDraw(true)
 	function SWEP:PreDrawViewModel()
 		local _Owner = self:GetOwner()
-		if (self.OldWorldModel == nil and self.WorldModel != "models/empty.mdl") then
-			self.OldWorldModel = self.WorldModel
-		else
-			self.WorldModel = "models/empty.mdl"
-		end
 		local skin = self:GetSkin()
 		if (IsValid(_Owner)) then
 			skin = self:GetOwner():GetSkin()
 		end
 		ViewModel2:SetSkin(skin)
-		ViewModel2:SetModel(self.WModel or self.OldWorldModel)
+		ViewModel2:SetModel(self.WModel)
 		if (IsValid(_Owner)) then
 			ViewModel2:SetParent(_Owner:GetViewModel())
 			ViewModel2:AddEffects(bit.bor(EF_BONEMERGE,EF_BONEMERGE_FASTCULL))
