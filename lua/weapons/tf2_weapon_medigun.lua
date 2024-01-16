@@ -12,7 +12,7 @@ SWEP.AdminOnly = false
 
  
 SWEP.ViewModel = "models/weapons/c_models/c_medic_arms.mdl"
-SWEP.WorldModel = "models/weapons/w_models/w_medigun.mdl"
+SWEP.WorldModel = "models/weapons/c_models/c_medigun/c_medigun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
