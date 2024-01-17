@@ -12,6 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
 
+SWEP.NoCModel = true
 SWEP.ViewModel = "models/weapons/v_models/v_pda_spy.mdl"
 SWEP.WorldModel = "models/weapons/w_models/w_cigarette_case.mdl"
 SWEP.ViewModelFlip = false

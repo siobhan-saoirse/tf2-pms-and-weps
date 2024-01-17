@@ -11,6 +11,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
+SWEP.NoCModel = true
 SWEP.ViewModel = "models/weapons/v_models/v_watch_spy.mdl"
 SWEP.WorldModel = ""
 SWEP.ViewModelFlip = false

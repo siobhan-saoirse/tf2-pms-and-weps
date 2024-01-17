@@ -12,6 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false 
 
 
+SWEP.NoCModel = true
 SWEP.ViewModel = "models/weapons/v_models/v_builder_engineer.mdl"
 SWEP.WorldModel = "models/weapons/w_models/w_builder.mdl"
 SWEP.ViewModelFlip = false
