@@ -1,0 +1,11 @@
+"Patch"
+{
+	include "materials\models\player\shared\red_invun.vmt"
+	
+	insert
+	{
+	"$detail" "models/player/shared/yellow_uber"
+	"$detailblendfactor" "0.56"
+	"$envmap" "effects/invun_yellow"
+	}
+}
