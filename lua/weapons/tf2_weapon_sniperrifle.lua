@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/v_models/v_sniperrifle_sniper.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_sniper_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_sniperrifle/c_sniperrifle.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -31,8 +31,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 300
-SWEP.RunSpeed = 400
+--SWEP.WalkSpeed = 300
+--SWEP.RunSpeed = 400
 
 SWEP.Scope = 0
 SWEP.ScopeTimer = CurTime()
@@ -108,7 +108,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "crossbow" )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -117,8 +117,8 @@ self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 self.Weapon:SetNWString( "CrosshairAlpha", 255 )
 self.Weapon:SetNWString( "ScopeLaserAlpha", 0 )
 self.Weapon:SetNWString( "ScopeAlpha", 0 )
@@ -134,8 +134,8 @@ self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+--self.Owner:SetWalkSpeed( 200 )
+--self.Owner:SetRunSpeed( 400 )
 self.Weapon:SetNWString( "CrosshairAlpha", 255 )
 self.Weapon:SetNWString( "ScopeLaserAlpha", 0 )
 self.Weapon:SetNWString( "ScopeAlpha", 0 )
@@ -169,7 +169,7 @@ self.Owner:FireBullets( bullet )
 if SERVER then
 self.Owner:EmitSound( self.Primary.Sound, 94, 100, 1, CHAN_WEAPON )
 end
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
@@ -183,8 +183,8 @@ self.Weapon:SetNWString( "ScopeLaserAlpha", 0 )
 self.Weapon:SetNWString( "ScopeAlpha", 0 )
 self.Weapon:SetNWString( "MouseSensitivity", 1 )
 self.Owner:SetFOV( 0, 0.1 )
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 end
 
 function SWEP:SecondaryAttack()
@@ -197,8 +197,8 @@ self.Weapon:SetNWString( "ScopeLaserAlpha", 0 )
 self.Weapon:SetNWString( "ScopeAlpha", 255 )
 self.Weapon:SetNWString( "MouseSensitivity", 0.2 )
 self.Owner:SetFOV( self.Owner:GetFOV() / 5, 0.1 )
-self.Owner:SetWalkSpeed( 54 )
-self.Owner:SetRunSpeed( 108 )
+--self.Owner:SetWalkSpeed( 54 )
+--self.Owner:SetRunSpeed( 108 )
 if SERVER then
 self.Weapon:SetHoldType( "scoped" )
 end
@@ -215,8 +215,8 @@ self.Weapon:SetNWString( "ScopeLaserAlpha", 0 )
 self.Weapon:SetNWString( "ScopeAlpha", 0 )
 self.Weapon:SetNWString( "MouseSensitivity", 1 )
 self.Owner:SetFOV( 0, 0.1 )
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 end
 end
 if self.Owner:KeyDown( IN_USE ) and self.Owner:KeyDown( IN_RELOAD ) then

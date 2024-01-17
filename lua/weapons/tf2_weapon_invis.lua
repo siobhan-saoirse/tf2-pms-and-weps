@@ -32,8 +32,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 320
-SWEP.RunSpeed = 428
+--SWEP.WalkSpeed = 320
+--SWEP.RunSpeed = 428
 
 SWEP.CloakCostTimer = CurTime()
 SWEP.Cloak = 0
@@ -75,8 +75,8 @@ self.CloakCostTimer = CurTime()
 self.Cloak = 0
 self.CloakTimer = CurTime()
 self.Idle = 1
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 self.Owner:GetViewModel():SetMaterial( "" )
 self.Owner:SetMaterial( "" )
 self.Owner:DrawShadow( true )
@@ -94,8 +94,8 @@ self.Cloak = 0
 self.CloakTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+--self.Owner:SetWalkSpeed( 200 )
+--self.Owner:SetRunSpeed( 400 )
 self.Owner:GetViewModel():SetMaterial( "" )
 self.Owner:SetMaterial( "" )
 self.Owner:DrawShadow( true )

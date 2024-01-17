@@ -32,10 +32,10 @@ if CLIENT then
 	SWEP.CSMuzzleFlashes = 1
 	SWEP.Base = "tf2_weaponbase"
 	
-	SWEP.WalkSpeed = 300
-	SWEP.RunSpeed = 400
+	--SWEP.WalkSpeed = 400
+	--SWEP.RunSpeed = 400
 	
-	SWEP.SpreadCooldown = CurTime()
+	SWEP.SpreadCooldown = CurTime() 
 	SWEP.Reloading = 0
 	SWEP.ReloadingTimer = CurTime()
 	SWEP.Idle = 0
@@ -96,8 +96,8 @@ if CLIENT then
 	self.ReloadingTimer = CurTime()
 	self.Idle = 0
 	self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-	self.Owner:SetWalkSpeed( self.WalkSpeed )
-	self.Owner:SetRunSpeed( self.RunSpeed )
+	--self.Owner:SetWalkSpeed( self.WalkSpeed )
+	--self.Owner:SetRunSpeed( self.RunSpeed )
 	if (IsValid(self:GetOwner()) and self:GetOwner():GetSkin() == 1) then
 		self:SetSkin(1)
 		self:GetOwner():GetViewModel():SetSkin(1)
@@ -112,8 +112,8 @@ self.Owner:GetViewModel():SetMaterial("")
 	self.ReloadingTimer = CurTime()
 	self.Idle = 0
 	self.IdleTimer = CurTime()
-	self.Owner:SetWalkSpeed( 200 )
-	self.Owner:SetRunSpeed( 400 )
+	--self.Owner:SetWalkSpeed( 200 )
+	--self.Owner:SetRunSpeed( 400 )
 	return true
 	end
 	

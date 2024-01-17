@@ -31,8 +31,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1 
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 300
-SWEP.RunSpeed = 428
+--SWEP.WalkSpeed = 300
+--SWEP.RunSpeed = 428
 
 SWEP.Backstab = 0
 SWEP.Attack = 0
@@ -91,8 +91,8 @@ self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 if (IsValid(self:GetOwner()) and self:GetOwner():GetSkin() == 1) then
     self:SetSkin(1)
     self:GetOwner():GetViewModel():SetSkin(1)
@@ -108,8 +108,8 @@ self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+--self.Owner:SetWalkSpeed( 200 )
+--self.Owner:SetRunSpeed( 400 )
 return true
 end
 

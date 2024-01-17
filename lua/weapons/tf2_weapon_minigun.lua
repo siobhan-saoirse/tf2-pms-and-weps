@@ -31,8 +31,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 230
-SWEP.RunSpeed = 308
+--SWEP.WalkSpeed = 230
+--SWEP.RunSpeed = 308
 
 SWEP.Sound = 0
 SWEP.Spin = 0
@@ -96,8 +96,9 @@ self.Spin = 0
 self.SpinTimer = CurTime() + 0.5
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+if SERVER then
+self.Owner:SetLaggedMovementValue(1.0)
+end
 return true
 end
 
@@ -114,8 +115,9 @@ self.Spin = 0
 self.SpinTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+if SERVER then
+self.Owner:SetLaggedMovementValue(1.0)
+end
 return true
 end
 
@@ -123,15 +125,16 @@ function SWEP:PrimaryAttack()
 if self.Spin == 0 and self.SpinTimer <= CurTime() and self.Owner:KeyDown( IN_ATTACK ) then
 if SERVER then
 self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindUp") )
-end
+end 
 self.Weapon:SendWeaponAnim( self:GetSequenceActivity(self:LookupSequence("m_spool_up")) )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_PREFIRE, true)
 self.Spin = 1
 self.SpinTimer = CurTime() + 0.75
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( 74 )
-self.Owner:SetRunSpeed( 148 )
+if SERVER then
+self.Owner:SetLaggedMovementValue(0.6)
+end
 self.Weapon:SetHoldType( "deployed" )
 end
 if !( self.Spin == 2 ) then return end
@@ -199,8 +202,9 @@ self.Spin = 1
 self.SpinTimer = CurTime() + 0.75
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( 74 )
-self.Owner:SetRunSpeed( 148 )
+if SERVER then
+self.Owner:SetLaggedMovementValue(0.6)
+end
 self.Weapon:SetHoldType( "deployed" )
 end
 if self.Spin == 2 then 	
@@ -258,8 +262,9 @@ self.Spin = 0
 self.SpinTimer = CurTime() + 0.01
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+if SERVER then
+self.Owner:SetLaggedMovementValue(1.0)
+end
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then

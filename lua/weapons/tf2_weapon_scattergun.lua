@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/v_models/v_scattergun_scout.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_scout_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_scattergun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -32,8 +32,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 400
-SWEP.RunSpeed = 532
+--SWEP.WalkSpeed = 400
+--SWEP.RunSpeed = 532
 
 SWEP.Reloading = 0
 SWEP.ReloadingTimer = CurTime()
@@ -88,7 +88,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -98,9 +98,9 @@ self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 self.Recoil = 0
 self.RecoilTimer = CurTime()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
-return true
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
+return true 
 end
 
 function SWEP:Holster()
@@ -111,8 +111,8 @@ self.Idle = 0
 self.IdleTimer = CurTime()
 self.Recoil = 0
 self.RecoilTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+--self.Owner:SetWalkSpeed( 200 )
+--self.Owner:SetRunSpeed( 400 )
 return true
 end
 
@@ -147,7 +147,7 @@ bullet.Damage = self.Primary.Damage
 bullet.AmmoType = self.Primary.Ammo
 self.Owner:FireBullets( bullet )
 self:EmitSound( self.Primary.Sound )
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
@@ -173,7 +173,7 @@ end
 
 function SWEP:Reload()
 if self.Reloading == 0 and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-self.Weapon:SendWeaponAnim( ACT_RELOAD_START )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_RELOAD_START )
 self:SetNextPrimaryFire( CurTime() + 0.25 )
 self:SetNextSecondaryFire( CurTime() + 0.25 )
 self.Reloading = 1
@@ -198,7 +198,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     end
     
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-    self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
+    self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_RELOAD )
     if (!self.ReloadingFirst) then
         self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND)
         self.ReloadingFirst = true
@@ -212,7 +212,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.Idle = 1
     end
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() == self.Primary.ClipSize then
-    self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
+    self.Weapon:SendWeaponAnim( ACT_PRIMARY_RELOAD_FINISH )
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -223,7 +223,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
     end
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() > 0 and self.Weapon:Ammo1() <= 0 then
-    self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
+    self.Weapon:SendWeaponAnim( ACT_PRIMARY_RELOAD_FINISH )
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END) 
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -234,7 +234,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
     end
     if self.Reloading == 2 and self.ReloadingTimer <= CurTime() then
-    self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH ) 
+    self.Weapon:SendWeaponAnim( ACT_PRIMARY_RELOAD_FINISH ) 
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -249,7 +249,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     end
     if self.Idle == 0 and self.IdleTimer <= CurTime() then
     if SERVER then
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_IDLE )
     end
     self.Idle = 1
     end
