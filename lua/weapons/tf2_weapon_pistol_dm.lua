@@ -33,7 +33,7 @@ if CLIENT then
 	SWEP.CSMuzzleFlashes = 1
 	SWEP.Base = "tf2_weaponbase"
 	
-	SWEP.WalkSpeed = 300
+	SWEP.WalkSpeed = 270 
 	SWEP.RunSpeed = 400 
 	
 	SWEP.SpreadCooldown = CurTime()

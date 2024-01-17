@@ -33,7 +33,7 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 320
+SWEP.WalkSpeed = 270 
 SWEP.RunSpeed = 372
 
 SWEP.Broken = 0
