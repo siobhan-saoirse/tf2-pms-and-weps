@@ -33,7 +33,7 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weapon_pistol"
 
-SWEP.WalkSpeed = 400
+SWEP.WalkSpeed = 320
 SWEP.RunSpeed = 532
 
 SWEP.Reloading = 0
@@ -43,16 +43,16 @@ SWEP.IdleTimer = CurTime()
 SWEP.Recoil = 0
 SWEP.RecoilTimer = CurTime()
 
-SWEP.Primary.Sound = Sound( "Weapon_Scatter_Gun.Single" )
+SWEP.Primary.Sound = Sound( "Weapon_Scatter_Gun_Double.Single" )
 SWEP.Primary.ClipSize = 1
 SWEP.Primary.DefaultClip = 38
 SWEP.Primary.MaxAmmo = 16
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "Buckshot"
 SWEP.Primary.Damage = 6
-SWEP.Primary.Spread = 0.0675
+SWEP.Primary.Spread = 0.0675 * 2
 SWEP.Primary.TakeAmmo = 1
-SWEP.Primary.NumberofShots = 10
+SWEP.Primary.NumberofShots = 10 * 2
 SWEP.Primary.Delay = 0.625
 SWEP.Primary.Force = 1
 

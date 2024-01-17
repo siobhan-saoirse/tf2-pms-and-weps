@@ -42,7 +42,7 @@ SWEP.Idle = 0
 SWEP.IdleTimer = CurTime()
 
 SWEP.Primary.Sound = Sound( "weapons/pistol_shoot.wav" )
-SWEP.Primary.ClipSize = 12
+SWEP.Primary.ClipSize = 15
 SWEP.Primary.DefaultClip = 212
 SWEP.Primary.MaxAmmo = 200
 SWEP.Primary.Automatic = true

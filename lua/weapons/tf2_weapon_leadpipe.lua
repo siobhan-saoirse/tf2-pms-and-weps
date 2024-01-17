@@ -33,7 +33,7 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 280
+SWEP.WalkSpeed = 320
 SWEP.RunSpeed = 372
 
 SWEP.Broken = 0
@@ -42,7 +42,7 @@ SWEP.AttackTimer = CurTime()
 SWEP.Idle = 0
 SWEP.IdleTimer = CurTime()
 
-SWEP.Primary.Sound = Sound( "Weapon_Bottle.Miss" )
+SWEP.Primary.Sound = Sound( "Weapon_Pipe.Miss" )
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Automatic = true

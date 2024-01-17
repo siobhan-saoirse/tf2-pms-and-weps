@@ -34,7 +34,7 @@ if CLIENT then
 	SWEP.Base = "tf2_weaponbase"
 	
 	SWEP.WalkSpeed = 300
-	SWEP.RunSpeed = 400
+	SWEP.RunSpeed = 400 
 	
 	SWEP.SpreadCooldown = CurTime()
 	SWEP.Reloading = 0

@@ -34,7 +34,7 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 240
+SWEP.WalkSpeed = 300
 SWEP.RunSpeed = 320
 
 SWEP.Reloading = 0
@@ -42,7 +42,7 @@ SWEP.ReloadingTimer = CurTime()
 SWEP.Idle = 0
 SWEP.IdleTimer = CurTime()
 
-SWEP.Primary.Sound = Sound( "weapons/rocket_shoot.wav" )
+SWEP.Primary.Sound = Sound( "Weapon_QuakeRPG.Single" )
 SWEP.Primary.ClipSize = 4
 SWEP.Primary.DefaultClip = 24
 SWEP.Primary.MaxAmmo = 20
@@ -153,6 +153,7 @@ local phys = entity:GetPhysicsObject()
 phys:SetMass( 1 )
 phys:EnableGravity( false )
 phys:ApplyForceCenter( entity:GetForward() * self.Primary.Force )
+entity.ExplosionSound = "Weapon_QuakeRPG.Explode"
 if (self:GetItemData() and self:GetItemData().visuals and self:GetItemData().visuals.sound_special1) then
     entity.ExplosionSound = self:GetItemData().visuals.sound_special1
 end

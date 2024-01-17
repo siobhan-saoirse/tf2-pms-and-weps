@@ -162,6 +162,48 @@ self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 
 function SWEP:SecondaryAttack()
+	if self.Weapon:Clip1() <= 0 and self.Weapon:Ammo1() <= 0 then
+	self.Weapon:EmitSound( "Weapon_Pistol.ClipEmpty" )
+	self:SetNextPrimaryFire( CurTime() + 0.2 )
+	self:SetNextSecondaryFire( CurTime() + 0.2 )
+	end
+	if self.FiresUnderwater == false and self.Owner:WaterLevel() == 3 then
+	self.Weapon:EmitSound( "Weapon_Pistol.ClipEmpty" )
+	self:SetNextPrimaryFire( CurTime() + 0.2 )
+	self:SetNextSecondaryFire( CurTime() + 0.2 )
+	end
+	if self.Weapon:Clip1() <= 0 then
+	self:Reload()
+	end
+	if self.Weapon:Clip1() <= 0 then return end
+	if self.FiresUnderwater == false and self.Owner:WaterLevel() == 3 then return end
+	local bullet = {}
+	bullet.Num = self.Primary.NumberofShots
+	bullet.Src = self.Owner:GetShootPos()
+	bullet.Dir = self.Owner:GetAimVector()
+	if self.SpreadCooldown <= CurTime() then
+	bullet.Spread = Vector( 0, 0, 0 )
+	end
+	if self.SpreadCooldown > CurTime() then
+	bullet.Spread = Vector( 1 * self.Primary.Spread, 1 * self.Primary.Spread, 0 )
+	end
+	bullet.Tracer = 1
+	bullet.Force = self.Primary.Force
+	bullet.Damage = self.Primary.Damage
+	bullet.AmmoType = self.Primary.Ammo
+	self.Owner:FireBullets( bullet )
+	if SERVER then
+	self.Owner:EmitSound( self.Primary.Sound, 94, 100, 1, CHAN_WEAPON )
+	end
+	self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK)
+	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	self.Owner:MuzzleFlash()
+	self:TakePrimaryAmmo( self.Primary.TakeAmmo )
+	self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
+	self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
+	self.SpreadCooldown = CurTime() + 1.25
+	self.Idle = 0
+	self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 
 function SWEP:Reload()
