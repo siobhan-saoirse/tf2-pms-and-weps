@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
-SWEP.ViewModel = "models/weapons/v_models/v_knife_spy.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_spy_arms.mdl"
 SWEP.WorldModel = "models/weapons/w_models/w_knife.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -82,7 +82,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "knife" )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_MELEE_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -176,7 +176,7 @@ self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 if self.Backstab == 0 then
 if SERVER then
     self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_VM_HITCENTER )
+    self.Weapon:SendWeaponAnim( ACT_MELEE_VM_HITCENTER )
     self.Crit = false
 end
 self.Attack = 1
@@ -231,13 +231,13 @@ if angle < -180 then
 angle = 360 + angle
 end
 if angle <= 90 and angle >= -90 and self.Backstab == 0 then
-self.Weapon:SendWeaponAnim( ACT_DEPLOY )
+--self.Weapon:SendWeaponAnim( ACT_DEPLOY )
 self.Backstab = 1
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 if !( angle <= 90 and angle >= -90 ) and self.Backstab == 1 then
-self.Weapon:SendWeaponAnim( ACT_UNDEPLOY )
+--self.Weapon:SendWeaponAnim( ACT_UNDEPLOY )
 self.Backstab = 0
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
@@ -245,14 +245,14 @@ self.Weapon:SetHoldType( "backstab" )
 end
 end
 if !( tr.Hit and IsValid( tr.Entity ) and ( tr.Entity:IsPlayer() || tr.Entity:IsNPC() ) ) and self.Backstab == 1 then
-self.Weapon:SendWeaponAnim( ACT_UNDEPLOY )
+--self.Weapon:SendWeaponAnim( ACT_UNDEPLOY )
 self.Backstab = 0
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 if self.Attack == 2 and self.AttackTimer <= CurTime() then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )
-self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+self.Weapon:SendWeaponAnim( ACT_MELEE_VM_SWINGHARD )
 self.Attack = 0
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
@@ -326,11 +326,11 @@ if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
 if self.Backstab == 0 then
 self.Weapon:SetHoldType( "knife" )
-self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+self.Weapon:SendWeaponAnim( ACT_MELEE_VM_IDLE )
 end
 if self.Backstab == 1 then
 self.Weapon:SetHoldType( "backstab" )
-self.Weapon:SendWeaponAnim( ACT_DEPLOY_IDLE )
+self.Weapon:SendWeaponAnim( ACT_MELEE_VM_IDLE )
 end
 end
 self.Idle = 1

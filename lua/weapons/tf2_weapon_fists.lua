@@ -12,8 +12,8 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false 
 
 
-SWEP.ViewModel = "models/weapons/v_models/v_fist_heavy.mdl"
-SWEP.WorldModel = ""
+SWEP.ViewModel = "models/weapons/c_models/c_heavy_arms.mdl"
+SWEP.WorldModel = "models/empty.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
@@ -82,7 +82,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_FISTS_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -111,11 +111,19 @@ self:EmitSound( self.Primary.Sound )
 if (math.random(1,6) == 1) then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )
     self.Crit = true
-    self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_SWINGHARD )
+    end
     self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_MELEE_SECONDARY,true)
 else
     self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_VM_HITLEFT )
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_HITLEFT )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_HITLEFT )
+    end
     self.Crit = false
     self.Owner:SetAnimation( PLAYER_ATTACK1 )
 end
@@ -132,11 +140,21 @@ self:EmitSound( self.Primary.Sound )
 if (math.random(1,6) == 1) then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )
     self.Crit = true
-    self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_SWINGHARD )
+    end
     self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_MELEE_SECONDARY,true)
 else
     self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_VM_HITRIGHT )
+    
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_HITRIGHT )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_HITRIGHT )
+    end
     self.Crit = false 
     self.Owner:SetAnimation( PLAYER_ATTACK1 )
 end
@@ -237,8 +255,13 @@ self.Attack = 0
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
-self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_IDLE )
+    end
+    self.IdleTimer = CurTime() + self:SequenceDuration() - 0.1
 end
-self.Idle = 1
+self.Idle = 0
 end
 end

@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false 
 
 
-SWEP.ViewModel = "models/weapons/v_models/v_machete_sniper.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_sniper_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_machete/c_machete.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -82,7 +82,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_MELEE_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -115,10 +115,10 @@ if SERVER then
 if (math.random(1,6) == 1) then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )
     self.Crit = true
-    self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    self.Weapon:SendWeaponAnim( ACT_MELEE_VM_SWINGHARD )
 else
     self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_VM_HITCENTER )
+    self.Weapon:SendWeaponAnim( ACT_MELEE_VM_HITCENTER )
     self.Crit = false
 end
 end
@@ -216,7 +216,7 @@ self.Attack = 0
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
-self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+self.Weapon:SendWeaponAnim( ACT_MELEE_VM_IDLE )
 end
 self.Idle = 1
 end

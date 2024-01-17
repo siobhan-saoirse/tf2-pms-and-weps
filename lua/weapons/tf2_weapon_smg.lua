@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/v_models/v_smg_sniper.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_sniper_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_smg/c_smg.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -87,7 +87,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -145,7 +145,7 @@ bullet.Damage = self.Primary.Damage
 bullet.AmmoType = self.Primary.Ammo
 self.Owner:FireBullets( bullet )
 self:EmitSound( self.Primary.Sound )
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
@@ -161,7 +161,7 @@ end
 
 function SWEP:Reload()
 if self.Reloading == 0 and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
+self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_RELOAD )
 self.Owner:SetAnimation( PLAYER_RELOAD )
 self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
 self:SetNextSecondaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )

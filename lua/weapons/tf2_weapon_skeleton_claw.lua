@@ -124,7 +124,7 @@ self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 self.Attack = 1
 self.AttackTimer = CurTime() + 0.2
 self.Idle = 0
-self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+self.IdleTimer = CurTime() + (self.Owner:GetViewModel():SequenceDuration() / 0.5)
 end
 
 function SWEP:SecondaryAttack()
@@ -145,13 +145,14 @@ self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 self.Attack = 1
 self.AttackTimer = CurTime() + 0.2
 self.Idle = 0
-self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+self.IdleTimer = CurTime() + (self.Owner:GetViewModel():SequenceDuration() / 0.5)
 end
 
 function SWEP:Reload()
 end
 
 function SWEP:Think()
+self.Owner:GetViewModel():SetPlaybackRate(0.5)
 tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 

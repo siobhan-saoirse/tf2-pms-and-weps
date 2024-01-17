@@ -76,7 +76,7 @@ player_manager.AddValidHands( "!tf_botengineer",			"models/bots/engineer/bot_eng
 player_manager.AddValidModel( "!tf_botpyro",			"models/bots/pyro/bot_pyro.mdl" )
 player_manager.AddValidHands( "!tf_botpyro",			"models/bots/pyro/bot_pyro.mdl",			0, "0000000" )
 player_manager.AddValidModel( "!tf_skeleton",			"models/bots/skeleton_sniper/skeleton_sniper.mdl" )
-player_manager.AddValidHands( "!tf_skeleton",			"models/bots/skeleton_sniper/skeleton_sniper.mdl",			2, "0000000" )
+player_manager.AddValidHands( "!tf_skeleton",			"models/weapons/c_models/c_sniper_arms.mdl",			2, "0000000" )
 player_manager.AddValidModel( "!tf_civilian",			"models/player/civilian.mdl" )
 player_manager.AddValidHands( "!tf_civilian",			"models/weapons/c_arms_citizen.mdl",			0, "0000000" )
 player_manager.AddValidModel( "!of_mercenary",			"models/player/mercenary.mdl" )
