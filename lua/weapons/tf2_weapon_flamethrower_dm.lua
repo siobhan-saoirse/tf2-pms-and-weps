@@ -5,15 +5,15 @@ SWEP.BounceWeaponIcon = false
 killicon.Add( "tf2_weapon_flamethrower", "hud/dneg_image_flamethrower", Color( 255, 255, 255, 255 ) )
 end
 
-SWEP.PrintName = "Flame Thrower"
-SWEP.Category = "Team Fortress 2"
+SWEP.PrintName = "DM Flame Thrower"
+SWEP.Category = "Team Fortress 2 Community Weapons"
 SWEP.Spawnable= true
 SWEP.AdminSpawnable= true 
 SWEP.AdminOnly = false
 
 
-SWEP.ViewModel = "models/weapons/c_models/c_pyro_arms.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_flamethrower/c_flamethrower.mdl"
+SWEP.ViewModel = "models/weapons/v_models/v_flamethrower_merc.mdl"
+SWEP.WorldModel = "models/weapons/w_models/w_flamethrower_merc.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
@@ -25,6 +25,7 @@ SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.UseHands = true
+SWEP.NoCModel = true
 SWEP.HoldType = "flamethrower"
 SWEP.FiresUnderwater = false
 SWEP.DrawCrosshair = false
@@ -46,11 +47,11 @@ SWEP.IdleTimer = CurTime()
 
 SWEP.Primary.Sound = Sound( "Weapon_FlameThrower.Fire" )
 SWEP.Primary.ClipSize = -1
-SWEP.Primary.DefaultClip = 200
-SWEP.Primary.MaxAmmo = 200
+SWEP.Primary.DefaultClip = 150
+SWEP.Primary.MaxAmmo = 150
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "AR2AltFire"
-SWEP.Primary.Damage = 6.8
+SWEP.Primary.Damage = 45
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.Delay = 0.08
 SWEP.Primary.Force = 100
@@ -90,12 +91,11 @@ end
 end
 
 function SWEP:Deploy()
-tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
 if SERVER then
 self.Owner:EmitSound( "Weapon_FlameThrower.PilotLoop" )
 end
-self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_DRAW"] )
+self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -117,7 +117,6 @@ return true
 end
 
 function SWEP:Holster()
-self.Owner:GetViewModel():SetMaterial("")
 self:StopSound( self.Primary.Sound )
 if SERVER then
 self.Owner:StopSound( "Weapon_FlameThrower.FireLoop" )
@@ -161,7 +160,7 @@ flame:Fire( "start", "", 0 )
 self.Flame = flame
 end
 self:EmitSound( self.Primary.Sound )
-self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_PRIMARYATTACK"] )
+self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Sound = 1
 self.SoundTimer = CurTime() + 3.5
@@ -208,8 +207,8 @@ blast:Activate()
 blast:Fire( "start", "", 0 )
 end
 self:EmitSound( self.Secondary.Sound )
-self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_SECONDARYATTACK"] )
-self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_SECONDARYFIRE)
+self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
+self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self:TakePrimaryAmmo( self.Secondary.TakeAmmo )
 self:SetNextPrimaryFire( CurTime() + self.Secondary.Delay )
 self:SetNextSecondaryFire( CurTime() + self.Secondary.Delay )
@@ -228,7 +227,6 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
-tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then
@@ -315,7 +313,7 @@ self.AttackTimer = CurTime() + 0.04
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
-	self.Weapon:SendWeaponAnim( _G["ACT_PRIMARY_VM_IDLE"] )
+self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
 end
 self.Idle = 1
 end

@@ -24,7 +24,7 @@ SWEP.Weight = 1
 SWEP.Slot = 4
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "pda"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
@@ -63,6 +63,7 @@ self.IdleTimer = CurTime() + 1
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)

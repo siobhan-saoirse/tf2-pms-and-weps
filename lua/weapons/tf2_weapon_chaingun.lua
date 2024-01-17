@@ -5,15 +5,15 @@ SWEP.BounceWeaponIcon = false
 killicon.Add( "tf2_weapon_minigun", "hud/dneg_image_minigun", Color( 255, 255, 255, 255 ) )
 end
 
-SWEP.PrintName = "Minigun"
-SWEP.Category = "Team Fortress 2"
+SWEP.PrintName = "Chaingun"
+SWEP.Category = "Team Fortress 2 Community Weapons"
 SWEP.Spawnable= true
 SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
-SWEP.ViewModel = "models/weapons/v_models/v_minigun_heavy.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_minigun/c_minigun.mdl"
+SWEP.ViewModel = "models/weapons/v_models/v_minigun_dm.mdl"
+SWEP.WorldModel = "models/weapons/w_models/w_minigun_dm.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
@@ -25,6 +25,7 @@ SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.UseHands = true
+SWEP.NoCModel = true
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
@@ -42,8 +43,8 @@ SWEP.IdleTimer = CurTime()
 
 SWEP.Primary.Sound = Sound( "Weapon_Minigun.Fire" )
 SWEP.Primary.ClipSize = -1
-SWEP.Primary.DefaultClip = 200
-SWEP.Primary.MaxAmmo = 200
+SWEP.Primary.DefaultClip = 100
+SWEP.Primary.MaxAmmo = 100
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "AR2"
 SWEP.Primary.Damage = 9
@@ -85,7 +86,6 @@ end
 end
 
 function SWEP:Deploy()
-tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "minigun" )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
@@ -102,7 +102,6 @@ return true
 end
 
 function SWEP:Holster()
-self.Owner:GetViewModel():SetMaterial("")
 if SERVER then
 self.Owner:StopSound( self.Primary.Sound )
 self.Owner:StopSound( self.Secondary.Sound )

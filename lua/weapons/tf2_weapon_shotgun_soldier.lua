@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/v_models/v_shotgun_soldier.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_soldier_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_shotgun/c_shotgun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -24,7 +24,7 @@ SWEP.Weight = 2
 SWEP.Slot = 1
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "shotgun"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
@@ -86,8 +86,9 @@ end
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_VM_DRAW"] )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -107,6 +108,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
@@ -151,7 +153,7 @@ self.Owner:FireBullets( bullet )
 if SERVER then
 self.Owner:EmitSound( self.Primary.Sound, 94, 100, 1, CHAN_WEAPON )
 end
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_VM_PRIMARYATTACK"] )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
@@ -170,7 +172,7 @@ end
 
 function SWEP:Reload()
 if self.Reloading == 0 and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-self.Weapon:SendWeaponAnim( ACT_RELOAD_START )
+    self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_RELOAD_START"] )
 self:SetNextPrimaryFire( CurTime() + 0.9 )
 self:SetNextSecondaryFire( CurTime() + 0.9 )
 self.Reloading = 1 
@@ -180,6 +182,7 @@ end
 end 
 
 function SWEP:Think()
+tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then
@@ -197,7 +200,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     end
     
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-    self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
+        self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_VM_RELOAD"] )
     if (!self.ReloadingFirst) then
         self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND)
         self.ReloadingFirst = true
@@ -211,7 +214,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.Idle = 1
     end
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() == self.Primary.ClipSize then
-    self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
+        self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_RELOAD_FINISH"] )
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -222,7 +225,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
     end
     if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() > 0 and self.Weapon:Ammo1() <= 0 then
-    self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
+        self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_RELOAD_FINISH"] )
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END) 
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -233,7 +236,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
     end
     if self.Reloading == 2 and self.ReloadingTimer <= CurTime() then
-    self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH ) 
+    self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_RELOAD_FINISH"] )
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
     self.ReloadingFirst = false
     self:SetNextPrimaryFire( CurTime() + 0.5 )
@@ -248,7 +251,7 @@ self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
     end
     if self.Idle == 0 and self.IdleTimer <= CurTime() then
     if SERVER then
-    self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+        self.Weapon:SendWeaponAnim( _G["ACT_SECONDARY_VM_IDLE"] )
     end
     self.Idle = 1
     end

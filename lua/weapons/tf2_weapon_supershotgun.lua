@@ -5,15 +5,15 @@ SWEP.BounceWeaponIcon = false
 killicon.Add( "tf2_weapon_scattergun", "hud/dneg_image_scatgun", Color( 255, 255, 255, 255 ) )
 end
 
-SWEP.PrintName = "Scattergun"
-SWEP.Category = "Team Fortress 2"
-SWEP.Spawnable= false
+SWEP.PrintName = "Super Shotgun"
+SWEP.Category = "Team Fortress 2 Community Weapons"
+SWEP.Spawnable= true
 SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
 
-SWEP.ViewModel = "models/weapons/c_models/c_scout_arms.mdl"
-SWEP.WorldModel = "models/weapons/c_models/c_scattergun.mdl"
+SWEP.ViewModel = "models/weapons/v_models/v_supershotgun_mercenary.mdl"
+SWEP.WorldModel = "models/weapons/w_models/w_supershotgun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
@@ -25,7 +25,8 @@ SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.UseHands = true
-SWEP.HoldType = "shotgun_db"
+SWEP.NoCModel = true
+SWEP.HoldType = "supershotgun"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
@@ -43,9 +44,9 @@ SWEP.Recoil = 0
 SWEP.RecoilTimer = CurTime()
 
 SWEP.Primary.Sound = Sound( "Weapon_Scatter_Gun.Single" )
-SWEP.Primary.ClipSize = 6
+SWEP.Primary.ClipSize = 1
 SWEP.Primary.DefaultClip = 38
-SWEP.Primary.MaxAmmo = 32
+SWEP.Primary.MaxAmmo = 16
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "Buckshot"
 SWEP.Primary.Damage = 6
@@ -54,6 +55,7 @@ SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.NumberofShots = 10
 SWEP.Primary.Delay = 0.625
 SWEP.Primary.Force = 1
+
 
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
@@ -88,7 +90,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_ITEM2_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -118,7 +120,7 @@ end
 
 function SWEP:Reload()
     if self.Reloading == 0 and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-    self.Weapon:SendWeaponAnim( ACT_ITEM2_VM_RELOAD )
+    self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
     self.Owner:SetAnimation( PLAYER_RELOAD )
     self:SetNextPrimaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
     self:SetNextSecondaryFire( CurTime() + self.Owner:GetViewModel():SequenceDuration() )
@@ -161,7 +163,7 @@ bullet.AmmoType = self.Primary.Ammo
 self.Owner:FireBullets( bullet )
 self:EmitSound( self.Primary.Sound )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
-self:SendWeaponAnim(ACT_ITEM2_VM_PRIMARYATTACK)
+self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
 self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
@@ -206,7 +208,7 @@ tf_util.ReadActivitiesFromModel(self)
 	end
 	if self.Idle == 0 and self.IdleTimer <= CurTime() then
 	if SERVER then
-	self.Weapon:SendWeaponAnim( ACT_ITEM2_VM_IDLE )
+	self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
     self.IdleTimer = CurTime() + self:SequenceDuration()
 	end
 	self.Idle = 0

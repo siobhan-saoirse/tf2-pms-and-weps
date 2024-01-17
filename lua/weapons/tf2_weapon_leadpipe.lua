@@ -1,52 +1,54 @@
 if CLIENT then
-SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/v_models/v_fist_heavy" )
+SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_bottle" )
 SWEP.DrawWeaponInfoBox = false
 SWEP.BounceWeaponIcon = false
-killicon.Add( "tf2_weapon_skeleton_claw", "hud/dneg_image_fists", Color( 255, 255, 255, 255 ) )
+killicon.Add( "tf2_weapon_bottle", "hud/dneg_image_bottle", Color( 255, 255, 255, 255 ) )
 end
 
-SWEP.PrintName = "Skeleton Claws"
-SWEP.Category = "Team Fortress 2"
+SWEP.PrintName = "Lead Pipe"
+SWEP.Category = "Team Fortress 2 Community Weapons"
 SWEP.Spawnable= true
-SWEP.AdminSpawnable= true
-SWEP.AdminOnly = false 
+SWEP.AdminSpawnable= true 
+SWEP.AdminOnly = false
 
 
-SWEP.ViewModel = "models/weapons/v_models/v_machete_sniper.mdl"
-SWEP.WorldModel = "models/empty.mdl"
+SWEP.ViewModel = "models/weapons/v_models/v_lead_pipe.mdl"
+SWEP.WorldModel = "models/weapons/w_models/w_leadpipe_merc.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
 
 SWEP.AutoSwitchTo = false
 SWEP.AutoSwitchFrom = false
-SWEP.Weight = 1 
+SWEP.Weight = 1
 SWEP.Slot = 2
 SWEP.SlotPos = 0
 
 SWEP.UseHands = true
-SWEP.HoldType = "fist"
+SWEP.NoCModel = true
+SWEP.HoldType = "melee"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 300
-SWEP.RunSpeed = 408
+SWEP.WalkSpeed = 280
+SWEP.RunSpeed = 372
 
+SWEP.Broken = 0
 SWEP.Attack = 0
 SWEP.AttackTimer = CurTime()
 SWEP.Idle = 0
 SWEP.IdleTimer = CurTime()
 
-SWEP.Primary.Sound = Sound( "" )
+SWEP.Primary.Sound = Sound( "Weapon_Bottle.Miss" )
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "none"
-SWEP.Primary.Damage = 35
-SWEP.Primary.Delay = 1.5
+SWEP.Primary.Damage = 40
+SWEP.Primary.Delay = 0.8
 SWEP.Primary.Force = 2000
 
 SWEP.Secondary.ClipSize = -1
@@ -58,6 +60,7 @@ tf_items.InitializeAsBaseItem(SWEP)
 
 function SWEP:Initialize()
 self:SetWeaponHoldType( self.HoldType )
+self.Broken = 0
 self.Idle = 0
 self.IdleTimer = CurTime() + 1
 end
@@ -80,7 +83,6 @@ end
 end
 
 function SWEP:Deploy()
-tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
@@ -92,11 +94,20 @@ self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 self.Owner:SetWalkSpeed( self.WalkSpeed )
 self.Owner:SetRunSpeed( self.RunSpeed )
+if self.Broken == 0 then
+self.Owner:GetViewModel():SetBodygroup( 1, 0 ) 
+end
+if self.Broken == 1 then
+self.Owner:GetViewModel():SetBodygroup( 1, 1 )
+end
+if (IsValid(self:GetOwner()) and self:GetOwner():GetSkin() == 1) then
+    self:SetSkin(1)
+    self:GetOwner():GetViewModel():SetSkin(1)
+end
 return true
 end
 
 function SWEP:Holster()
-self.Owner:GetViewModel():SetMaterial("")
 self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
@@ -128,31 +139,12 @@ self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 
 function SWEP:SecondaryAttack()
-if SERVER then
-if (math.random(1,6) == 1) then
-    self.Owner:EmitSound( self.Primary.Sound.."Crit" )
-    self.Crit = true
-    self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
-else
-    self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_VM_HITCENTER )
-    self.Crit = false
-end
-end
-self.Owner:SetAnimation( PLAYER_ATTACK1 )
-self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
-self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
-self.Attack = 1
-self.AttackTimer = CurTime() + 0.2
-self.Idle = 0
-self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 
 function SWEP:Reload()
 end
 
 function SWEP:Think()
-tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then
@@ -199,12 +191,35 @@ tr.Entity:TakeDamageInfo( dmg )
 end
 if tr.Hit then
 if SERVER then
-if tr.Entity:IsNPC() || tr.Entity:IsPlayer() then
---self.Owner:EmitSound( "Weapon_Fist.HitFlesh" )
+    if (self:GetItemData().visuals) then
+
+        local visuals = self:GetItemData().visuals
+
+        if tr.Entity:IsNPC() || tr.Entity:IsPlayer() then
+			if visuals.sound_melee_hit then
+				self.HitFlesh = Sound(visuals.sound_melee_hit)
+                self.Owner:EmitSound( self.HitFlesh )
+			end
+        end
+        if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
+            if visuals.sound_melee_hit_world then
+                self.HitWorld = Sound(visuals.sound_melee_hit_world)
+                self.Owner:EmitSound( self.HitWorld )
+            end
+        end
+
+    else
+        if tr.Entity:IsNPC() || tr.Entity:IsPlayer() then
+            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitFlesh" )
+        end
+        if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
+            self.Owner:EmitSound( string.Replace(string.Replace(self.Primary.Sound,"Crit",""),"Miss","").."HitWorld" )
+        end
+    end
 end
 if !( tr.Entity:IsNPC() || tr.Entity:IsPlayer() ) then
---self.Owner:EmitSound( "Weapon_Fist.HitWorld" )
-end
+self.Broken = 1
+self.Owner:GetViewModel():SetBodygroup( 1, 1 )
 end
 end
 self.Attack = 0

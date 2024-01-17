@@ -1,57 +1,56 @@
 if CLIENT then
-SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_grenadelauncher" )
+SWEP.WepSelectIcon = surface.GetTextureID( "backpack/weapons/w_models/w_rocketlauncher" )
 SWEP.DrawWeaponInfoBox = false
 SWEP.BounceWeaponIcon = false
-killicon.Add( "tf2_weapon_grenadelauncher", "hud/dneg_image_grenlaunch", Color( 255, 255, 255, 255 ) )
-killicon.Add( "tf_projectile_pipe", "hud/dneg_image_grenlaunch", Color( 255, 255, 255, 255 ) )
+killicon.Add( "tf2_weapon_rocketlauncher", "hud/dneg_image_rl", Color( 255, 255, 255, 255 ) )
+killicon.Add( "tf_projectile_rocket", "hud/dneg_image_rl", Color( 255, 255, 255, 255 ) )
 end
 
-SWEP.PrintName = "Grenade Launcher"
-SWEP.Category = "Team Fortress 2"
-SWEP.Spawnable= true 
+SWEP.PrintName = "DM Rocket Launcher"
+SWEP.Category = "Team Fortress 2 Community Weapons"
+SWEP.Spawnable= true
 SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
+ 
 
-
-SWEP.ViewModel = "models/weapons/c_models/c_demo_arms.mdl"
-SWEP.WorldModel = "models/weapons/C_models/c_grenadelauncher/c_grenadelauncher.mdl"
+SWEP.ViewModel = "models/weapons/v_models/v_rocketlauncher_dm.mdl"
+SWEP.WorldModel = "models/weapons/w_models/w_rocketlauncher_dm.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0
 
 SWEP.AutoSwitchTo = false
 SWEP.AutoSwitchFrom = false
-SWEP.Weight = 4
+SWEP.Weight = 3
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 
 SWEP.UseHands = true
-SWEP.HoldType = "ar2"
+SWEP.NoCModel = true
+SWEP.HoldType = "rpg"
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 280
-SWEP.RunSpeed = 372
+SWEP.WalkSpeed = 240
+SWEP.RunSpeed = 320
 
 SWEP.Reloading = 0
 SWEP.ReloadingTimer = CurTime()
 SWEP.Idle = 0
 SWEP.IdleTimer = CurTime()
-SWEP.Recoil = 0
-SWEP.RecoilTimer = CurTime()
 
-SWEP.Primary.Sound = Sound( "Weapon_GrenadeLauncher.Single" )
+SWEP.Primary.Sound = Sound( "weapons/rocket_shoot.wav" )
 SWEP.Primary.ClipSize = 4
-SWEP.Primary.DefaultClip = 20
-SWEP.Primary.MaxAmmo = 16
+SWEP.Primary.DefaultClip = 24
+SWEP.Primary.MaxAmmo = 20
 SWEP.Primary.Automatic = true
-SWEP.Primary.Ammo = "SMG1_Grenade"
+SWEP.Primary.Ammo = "RPG_Round"
 SWEP.Primary.TakeAmmo = 1
-SWEP.Primary.Delay = 0.6
-SWEP.Primary.Force = 1200
+SWEP.Primary.Delay = 0.8
+SWEP.Primary.Force = 1100
 
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
@@ -84,9 +83,8 @@ end
 end
 
 function SWEP:Deploy()
-tf_util.ReadActivitiesFromModel(self)
 self:SetWeaponHoldType( self.HoldType )
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -94,8 +92,6 @@ self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Recoil = 0
-self.RecoilTimer = CurTime()
 self.Owner:SetWalkSpeed( self.WalkSpeed )
 self.Owner:SetRunSpeed( self.RunSpeed )
 if (IsValid(self:GetOwner()) and self:GetOwner():GetSkin() == 1) then
@@ -106,20 +102,17 @@ return true
 end
 
 function SWEP:Holster()
-self.Owner:GetViewModel():SetMaterial("")
 self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Recoil = 0
-self.RecoilTimer = CurTime()
 self.Owner:SetWalkSpeed( 200 )
 self.Owner:SetRunSpeed( 400 )
 return true
 end
 
 function SWEP:PrimaryAttack()
-if self.Reloading == 1 then
+if self.Reloading == 1 then 
 self.Reloading = 2
 else
 if !( self.Reloading == 0 ) then return end
@@ -139,57 +132,77 @@ end
 if self.Weapon:Clip1() <= 0 then return end
 if self.FiresUnderwater == false and self.Owner:WaterLevel() == 3 then return end
 if SERVER then
-local entity = ents.Create( "tf_projectile_pipe" )
+local entity = ents.Create( "tf_projectile_rocket" )
 entity:SetOwner( self.Owner )
 if IsValid( entity ) then
 local Forward = self.Owner:EyeAngles():Forward()
 local Right = self.Owner:EyeAngles():Right()
 local Up = self.Owner:EyeAngles():Up()
-entity:SetPos( self.Owner:GetShootPos() + Forward * 8 + Right * 4 + Up * -4 )
+if (self.WModel and self.WModel == "models/workshop_partner/weapons/c_models/c_bet_rocketlauncher/c_bet_rocketlauncher.mdl") then
+    entity:SetPos( self.Owner:GetShootPos() + Up * -9 )
+else
+    entity:SetPos( self.Owner:GetShootPos() + Forward * 8 + Right * 8 + Up * -2 )
+end
 entity:SetAngles( self.Owner:EyeAngles() )
 entity:Spawn()
+if (self.ProjectileDamageMultiplier) then
+    entity.OldBaseDamage = entity.BaseDamage
+    entity.BaseDamage = entity.OldBaseDamage * self.ProjectileDamageMultiplier
+end   
 local phys = entity:GetPhysicsObject()
-phys:SetVelocity( self.Owner:GetAimVector() * self.Primary.Force )
-phys:AddAngleVelocity( Vector( math.Rand( -500, 500 ), math.Rand( -500, 500 ), math.Rand( -500, 500 ) ) )
+phys:SetMass( 1 )
+phys:EnableGravity( false )
+phys:ApplyForceCenter( entity:GetForward() * self.Primary.Force )
+if (self:GetItemData() and self:GetItemData().visuals and self:GetItemData().visuals.sound_special1) then
+    entity.ExplosionSound = self:GetItemData().visuals.sound_special1
+end
+
+self:InitProjectileAttributes(entity)
+timer.Create( "Flight"..entity:EntIndex(), 0, 0, function()
+if !IsValid( phys ) then
+timer.Stop( "Flight" )
+end
+if IsValid( entity ) and IsValid( phys ) then
+phys:ApplyForceCenter( entity:GetForward() * 50 )
+end
+end )
 end
 end
-self:EmitSound( self.Primary.Sound )
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_PRIMARYATTACK )
+if SERVER then
+self.Owner:EmitSound( self.Primary.Sound, 94, 100, 1, CHAN_WEAPON )
+end
+self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
 self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 self:SetNextSecondaryFire( CurTime() + self.Primary.Delay )
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Recoil = 1
-self.RecoilTimer = CurTime() + 0.2
-self.Owner:SetViewPunchAngles( Angle( -3, 0, 0 ) )
 end
 end
 
 function SWEP:SecondaryAttack()
 if self.Owner:KeyDown( IN_USE ) and self.Owner:KeyDown( IN_RELOAD ) then
 if SERVER then
-self.Owner:StopSound( "player/demoman_laugh.wav", 95, 100, 1, CHAN_VOICE )
-self.Owner:EmitSound( "player/demoman_laugh.wav", 95, 100, 1, CHAN_VOICE )
+self.Owner:StopSound( "player/soldier_maggots.wav", 95, 100, 1, CHAN_VOICE )
+self.Owner:EmitSound( "player/soldier_maggots.wav", 95, 100, 1, CHAN_VOICE )
 end
-self:SetNextSecondaryFire( CurTime() + 5 )
+self:SetNextSecondaryFire( CurTime() + 1 )
 end
 end
 
 function SWEP:Reload()
 if self.Reloading == 0 and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_RELOAD_START )
-self:SetNextPrimaryFire( CurTime() + 0.7 )
-self:SetNextSecondaryFire( CurTime() + 0.7 )
+self.Weapon:SendWeaponAnim( ACT_RELOAD_START )
+self:SetNextPrimaryFire( CurTime() + 0.6 )
+self:SetNextSecondaryFire( CurTime() + 0.6 )
 self.Reloading = 1
-self.ReloadingTimer = CurTime() + 0.6
+self.ReloadingTimer = CurTime() + 0.5
 self.Idle = 1
 end
 end
 
 function SWEP:Think()
-tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then
@@ -199,14 +212,8 @@ self.PrintName = self:GetNWString("PrintName2",self.PrintName)
 self.Primary.Sound = self:GetNWString("PrimarySound2",self.Primary.Sound)
 self.HoldType = self:GetNWString("HoldType2",self.HoldType)
 self.ItemData = self:GetNW2Var("ItemData",self.ItemData)
-if self.Recoil == 1 and self.RecoilTimer <= CurTime() then
-self.Recoil = 0
-end
-if self.Recoil == 1 then
---self.Owner:SetViewPunchAngles( Angle( 0.23, 0, 0 ) )
-end
 if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() < self.Primary.ClipSize and self.Weapon:Ammo1() > 0 then
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_RELOAD )
+self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
 if (!self.ReloadingFirst) then
     self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND)
     self.ReloadingFirst = true
@@ -216,39 +223,39 @@ end
 self.Weapon:SetClip1( self.Weapon:Clip1() + 1 )
 self.Owner:RemoveAmmo( 1, self.Primary.Ammo, false )
 self.Reloading = 1
-self.ReloadingTimer = CurTime() + 0.6
+self.ReloadingTimer = CurTime() + 0.85
 self.Idle = 1
 end
 if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() == self.Primary.ClipSize then
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_RELOAD_FINISH )
+self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
 self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
 self.ReloadingFirst = false
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
 self.Reloading = 0
-self.ReloadingTimer = CurTime() + 0.6
+self.ReloadingTimer = CurTime() + 0.5
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 if self.Reloading == 1 and self.ReloadingTimer <= CurTime() and self.Weapon:Clip1() > 0 and self.Weapon:Ammo1() <= 0 then
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_RELOAD_FINISH )
+self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH )
 self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END) 
 self.ReloadingFirst = false
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
 self.Reloading = 0
-self.ReloadingTimer = CurTime() + 0.6
+self.ReloadingTimer = CurTime() + 0.5
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
 if self.Reloading == 2 and self.ReloadingTimer <= CurTime() then
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_RELOAD_FINISH ) 
+self.Weapon:SendWeaponAnim( ACT_RELOAD_FINISH ) 
 self.Owner:DoAnimationEvent(ACT_MP_RELOAD_STAND_END)
 self.ReloadingFirst = false
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
 self.Reloading = 3
-self.ReloadingTimer = CurTime() + 0.6
+self.ReloadingTimer = CurTime() + 0.5
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
 end
@@ -257,7 +264,7 @@ self.Reloading = 0
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
-self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_IDLE )
+self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
 end
 self.Idle = 1
 end

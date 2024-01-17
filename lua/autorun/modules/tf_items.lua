@@ -25,10 +25,65 @@ tf_items.Items = Items
 tf_items.Attributes = Attributes
 tf_items.Qualities = Qualities
 tf_items.Particles = Particles
+if CLIENT then
+
+	CreateConVar("loadout_scout", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_soldier", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_pyro", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_demoman", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_heavy", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_engineer", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_sniper", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_medic", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+	CreateConVar("loadout_spy", "", {FCVAR_ARCHIVE,FCVAR_USERINFO}, "")
+
+end
 
 local ITEM = {}
 
 ITEM.IsTFItem = true
+
+local function updateLoadout(type, id, update)
+	
+	local class = ""
+	local ply = LocalPlayer()
+	if (string.find(ply:GetModel(),"scout")) then
+		class = "scout"
+	elseif (string.find(ply:GetModel(),"soldier")) then
+		class = "soldier"
+	elseif (string.find(ply:GetModel(),"pyro")) then
+		class = "pyro"
+	elseif (string.find(ply:GetModel(),"demo")) then
+		class = "demoman"
+	elseif (string.find(ply:GetModel(),"heavy")) then
+		class = "heavy"
+	elseif (string.find(ply:GetModel(),"engineer")) then
+		class = "engineer"
+	elseif (string.find(ply:GetModel(),"medic")) then
+		class = "medic"
+	elseif (string.find(ply:GetModel(),"sniper")) then
+		class = "sniper"
+	elseif (string.find(ply:GetModel(),"spy")) then
+		class = "spy"
+	end
+    local convar = GetConVar("loadout_" .. class)
+	if !convar then PrintMessage(HUD_PRINTNOTIFY, "You're a class without a loadout?! Pick one of the TF2 classes!!") return end
+    local split = string.Split(convar:GetString(), ",")
+
+    if #split == 5 then
+        split[type] = id
+    else
+        split = {-1, -1, -1, -1, -1, -1}
+        split[type] = id
+    end
+
+    convar:SetString(table.concat(split, ","))
+    if update then
+        timer.Simple(0.3, function()
+            RunConsoleCommand("loadout_update")
+        end)
+    end
+end
 
 function ITEM:SetItemIndex(i)
 	self.dt.ItemID = i
@@ -334,6 +389,7 @@ for k, v in pairs(items_game["items"]) do
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Scout",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -342,6 +398,7 @@ for k, v in pairs(items_game["items"]) do
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -352,6 +409,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -362,6 +420,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -372,6 +431,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -382,6 +442,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -392,6 +453,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -402,6 +464,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -412,6 +475,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -422,6 +486,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -433,6 +498,7 @@ if (v.used_by_classes["soldier"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Soldier",
 					Spawnable = true, 
 					BackpackIcon = v.image_inventory
@@ -441,6 +507,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -451,6 +518,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -461,6 +529,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -471,6 +540,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -481,6 +551,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -491,6 +562,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -501,6 +573,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -511,6 +584,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -521,6 +595,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -532,6 +607,7 @@ if (v.used_by_classes["pyro"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Pyro",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -540,6 +616,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -550,6 +627,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -560,6 +638,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -570,6 +649,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -580,6 +660,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -590,6 +671,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -600,6 +682,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -610,6 +693,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -620,6 +704,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -631,6 +716,7 @@ if (v.used_by_classes["demoman"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Demoman",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -639,6 +725,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -649,6 +736,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -659,6 +747,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -669,6 +758,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -679,6 +769,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -689,6 +780,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -699,6 +791,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -709,6 +802,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -719,6 +813,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -730,6 +825,7 @@ if (v.used_by_classes["heavy"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Heavy",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -738,6 +834,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -748,6 +845,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -758,6 +856,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -768,6 +867,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -778,6 +878,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -788,6 +889,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -798,6 +900,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -808,6 +911,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -818,6 +922,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -829,6 +934,7 @@ if (v.used_by_classes["engineer"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Engineer",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -837,6 +943,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -847,6 +954,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -857,6 +965,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -867,6 +976,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -877,6 +987,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -887,6 +998,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -897,6 +1009,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -907,6 +1020,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -917,6 +1031,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -928,6 +1043,7 @@ if (v.used_by_classes["medic"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Medic",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -936,6 +1052,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -946,6 +1063,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -956,6 +1074,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -966,6 +1085,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -976,6 +1096,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -986,6 +1107,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -996,6 +1118,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1006,6 +1129,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1016,6 +1140,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1027,6 +1152,7 @@ if (v.used_by_classes["sniper"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Sniper",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1035,6 +1161,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1045,6 +1172,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1055,6 +1183,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1065,6 +1194,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1075,6 +1205,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1085,6 +1216,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1095,6 +1227,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1105,6 +1238,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1115,6 +1249,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1126,6 +1261,7 @@ if (v.used_by_classes["spy"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Weapons - Spy",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1134,6 +1270,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1144,6 +1281,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1154,6 +1292,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1164,6 +1303,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1174,6 +1314,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1184,6 +1325,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1194,6 +1336,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1204,6 +1347,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1214,6 +1358,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Weapons - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1229,6 +1374,7 @@ if (v.item_slot == "misc" || v.item_class and string.find(v.item_class,"wearable
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Scout",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1237,6 +1383,7 @@ if (v.item_slot == "misc" || v.item_class and string.find(v.item_class,"wearable
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1247,6 +1394,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1257,6 +1405,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1267,6 +1416,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1277,6 +1427,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1287,6 +1438,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1297,6 +1449,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1307,6 +1460,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1317,6 +1471,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1328,6 +1483,7 @@ if (v.used_by_classes["soldier"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Soldier",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1336,6 +1492,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1346,6 +1503,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1356,6 +1514,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1366,6 +1525,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1376,6 +1536,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1386,6 +1547,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1396,6 +1558,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1406,6 +1569,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1416,6 +1580,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1427,6 +1592,7 @@ if (v.used_by_classes["pyro"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Pyro",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1435,6 +1601,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1445,6 +1612,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1455,6 +1623,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1465,6 +1634,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1475,6 +1645,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1485,6 +1656,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1495,6 +1667,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1505,6 +1678,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1515,6 +1689,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1526,6 +1701,7 @@ if (v.used_by_classes["demoman"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Demoman",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1534,6 +1710,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1544,6 +1721,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1554,6 +1732,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1564,6 +1743,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1574,6 +1754,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1584,6 +1765,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1594,6 +1776,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1604,6 +1787,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1614,6 +1798,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1625,6 +1810,7 @@ if (v.used_by_classes["heavy"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Heavy",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1633,6 +1819,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1643,6 +1830,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1653,6 +1841,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1663,6 +1852,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1673,6 +1863,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1683,6 +1874,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1693,6 +1885,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1703,6 +1896,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1713,6 +1907,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1724,6 +1919,7 @@ if (v.used_by_classes["engineer"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Engineer",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1732,6 +1928,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1742,6 +1939,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1752,6 +1950,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1762,6 +1961,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1772,6 +1972,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1782,6 +1983,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1792,6 +1994,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1802,6 +2005,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1812,6 +2016,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1823,6 +2028,7 @@ if (v.used_by_classes["medic"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Medic",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1831,6 +2037,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1841,6 +2048,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1851,6 +2059,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1861,6 +2070,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1871,6 +2081,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1881,6 +2092,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1891,6 +2103,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1901,6 +2114,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1911,6 +2125,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1922,6 +2137,7 @@ if (v.used_by_classes["sniper"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Sniper",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -1930,6 +2146,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1940,6 +2157,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1950,6 +2168,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1960,6 +2179,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1970,6 +2190,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1980,6 +2201,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -1990,6 +2212,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2000,6 +2223,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2010,6 +2234,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2021,6 +2246,7 @@ if (v.used_by_classes["spy"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Misc - Spy",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2029,6 +2255,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2039,6 +2266,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2049,6 +2277,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2059,6 +2288,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2069,6 +2299,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2079,6 +2310,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2089,6 +2321,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2099,6 +2332,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2109,6 +2343,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Misc - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2124,6 +2359,7 @@ if (v.item_slot == "head" || v.prefab and string.find(v.prefab,"hat")) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Scout",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2132,6 +2368,7 @@ if (v.item_slot == "head" || v.prefab and string.find(v.prefab,"hat")) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2142,6 +2379,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2152,6 +2390,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2162,6 +2401,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2172,6 +2412,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2182,6 +2423,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2192,6 +2434,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2202,6 +2445,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2212,6 +2456,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2223,6 +2468,7 @@ if (v.used_by_classes["soldier"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Soldier",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2231,6 +2477,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2241,6 +2488,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2251,6 +2499,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2261,6 +2510,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2271,6 +2521,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2281,6 +2532,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2291,6 +2543,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2301,6 +2554,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2311,6 +2565,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2322,6 +2577,7 @@ if (v.used_by_classes["pyro"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Pyro",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2330,6 +2586,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2340,6 +2597,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2350,6 +2608,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2360,6 +2619,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2370,6 +2630,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2380,6 +2641,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2390,6 +2652,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2400,6 +2663,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2410,6 +2674,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2421,6 +2686,7 @@ if (v.used_by_classes["demoman"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Demoman",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2429,6 +2695,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2439,6 +2706,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2449,6 +2717,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2459,6 +2728,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2469,6 +2739,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2479,6 +2750,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2489,6 +2761,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2499,6 +2772,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2509,6 +2783,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2520,6 +2795,7 @@ if (v.used_by_classes["heavy"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Heavy",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2528,6 +2804,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2538,6 +2815,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2548,6 +2826,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2558,6 +2837,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2568,6 +2848,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2578,6 +2859,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2588,6 +2870,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2598,6 +2881,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2608,6 +2892,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2619,6 +2904,7 @@ if (v.used_by_classes["engineer"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Engineer",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2627,6 +2913,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2637,6 +2924,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2647,6 +2935,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2657,6 +2946,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2667,6 +2957,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2677,6 +2968,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2687,6 +2979,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2697,6 +2990,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2707,6 +3001,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2718,6 +3013,7 @@ if (v.used_by_classes["medic"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Medic",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2726,6 +3022,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2736,6 +3033,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2746,6 +3044,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2756,6 +3055,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2766,6 +3066,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2776,6 +3077,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2786,6 +3088,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2796,6 +3099,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2806,6 +3110,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2817,6 +3122,7 @@ if (v.used_by_classes["sniper"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Sniper",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2825,6 +3131,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2835,6 +3142,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2845,6 +3153,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2855,6 +3164,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2865,6 +3175,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2875,6 +3186,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2885,6 +3197,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2895,6 +3208,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2905,6 +3219,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2916,6 +3231,7 @@ if (v.used_by_classes["spy"]) then
 				list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 					ClassName = string.Replace(v.name," ", "_"),
 					PrintName = v.name,
+					ItemIndex = v.id,
 					Category = "Hats - Spy",
 					Spawnable = true,
 					BackpackIcon = v.image_inventory
@@ -2924,6 +3240,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_scout", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Scout",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2934,6 +3251,7 @@ if (v.used_by_classes["soldier"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_soldier", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Soldier",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2944,6 +3262,7 @@ if (v.used_by_classes["pyro"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_pyro", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Pyro",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2954,6 +3273,7 @@ if (v.used_by_classes["demoman"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_demoman", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Demoman",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2964,6 +3284,7 @@ if (v.used_by_classes["heavy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_heavy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Heavy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2974,6 +3295,7 @@ if (v.used_by_classes["engineer"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_engineer", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Engineer",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2984,6 +3306,7 @@ if (v.used_by_classes["medic"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_medic", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Medic",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -2994,6 +3317,7 @@ if (v.used_by_classes["sniper"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_sniper", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Sniper",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -3004,6 +3328,7 @@ if (v.used_by_classes["spy"]) then
 					list.Set( "TFWeapon", string.Replace(v.name," ", "_").."_spy", {
 						ClassName = string.Replace(v.name," ", "_"),
 						PrintName = v.name,
+						ItemIndex = v.id,
 						Category = "Hats - Spy",
 						Spawnable = true,
 						BackpackIcon = v.image_inventory,
@@ -3100,8 +3425,61 @@ function META:HasTFItem(name)
 	
 	return false
 end
+
 if SERVER then
 
+	function META:GiveLoadout()
+		local ply = self
+		local class = ""
+		if (string.find(ply:GetModel(),"scout")) then
+			class = "scout"
+		elseif (string.find(ply:GetModel(),"soldier")) then
+			class = "soldier"
+		elseif (string.find(ply:GetModel(),"pyro")) then
+			class = "pyro"
+		elseif (string.find(ply:GetModel(),"demo")) then
+			class = "demoman"
+		elseif (string.find(ply:GetModel(),"heavy")) then
+			class = "heavy"
+		elseif (string.find(ply:GetModel(),"engineer")) then
+			class = "engineer"
+		elseif (string.find(ply:GetModel(),"medic")) then
+			class = "medic"
+		elseif (string.find(ply:GetModel(),"sniper")) then
+			class = "sniper"
+		elseif (string.find(ply:GetModel(),"spy")) then
+			class = "spy"
+		end
+		local convar = "loadout_" .. class
+		local split = string.Split(self:GetInfo(convar, "-1,-1,-1,-1,-1,-1"), ",")
+	
+		self:StripWeapons()
+		self:Give("gmod_tool")
+		self:Give("gmod_camera")
+		for type, id in pairs(split) do
+			id = tonumber(id)
+			local itemid = nil
+			local itemname = nil
+			-- oh no
+			for name, wep in pairs(tf_items.Items) do
+				if istable(wep) and wep.id == id then
+					itemname = name
+				end
+			end
+	
+			if itemname then
+				timer.Simple(0 + type * 0.05, function()
+					--self:EquipInLoadout(itemname)
+					CC_GiveItem(self, _, {itemname})
+				end)
+				--self:ConCommand("__svgiveitem", itemname) --id)
+			end
+		end
+	end
+	
+	concommand.Add("loadout_update", function(ply)
+		ply:GiveLoadout()
+	end) 
 	function META:ClearItemSetAttributes()
 		self.ItemSetAttributes = nil
 	end
@@ -3247,6 +3625,12 @@ if SERVER then
 				class = "tf_weapon_shotgun_pyro"
 			else
 				class = "tf_weapon_shotgun_primary"
+			end
+		elseif (item.item_class == "tf_weapon_pistol") then
+			if (string.find(self:GetModel(),"/scout")) then
+				class = "tf_weapon_pistol_scout"
+			else
+				class = "tf_weapon_pistol"
 			end
 		end
 		if (item.item_class == "saxxy") then
@@ -3404,7 +3788,11 @@ if SERVER then
 		else
 			weapon:Spawn()
 		end
-        
+		timer.Simple(0.1, function()
+			if SERVER then
+				self:SelectWeapon(weapon)
+			end
+		end)
 		if (item.item_slot == "head") then
 			self:SetBodygroup(self:FindBodygroupByName("hat"), 1)
 		end 
@@ -3572,21 +3960,6 @@ if SERVER then
 		end
 		
 		pl:GiveItem(name, prop)
-		if (item.item_slot == "head") then
-			self:SetBodygroup(self:FindBodygroupByName("hat"), 1)
-		end 
-		local visuals = item.visuals or {}
-		if visuals and visuals.player_bodygroups then
-			for _,group in ipairs(visuals.player_bodygroups) do
-				if visuals.player_bodygroups == "hat" then
-					self:SetBodygroup("hat", 1)
-				elseif visuals.player_bodygroups == "head" then
-					self:SetBodygroup("head", 1)
-				elseif visuals.player_bodygroups == "headphones" then
-					self:SetBodygroup("headphones", 1)
-				end
-			end
-		end
 		--pl:EquipInLoadout(name, prop)
 	end
 	
@@ -3655,6 +4028,7 @@ if CLIENT then
 					spawnmenu.CreateContentIcon( "TFWeapon", self.PropPanel, {
 						nicename	= ent.PrintName or ent.ClassName,
 						spawnname	= ent.ClassName,
+						itemindex 			= ent.ItemIndex,
 						material	= ent.IconOverride or ent.BackpackIcon,
 						admin		= ent.AdminOnly,
 						clicksound  = ent.ClickSound
@@ -3726,6 +4100,7 @@ if CLIENT then
 		if ( !obj.material ) then return end
 		if ( !obj.nicename ) then return end
 		if ( !obj.spawnname ) then return end
+		if ( !obj.itemindex ) then return end
 	
 		local icon = vgui.Create( "ContentIcon", container )
 		icon:SetContentType( "TFWeapon" )
@@ -3737,6 +4112,7 @@ if CLIENT then
 		icon.DoClick = function()
 	
 			LocalPlayer():ConCommand( "giveitem "..string.Replace(obj.spawnname,"_"," ") )
+
 			surface.PlaySound( obj.clicksound or "ui/buttonclick.wav" )
 	
 		end

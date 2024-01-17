@@ -12,8 +12,8 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
-SWEP.ViewModel = "models/weapons/v_models/v_knife_spy.mdl"
-SWEP.WorldModel = "models/weapons/w_models/w_knife.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_spy_hands.mdl"
+SWEP.WorldModel = "models/weapons/c_models/c_knife/c_knife.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0  
@@ -24,7 +24,7 @@ SWEP.Weight = 2
 SWEP.Slot = 2
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
@@ -80,6 +80,7 @@ end
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "knife" )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
@@ -100,6 +101,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.Weapon:SetHoldType( "knife" )
 self.Backstab = 0
 self.Attack = 0
@@ -198,6 +200,7 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
+tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then

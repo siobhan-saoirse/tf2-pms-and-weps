@@ -1,17 +1,43 @@
-SWEP.RenderGroup = RENDERGROUP_BOTH
 SWEP.Base = "weapon_base"
 SWEP.ViewModel = "models/weapons/v_models/v_bat_scout.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_bat.mdl"
 
 if CLIENT then
 
-		local WorldModel2 = ClientsideModel("models/empty.mdl")
+	local WorldModel2 = ClientsideModel("models/empty.mdl")
+	local ViewModel2 = ClientsideModel("models/empty.mdl")
 		-- Settings...
 		WorldModel2:SetNoDraw(true)
+		ViewModel2:SetNoDraw(true)
+	function SWEP:PreDrawViewModel()
+		if (!self.NoCModel) then
+			local _Owner = self:GetOwner()
+			local skin = self:GetSkin()
+			if (IsValid(_Owner)) then
+				skin = self:GetOwner():GetSkin()
+			end
+			ViewModel2:SetSkin(skin)
+			ViewModel2:SetModel(self.WorldModel)
+			if (IsValid(_Owner)) then
+				ViewModel2:SetParent(_Owner:GetViewModel())
+				ViewModel2:AddEffects(bit.bor(EF_BONEMERGE,EF_BONEMERGE_FASTCULL))
+				ViewModel2:SetPos(self:GetPos())
+				ViewModel2:SetAngles(self:GetAngles())
+				_Owner:GetViewModel():SetMaterial("color")
+			else
+				ViewModel2:SetPos(self:GetPos())
+				ViewModel2:SetAngles(self:GetAngles())
+			end
+			ViewModel2:DrawModel()
+			ViewModel2:DrawShadow(true)
+		end
+	end
+
 	function SWEP:DrawWorldModel()
+		self:DrawShadow(false)
 			self.WModel = self:GetNWString("WorldModel2",self.OldWorldModel)
 			local _Owner = self:GetOwner()
-			if (self.OldWorldModel == nil) then
+			if (self.OldWorldModel == nil and self.WorldModel != "models/empty.mdl") then
 				self.OldWorldModel = self.WorldModel
 			else
 				self.WorldModel = "models/empty.mdl"
@@ -52,5 +78,6 @@ if CLIENT then
 				WorldModel2:SetAngles(self:GetAngles())
 			end
 			WorldModel2:DrawModel()
+			WorldModel2:DrawShadow(true)
 	end
 end

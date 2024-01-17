@@ -24,7 +24,7 @@ SWEP.Weight = 3
 SWEP.Slot = 0
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
 SWEP.DrawAmmo = true
@@ -106,6 +106,7 @@ return self.Weapon:GetNWString( "MouseSensitivity", 1 )
 end
 
 function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "crossbow" )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
@@ -126,6 +127,7 @@ return true
 end
 
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.Weapon:SetHoldType( "crossbow" )
 self.Scope = 0
 self.Reloading = 0
@@ -230,6 +232,7 @@ function SWEP:Reload()
 end
 
 function SWEP:Think()
+tf_util.ReadActivitiesFromModel(self)
 self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then

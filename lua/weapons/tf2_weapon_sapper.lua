@@ -24,7 +24,7 @@ SWEP.Weight = 1
 SWEP.Slot = 1
 SWEP.SlotPos = 0
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.HoldType = "slam" 
 SWEP.FiresUnderwater = true
 SWEP.DrawCrosshair = false
@@ -62,7 +62,8 @@ self.Idle = 0
 self.IdleTimer = CurTime() + 1
 end
 
-function SWEP:Deploy() 
+function SWEP:Deploy()
+tf_util.ReadActivitiesFromModel(self) 
 self:SetWeaponHoldType( self.HoldType )
 self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
@@ -82,6 +83,7 @@ return true
 end
 
 function SWEP:Think()
+tf_util.ReadActivitiesFromModel(self)
     self.WModel = self:GetNWString("WorldModel2",self.WorldModel)
 
 		if (self:GetItemData().model_player != nil and self.WModel) then
@@ -94,6 +96,7 @@ function SWEP:Think()
     return true
 end
 function SWEP:Holster()
+self.Owner:GetViewModel():SetMaterial("")
 self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
