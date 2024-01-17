@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\w_smg/w_smg"
+	"$baseTexture" "models\weapons\w_smg/w_smg_merc"
 
 	"$glowcolor" "1"
 	"$phong" "1"

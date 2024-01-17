@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models\weapons\w_smg/w_smg"
-
+	"$baseTexture" "models\weapons\w_quad\w_quadlauncher"
+	
 	"$glowcolor" "1"
 	"$phong" "1"
 	"$phongexponent" "25"
@@ -12,17 +12,12 @@
 	"$basemapalphaphongmask" "1"
 
 	"$rimlight" "1"
-	"$rimlightexponent" "4"	
-	"$rimlightboost" "2"
+	"$rimlightexponent" "20"				
+	"$rimlightboost" ".25"
 
-
-	// Cloaking
 	"$cloakPassEnabled" "1"
 	"Proxies"
 	{
-		"weapon_invis"
-		{
-		}
 		"ModelGlowColor"
 		{
 			"resultVar""$glowcolor"
