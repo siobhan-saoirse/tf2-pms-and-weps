@@ -196,7 +196,7 @@ self.Reloading = 0
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
-self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+self.Weapon:SendWeaponAnim( ACT_SECONDARY_VM_IDLE )
 end
 self.Idle = 1
 end

@@ -25,6 +25,7 @@ SWEP.Slot = 2
 SWEP.SlotPos = 0
 
 SWEP.UseHands = true
+SWEP.NoCModel = false
 SWEP.HoldType = "fist"
 SWEP.FiresUnderwater = true 
 SWEP.DrawCrosshair = false
@@ -254,7 +255,6 @@ end
 self.Attack = 0
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
-if SERVER then
     if (self.WModel != "models/empty.mdl") then
         self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
     else

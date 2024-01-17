@@ -10,7 +10,7 @@ if CLIENT then
 		WorldModel2:SetNoDraw(true)
 		ViewModel2:SetNoDraw(true)
 	function SWEP:PreDrawViewModel()
-		if (!self.NoCModel) then
+		if (!self.NoCModel and self.WModel) then
 			local _Owner = self:GetOwner()
 			local skin = self:GetSkin()
 			if (IsValid(_Owner)) then

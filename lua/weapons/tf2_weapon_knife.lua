@@ -12,8 +12,8 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
-SWEP.ViewModel = "models/weapons/c_models/c_spy_arms.mdl"
-SWEP.WorldModel = "models/weapons/w_models/w_knife.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_spy_hands.mdl"
+SWEP.WorldModel = "models/weapons/c_models/c_knife/c_knife.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
 SWEP.SwayScale = 0  

@@ -3,6 +3,7 @@
 	"$baseTexture" "models\weapons\w_grenade_grenadelauncher/w_grenade_red"
 	"$selfillum" "1"
 
+	"$glowcolor" "1"
 	"$phong" "1"
 	"$phongexponent" "35"
 	"$phongboost" "5"	
@@ -17,16 +18,6 @@
 			"sinemin" .1
 			"sinemax" 2.00
 			"sineperiod" 0.30
-		}
-	}
-
-
-	// Cloaking
-	"$cloakPassEnabled" "1"
-	"Proxies"
-	{
-		"invis"
-		{
 		}
 	}
 
