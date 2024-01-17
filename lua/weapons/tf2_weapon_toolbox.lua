@@ -11,7 +11,7 @@ SWEP.Spawnable= true
 SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
  
-
+SWEP.NoCModel = true
 SWEP.ViewModel = "models/weapons/v_models/v_toolbox_engineer.mdl"
 SWEP.WorldModel = "models/weapons/w_models/w_toolbox.mdl"
 SWEP.ViewModelFlip = false
@@ -32,8 +32,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 300
-SWEP.RunSpeed = 400
+--SWEP.WalkSpeed = 300
+--SWEP.RunSpeed = 400
 
 SWEP.Attack = 0
 SWEP.AttackTimer = CurTime()
@@ -73,8 +73,8 @@ self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 return true
 end
 
@@ -84,7 +84,7 @@ self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+--self.Owner:SetWalkSpeed( 200 )
+--self.Owner:SetRunSpeed( 400 )
 return true
 end

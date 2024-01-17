@@ -32,8 +32,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 300
-SWEP.RunSpeed = 400
+--SWEP.WalkSpeed = 300
+--SWEP.RunSpeed = 400
 
 SWEP.SpreadCooldown = CurTime()
 SWEP.Reloading = 0
@@ -96,8 +96,8 @@ self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 return true
 end
 
@@ -108,8 +108,8 @@ self.Reloading = 0
 self.ReloadingTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+--self.Owner:SetWalkSpeed( 200 )
+--self.Owner:SetRunSpeed( 400 )
 return true
 end
 

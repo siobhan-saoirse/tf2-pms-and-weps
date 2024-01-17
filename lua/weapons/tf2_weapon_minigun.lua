@@ -12,7 +12,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = false
 
  
-SWEP.ViewModel = "models/weapons/v_models/v_minigun_heavy.mdl"
+SWEP.ViewModel = "models/weapons/c_models/c_heavy_arms.mdl"
 SWEP.WorldModel = "models/weapons/c_models/c_minigun/c_minigun.mdl"
 SWEP.ViewModelFlip = false
 SWEP.BobScale = 1
@@ -31,8 +31,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 230
-SWEP.RunSpeed = 308
+--SWEP.WalkSpeed = 230
+--SWEP.RunSpeed = 308
 
 SWEP.Sound = 0
 SWEP.Spin = 0
@@ -87,7 +87,7 @@ end
 function SWEP:Deploy()
 tf_util.ReadActivitiesFromModel(self)
 self.Weapon:SetHoldType( "minigun" )
-self.Weapon:SendWeaponAnim( ACT_VM_DRAW )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_DRAW )
 self.Owner:GetViewModel():SetPlaybackRate(1.4)
 self:SetNextPrimaryFire( CurTime() + 0.5 )
 self:SetNextSecondaryFire( CurTime() + 0.5 )
@@ -96,8 +96,9 @@ self.Spin = 0
 self.SpinTimer = CurTime() + 0.5
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+if SERVER then
+self.Owner:SetLaggedMovementValue(1.0)
+end
 return true
 end
 
@@ -114,8 +115,9 @@ self.Spin = 0
 self.SpinTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+if SERVER then
+self.Owner:SetLaggedMovementValue(1.0)
+end
 return true
 end
 
@@ -123,15 +125,16 @@ function SWEP:PrimaryAttack()
 if self.Spin == 0 and self.SpinTimer <= CurTime() and self.Owner:KeyDown( IN_ATTACK ) then
 if SERVER then
 self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindUp") )
-end
-self.Weapon:SendWeaponAnim( ACT_DEPLOY )
+end 
+self.Weapon:SendWeaponAnim( self:GetSequenceActivity(self:LookupSequence("m_spool_up")) )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_PREFIRE, true)
 self.Spin = 1
 self.SpinTimer = CurTime() + 0.75
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( 74 )
-self.Owner:SetRunSpeed( 148 )
+if SERVER then
+self.Owner:SetLaggedMovementValue(0.6)
+end
 self.Weapon:SetHoldType( "deployed" )
 end
 if !( self.Spin == 2 ) then return end
@@ -144,7 +147,7 @@ if SERVER then
 	self.Owner:StopSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
 	self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
 end
-self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
+self.Weapon:SendWeaponAnim( self:GetSequenceActivity(self:LookupSequence("m_spool_idle")) )
 self:SetNextPrimaryFire( CurTime() + 0.2 )
 end
 if self.FiresUnderwater == false and self.Owner:WaterLevel() == 3 then
@@ -156,7 +159,7 @@ if SERVER then
 self.Owner:StopSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
 self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","ClipEmpty") )
 end
-self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
+self.Weapon:SendWeaponAnim( self:GetSequenceActivity(self:LookupSequence("m_spool_idle")) )
 self:SetNextPrimaryFire( CurTime() + 0.2 )
 end
 if self.Weapon:Ammo1() <= 0 then return end
@@ -178,7 +181,7 @@ self.Owner:EmitSound( self.Primary.Sound )
 end
 self.Sound = 1
 end
-self.Weapon:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_PRIMARYATTACK )
 self.Owner:SetAnimation( PLAYER_ATTACK1 )
 self.Owner:MuzzleFlash()
 self:TakePrimaryAmmo( self.Primary.TakeAmmo )
@@ -193,14 +196,15 @@ if self.Spin == 0 and self.SpinTimer <= CurTime() and self.Owner:KeyDown( IN_ATT
 if SERVER then
 	self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindUp") )
 end
-self.Weapon:SendWeaponAnim( ACT_DEPLOY )
+self.Weapon:SendWeaponAnim( self:GetSequenceActivity(self:LookupSequence("m_spool_up")) )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_PREFIRE, true)
 self.Spin = 1
 self.SpinTimer = CurTime() + 0.75
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( 74 )
-self.Owner:SetRunSpeed( 148 )
+if SERVER then
+self.Owner:SetLaggedMovementValue(0.6)
+end
 self.Weapon:SetHoldType( "deployed" )
 end
 if self.Spin == 2 then 	
@@ -252,22 +256,23 @@ self.Owner:EmitSound( string.Replace(self.Primary.Sound,"Fire","WindDown") )
 self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_POSTFIRE, true)
 end
 self.Weapon:SetHoldType( "minigun" )
-self.Weapon:SendWeaponAnim( ACT_UNDEPLOY )
+self.Weapon:SendWeaponAnim( self:GetSequenceActivity(self:LookupSequence("m_spool_down")) )
 self.Sound = 0
 self.Spin = 0
 self.SpinTimer = CurTime() + 0.01
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+if SERVER then
+self.Owner:SetLaggedMovementValue(1.0)
+end
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
 if SERVER then
 if self.Spin == 0 then
-self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+self.Weapon:SendWeaponAnim( ACT_PRIMARY_VM_IDLE )
 end
 if !( self.Spin == 0 ) then
-self.Weapon:SendWeaponAnim( ACT_VM_SECONDARYATTACK )
+self.Weapon:SendWeaponAnim( self:GetSequenceActivity(self:LookupSequence("m_spool_idle")) )
 end
 end
 self.Idle = 1

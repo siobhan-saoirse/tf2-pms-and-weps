@@ -10,14 +10,14 @@ if CLIENT then
 		WorldModel2:SetNoDraw(true)
 		ViewModel2:SetNoDraw(true)
 	function SWEP:PreDrawViewModel()
-		if (!self.NoCModel) then
+		if (!self.NoCModel and self.WModel) then
 			local _Owner = self:GetOwner()
 			local skin = self:GetSkin()
 			if (IsValid(_Owner)) then
 				skin = self:GetOwner():GetSkin()
 			end
 			ViewModel2:SetSkin(skin)
-			ViewModel2:SetModel(self.WorldModel)
+			ViewModel2:SetModel(self.WModel)
 			if (IsValid(_Owner)) then
 				ViewModel2:SetParent(_Owner:GetViewModel())
 				ViewModel2:AddEffects(bit.bor(EF_BONEMERGE,EF_BONEMERGE_FASTCULL))

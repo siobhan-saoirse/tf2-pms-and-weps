@@ -33,8 +33,8 @@ SWEP.DrawAmmo = true
 SWEP.CSMuzzleFlashes = 1
 SWEP.Base = "tf2_weaponbase"
 
-SWEP.WalkSpeed = 240
-SWEP.RunSpeed = 308
+--SWEP.WalkSpeed = 240
+--SWEP.RunSpeed = 308
 
 SWEP.Attack = 0
 SWEP.AttackTimer = CurTime() 
@@ -91,8 +91,8 @@ self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime() + self.Owner:GetViewModel():SequenceDuration()
-self.Owner:SetWalkSpeed( self.WalkSpeed )
-self.Owner:SetRunSpeed( self.RunSpeed )
+--self.Owner:SetWalkSpeed( self.WalkSpeed )
+--self.Owner:SetRunSpeed( self.RunSpeed )
 return true
 end
 
@@ -102,8 +102,8 @@ self.Attack = 0
 self.AttackTimer = CurTime()
 self.Idle = 0
 self.IdleTimer = CurTime()
-self.Owner:SetWalkSpeed( 200 )
-self.Owner:SetRunSpeed( 400 )
+--self.Owner:SetWalkSpeed( 200 )
+--self.Owner:SetRunSpeed( 400 )
 return true
 end
 
@@ -112,11 +112,19 @@ self:EmitSound( self.Primary.Sound )
 if (math.random(1,6) == 1) then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )
     self.Crit = true
-    self.Weapon:SendWeaponAnim( ACT_FISTS_VM_SWINGHARD )
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_SWINGHARD )
+    end
     self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_MELEE_SECONDARY,true)
 else
     self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_FISTS_VM_HITLEFT )
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_HITLEFT )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_HITLEFT )
+    end
     self.Crit = false
     self.Owner:SetAnimation( PLAYER_ATTACK1 )
 end
@@ -133,11 +141,21 @@ self:EmitSound( self.Primary.Sound )
 if (math.random(1,6) == 1) then
     self.Owner:EmitSound( self.Primary.Sound.."Crit" )
     self.Crit = true
-    self.Weapon:SendWeaponAnim( ACT_FISTS_VM_SWINGHARD )
+    
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_SWINGHARD )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_SWINGHARD )
+    end
     self.Owner:DoAnimationEvent(ACT_MP_ATTACK_STAND_MELEE_SECONDARY,true)
 else
     self.Owner:EmitSound( self.Primary.Sound )
-    self.Weapon:SendWeaponAnim( ACT_FISTS_VM_HITRIGHT )
+    
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_HITRIGHT )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_HITRIGHT )
+    end
     self.Crit = false 
     self.Owner:SetAnimation( PLAYER_ATTACK1 )
 end
@@ -237,9 +255,13 @@ end
 self.Attack = 0
 end
 if self.Idle == 0 and self.IdleTimer <= CurTime() then
-if SERVER then
-self.Weapon:SendWeaponAnim( ACT_FISTS_VM_IDLE )
+    if (self.WModel != "models/empty.mdl") then
+        self.Weapon:SendWeaponAnim( ACT_VM_IDLE )
+    else
+        self.Weapon:SendWeaponAnim( ACT_FISTS_VM_IDLE )
+    end
+    self.IdleTimer = CurTime() + self:SequenceDuration() - 0.1
 end
-self.Idle = 1
+self.Idle = 0
 end
 end

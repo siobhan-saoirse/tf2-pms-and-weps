@@ -21,136 +21,136 @@ game.AddParticles( "particles/medicgun_beam.pcf" )
 game.AddParticles( "particles/rockettrail.pcf" )
 game.AddParticles( "particles/stickybomb.pcf" )
 
-player_manager.AddValidModel( "tf_heavy",			"models/player/heavy.mdl" )
-player_manager.AddValidHands( "tf_heavy",			"models/weapons/c_models/c_heavy_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_scout",			"models/player/scout.mdl" )
-player_manager.AddValidHands( "tf_scout",			"models/weapons/c_models/c_scout_arms.mdl",			0, "0000000" )	
-player_manager.AddValidModel( "tf_soldier",			"models/player/soldier.mdl" )
-player_manager.AddValidHands( "tf_soldier",			"models/weapons/c_models/c_soldier_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_sniper",			"models/player/sniper.mdl" )
-player_manager.AddValidHands( "tf_sniper",			"models/weapons/c_models/c_sniper_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_spy",			"models/player/spy.mdl" )
-player_manager.AddValidHands( "tf_spy",			"models/weapons/c_models/c_spy_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_medic",			"models/player/medic.mdl" )
-player_manager.AddValidHands( "tf_medic",			"models/weapons/c_models/c_medic_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_demoman",			"models/player/demo.mdl" )
-player_manager.AddValidHands( "tf_demoman",			"models/weapons/c_models/c_demo_arms.mdl",			1, "0000000" )
-player_manager.AddValidModel( "tf_engineer",			"models/player/engineer.mdl" )
-player_manager.AddValidHands( "tf_engineer",			"models/weapons/c_models/c_engineer_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_pyro",			"models/player/pyro.mdl" )
-player_manager.AddValidHands( "tf_pyro",			"models/weapons/c_models/c_pyro_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_heavy",			"models/player/hwm/heavy.mdl" )
-player_manager.AddValidHands( "hwm_tf_heavy",			"models/weapons/c_models/c_heavy_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_scout",			"models/player/hwm/scout.mdl" )
-player_manager.AddValidHands( "hwm_tf_scout",			"models/weapons/c_models/c_scout_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_soldier",			"models/player/hwm/soldier.mdl" )
-player_manager.AddValidHands( "hwm_tf_soldier",			"models/weapons/c_models/c_soldier_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_sniper",			"models/player/hwm/sniper.mdl" )
-player_manager.AddValidHands( "hwm_tf_sniper",			"models/weapons/c_models/c_sniper_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_spy",			"models/player/hwm/spy.mdl" )
-player_manager.AddValidHands( "hwm_tf_spy",			"models/weapons/c_models/c_spy_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_medic",			"models/player/hwm/medic.mdl" )
-player_manager.AddValidHands( "hwm_tf_medic",			"models/weapons/c_models/c_medic_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_demoman",			"models/player/hwm/demo.mdl" )
-player_manager.AddValidHands( "hwm_tf_demoman",			"models/weapons/c_models/c_demo_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_engineer",			"models/player/hwm/engineer.mdl" )
-player_manager.AddValidHands( "hwm_tf_engineer",			"models/weapons/c_models/c_engineer_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "hwm_tf_pyro",			"models/player/hwm/pyro.mdl" )
-player_manager.AddValidHands( "hwm_tf_pyro",			"models/weapons/c_models/c_pyro_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botheavy",			"models/bots/heavy/bot_heavy.mdl" )
-player_manager.AddValidHands( "tf_botheavy",			"models/weapons/c_models/c_heavy_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botscout",			"models/bots/scout/bot_scout.mdl" )
-player_manager.AddValidHands( "tf_botscout",			"models/bots/scout/bot_scout.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botsoldier",			"models/bots/soldier/bot_soldier.mdl" )
-player_manager.AddValidHands( "tf_botsoldier",			"models/bots/soldier/bot_soldier.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botsniper",			"models/bots/sniper/bot_sniper.mdl" )
-player_manager.AddValidHands( "tf_botsniper",			"models/bots/soldier/bot_sniper.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botspy",			"models/bots/spy/bot_spy.mdl" )
-player_manager.AddValidHands( "tf_botspy",			"models/bots/soldier/bot_spy.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botmedic",			"models/bots/medic/bot_medic.mdl" )
-player_manager.AddValidHands( "tf_botmedic",			"models/bots/soldier/bot_medic.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botdemoman",			"models/bots/demo/bot_demo.mdl" )
-player_manager.AddValidHands( "tf_botdemoman",			"models/bots/demo/bot_demo.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botengineer",			"models/bots/engineer/bot_engineer.mdl" )
-player_manager.AddValidHands( "tf_botengineer",			"models/bots/engineer/bot_engineer.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_botpyro",			"models/bots/pyro/bot_pyro.mdl" )
-player_manager.AddValidHands( "tf_botpyro",			"models/bots/pyro/bot_pyro.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_skeleton",			"models/bots/skeleton_sniper/skeleton_sniper.mdl" )
-player_manager.AddValidHands( "tf_skeleton",			"models/bots/skeleton_sniper/skeleton_sniper.mdl",			2, "0000000" )
-player_manager.AddValidModel( "tf_civilian",			"models/player/civilian.mdl" )
-player_manager.AddValidHands( "tf_civilian",			"models/weapons/c_models/c_civilian_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "of_mercenary",			"models/player/mercenary.mdl" )
-player_manager.AddValidHands( "of_mercenary",			"models/weapons/c_models/c_merc_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "tf_mercenary",			"models/player/merc_deathmatch.mdl" )
-player_manager.AddValidHands( "tf_mercenary",			"models/weapons/c_models/c_merc_deathmatch_arms.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_heavy",			"models/pf2/player/heavy.mdl" )
-player_manager.AddValidHands( "pf2_heavy",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_scout",			"models/pf2/player/scout.mdl" )
-player_manager.AddValidHands( "pf2_scout",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_soldier",			"models/pf2/player/soldier.mdl" )
-player_manager.AddValidHands( "pf2_soldier",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_sniper",			"models/pf2/player/sniper.mdl" )
-player_manager.AddValidHands( "pf2_sniper",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_spy",			"models/pf2/player/spy.mdl" )
-player_manager.AddValidHands( "pf2_spy",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_medic",			"models/pf2/player/medic.mdl" )
-player_manager.AddValidHands( "pf2_medic",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_demoman",			"models/pf2/player/demo.mdl" )
-player_manager.AddValidHands( "pf2_demoman",			"models/weapons/c_arms_citizen.mdl",			1, "0000000" )
-player_manager.AddValidModel( "pf2_engineer",			"models/pf2/player/engineer.mdl" )
-player_manager.AddValidHands( "pf2_engineer",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_pyro",			"models/pf2/player/pyro.mdl" )
-player_manager.AddValidHands( "pf2_pyro",			"models/weapons/c_arms_combine.mdl",			0, "0000000" )
-player_manager.AddValidModel( "pf2_civilian",			"models/pf2/player/civilian.mdl" )
-player_manager.AddValidHands( "pf2_civilian",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
-player_manager.AddValidModel( "of_camdroid",			"models/player/robotdm/robotdm.mdl" )
-player_manager.AddValidHands( "of_camdroid",			"models/weapons/c_models/c_robotdm_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_heavy",			"models/player/heavy.mdl" )
+player_manager.AddValidHands( "!tf_heavy",			"models/weapons/c_models/c_heavy_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_scout",			"models/player/scout.mdl" )
+player_manager.AddValidHands( "!tf_scout",			"models/weapons/c_models/c_scout_arms.mdl",			0, "0000000" )	
+player_manager.AddValidModel( "!tf_soldier",			"models/player/soldier.mdl" )
+player_manager.AddValidHands( "!tf_soldier",			"models/weapons/c_models/c_soldier_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_sniper",			"models/player/sniper.mdl" )
+player_manager.AddValidHands( "!tf_sniper",			"models/weapons/c_models/c_sniper_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_spy",			"models/player/spy.mdl" )
+player_manager.AddValidHands( "!tf_spy",			"models/weapons/c_models/c_spy_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_medic",			"models/player/medic.mdl" )
+player_manager.AddValidHands( "!tf_medic",			"models/weapons/c_models/c_medic_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_demoman",			"models/player/demo.mdl" )
+player_manager.AddValidHands( "!tf_demoman",			"models/weapons/c_models/c_demo_arms.mdl",			1, "0000000" )
+player_manager.AddValidModel( "!tf_engineer",			"models/player/engineer.mdl" )
+player_manager.AddValidHands( "!tf_engineer",			"models/weapons/c_models/c_engineer_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_pyro",			"models/player/pyro.mdl" )
+player_manager.AddValidHands( "!tf_pyro",			"models/weapons/c_models/c_pyro_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_heavy",			"models/player/hwm/heavy.mdl" )
+player_manager.AddValidHands( "!hwm_tf_heavy",			"models/weapons/c_models/c_heavy_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_scout",			"models/player/hwm/scout.mdl" )
+player_manager.AddValidHands( "!hwm_tf_scout",			"models/weapons/c_models/c_scout_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_soldier",			"models/player/hwm/soldier.mdl" )
+player_manager.AddValidHands( "!hwm_tf_soldier",			"models/weapons/c_models/c_soldier_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_sniper",			"models/player/hwm/sniper.mdl" )
+player_manager.AddValidHands( "!hwm_tf_sniper",			"models/weapons/c_models/c_sniper_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_spy",			"models/player/hwm/spy.mdl" )
+player_manager.AddValidHands( "!hwm_tf_spy",			"models/weapons/c_models/c_spy_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_medic",			"models/player/hwm/medic.mdl" )
+player_manager.AddValidHands( "!hwm_tf_medic",			"models/weapons/c_models/c_medic_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_demoman",			"models/player/hwm/demo.mdl" )
+player_manager.AddValidHands( "!hwm_tf_demoman",			"models/weapons/c_models/c_demo_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_engineer",			"models/player/hwm/engineer.mdl" )
+player_manager.AddValidHands( "!hwm_tf_engineer",			"models/weapons/c_models/c_engineer_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!hwm_tf_pyro",			"models/player/hwm/pyro.mdl" )
+player_manager.AddValidHands( "!hwm_tf_pyro",			"models/weapons/c_models/c_pyro_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_botheavy",			"models/bots/heavy/bot_heavy.mdl" )
+player_manager.AddValidModel( "!tf_botscout",			"models/bots/scout/bot_scout.mdl" )
+player_manager.AddValidModel( "!tf_botsoldier",			"models/bots/soldier/bot_soldier.mdl" )
+player_manager.AddValidModel( "!tf_botsniper",			"models/bots/sniper/bot_sniper.mdl" )
+player_manager.AddValidModel( "!tf_botspy",			"models/bots/spy/bot_spy.mdl" )
+player_manager.AddValidModel( "!tf_botmedic",			"models/bots/medic/bot_medic.mdl" )
+player_manager.AddValidModel( "!tf_botdemoman",			"models/bots/demo/bot_demo.mdl" )
+player_manager.AddValidModel( "!tf_botengineer",			"models/bots/engineer/bot_engineer.mdl" )
+player_manager.AddValidModel( "!tf_botpyro",			"models/bots/pyro/bot_pyro.mdl" )
+player_manager.AddValidHands( "!tf_botheavy",			"models/weapons/c_models/c_heavy_arms.mdl",			0, "0000000" )
+player_manager.AddValidHands( "!tf_botscout",			"models/weapons/c_models/c_scout_arms.mdl",			0, "0000000" )	
+player_manager.AddValidHands( "!tf_botsoldier",			"models/weapons/c_models/c_soldier_arms.mdl",			0, "0000000" )
+player_manager.AddValidHands( "!tf_botsniper",			"models/weapons/c_models/c_sniper_arms.mdl",			0, "0000000" )
+player_manager.AddValidHands( "!tf_botspy",			"models/weapons/c_models/c_spy_arms.mdl",			0, "0000000" )
+player_manager.AddValidHands( "!tf_botmedic",			"models/weapons/c_models/c_medic_arms.mdl",			0, "0000000" )
+player_manager.AddValidHands( "!tf_botdemoman",			"models/weapons/c_models/c_demo_arms.mdl",			1, "0000000" )
+player_manager.AddValidHands( "!tf_botengineer",			"models/weapons/c_models/c_engineer_arms.mdl",			0, "0000000" )
+player_manager.AddValidHands( "!tf_botpyro",			"models/weapons/c_models/c_pyro_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_skeleton",			"models/bots/skeleton_sniper/skeleton_sniper.mdl" )
+player_manager.AddValidHands( "!tf_skeleton",			"models/weapons/c_models/c_sniper_arms.mdl",			2, "0000000" )
+player_manager.AddValidModel( "!tf_civilian",			"models/player/civilian.mdl" )
+player_manager.AddValidHands( "!tf_civilian",			"models/weapons/c_arms_citizen.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!of_mercenary",			"models/player/mercenary.mdl" )
+player_manager.AddValidHands( "!of_mercenary",			"models/weapons/c_models/c_merc_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!tf_mercenary",			"models/player/merc_deathmatch.mdl" )
+player_manager.AddValidHands( "!tf_mercenary",			"models/weapons/c_models/c_merc_deathmatch_arms.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_heavy",			"models/pf2/player/heavy.mdl" )
+player_manager.AddValidHands( "!pf2_heavy",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_scout",			"models/pf2/player/scout.mdl" )
+player_manager.AddValidHands( "!pf2_scout",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_soldier",			"models/pf2/player/soldier.mdl" )
+player_manager.AddValidHands( "!pf2_soldier",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_sniper",			"models/pf2/player/sniper.mdl" )
+player_manager.AddValidHands( "!pf2_sniper",			"models/weapons/c_arms_cstrike.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_spy",			"models/pf2/player/spy.mdl" )
+player_manager.AddValidHands( "!pf2_spy",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_medic",			"models/pf2/player/medic.mdl" )
+player_manager.AddValidHands( "!pf2_medic",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_demoman",			"models/pf2/player/demo.mdl" )
+player_manager.AddValidHands( "!pf2_demoman",			"models/weapons/c_arms_citizen.mdl",			1, "0000000" )
+player_manager.AddValidModel( "!pf2_engineer",			"models/pf2/player/engineer.mdl" )
+player_manager.AddValidHands( "!pf2_engineer",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_pyro",			"models/pf2/player/pyro.mdl" )
+player_manager.AddValidHands( "!pf2_pyro",			"models/weapons/c_arms_combine.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!pf2_civilian",			"models/pf2/player/civilian.mdl" )
+player_manager.AddValidHands( "!pf2_civilian",			"models/weapons/c_arms_hev.mdl",			0, "0000000" )
+player_manager.AddValidModel( "!of_camdroid",			"models/player/robotdm/robotdm.mdl" )
+player_manager.AddValidHands( "!of_camdroid",			"models/weapons/c_models/c_robotdm_arms.mdl",			0, "0000000" )
 
 
 -- special thanks to the competitive addon creator for suggesting a lot of things!
 
-list.Set( "PlayerOptionsAnimations", "tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
-list.Set( "PlayerOptionsAnimations", "pf2_scout", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_medic", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "pf2_spy", { "selectionmenu_anim01", "layer_taunt04" } )
-list.Set( "PlayerOptionsAnimations", "pf2_civilian", { "selectionmenu_anim01", "taunt", "cross_idle", "look_idle","wait_idle" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_sniper", { "selectionmenu_anim01", "taunt01" } )
-list.Set( "PlayerOptionsAnimations", "hwm_tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
-list.Set( "PlayerOptionsAnimations", "tf_botscout", { "stand_melee", "taunt03" } )
-list.Set( "PlayerOptionsAnimations", "tf_botsoldier", { "stand_primary", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botpyro", { "stand_primary", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botdemoman", { "stand_item1", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botheavy", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botengineer", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botmedic", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botsniper", { "stand_melee", "layer_taunt01" } )
-list.Set( "PlayerOptionsAnimations", "tf_botspy", { "stand_melee", "layer_taunt03" } )
-list.Set( "PlayerOptionsAnimations", "tf_skeleton", { "stand_melee", "spawn01", "spawn02", "spawn03", "spawn04", "spawn05", "spawn06", "spawn07" } )
-list.Set( "PlayerOptionsAnimations", "tf_civilian", { "selectionmenu_anim01", "layer_taunt01", "layer_taunt_sandvich"  } )
-list.Set( "PlayerOptionsAnimations", "of_mercenary", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first" } )
-list.Set( "PlayerOptionsAnimations", "tf_mercenary", { "stand_crowbar", "selectionMenu_Anim0l", "winscreen_first", "winscreen_first_2", "winscreen_first_3", "winscreen_second",  } )
-list.Set( "PlayerOptionsAnimations", "of_camdroid", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first", "camdroid_stand", "camdroid_crouch", "camdroid_shutdown" } )
+list.Set( "PlayerOptionsAnimations", "!tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_scout", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_medic", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_sniper", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_spy", { "selectionmenu_anim01", "layer_taunt04" } )
+list.Set( "PlayerOptionsAnimations", "!pf2_civilian", { "selectionmenu_anim01", "taunt", "cross_idle", "look_idle","wait_idle" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_scout", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_soldier", { "selectionmenu_anim0l", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_pyro", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_demoman", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_heavy", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_engineer", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_medic", { "selectionmenu_anim01", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_sniper", { "selectionmenu_anim01", "taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!hwm_tf_spy", { "selectionmenu_anim01", "layer_taunt04" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botscout", { "stand_melee", "taunt03" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botsoldier", { "stand_primary", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botpyro", { "stand_primary", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botdemoman", { "stand_item1", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botheavy", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botengineer", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botmedic", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botsniper", { "stand_melee", "layer_taunt01" } )
+list.Set( "PlayerOptionsAnimations", "!tf_botspy", { "stand_melee", "layer_taunt03" } )
+list.Set( "PlayerOptionsAnimations", "!tf_skeleton", { "stand_melee", "spawn01", "spawn02", "spawn03", "spawn04", "spawn05", "spawn06", "spawn07" } )
+list.Set( "PlayerOptionsAnimations", "!tf_civilian", { "selectionmenu_anim01", "layer_taunt01", "layer_taunt_sandvich"  } )
+list.Set( "PlayerOptionsAnimations", "!of_mercenary", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first" } )
+list.Set( "PlayerOptionsAnimations", "!tf_mercenary", { "stand_crowbar", "selectionMenu_Anim0l", "winscreen_first", "winscreen_first_2", "winscreen_first_3", "winscreen_second",  } )
+list.Set( "PlayerOptionsAnimations", "!of_camdroid", { "loadout_idle", "layer_taunt01", "layer_taunt03","hud_ref", "loadout_fuckinsiiiiick", "layer_taunt02", "layer_taunt_bond", "winpanel_first", "camdroid_stand", "camdroid_crouch", "camdroid_shutdown" } )
 
 local ActivityTranslateFixTF2 = {}  
 local BlastForceMultiplier = 16
@@ -1936,6 +1936,7 @@ elseif ( holdtype == "backstab" ) then
 				ActivityTranslateFixTF2[ACT_MP_CROUCHWALK] 							= ACT_MP_CROUCHWALK_PRIMARY
 				
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_PRIMARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY
+				ActivityTranslateFixTF2[ACT_MP_ATTACK_STAND_SECONDARYFIRE] 						= ACT_MP_ATTACK_STAND_PRIMARY_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_ATTACK_CROUCH_PRIMARYFIRE] 						= ACT_MP_ATTACK_CROUCH_PRIMARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND] 						= ACT_MP_RELOAD_STAND_SECONDARY
 				ActivityTranslateFixTF2[ACT_MP_RELOAD_STAND_LOOP] 						= ACT_MP_RELOAD_STAND_SECONDARY_LOOP
@@ -5404,7 +5405,7 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 			end
 		end)
 		timer.Simple(0.1, function()
-			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+			if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
 				if (ply:IsBot()) then
 					ply:StripWeapons()
 					RandomWeapon2(ply, "primary")
@@ -5412,6 +5413,8 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 					RandomWeapon2(ply, "melee")
 				end
 				ply:SetViewOffset(Vector(0,0,72))
+			else
+				ply:SetViewOffset(Vector(0,0,62))
 			end
 			if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" 
 				|| ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl" || ply:GetModel() == "models/pf2/player/engineer.mdl" 
@@ -5421,19 +5424,45 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 				|| ply:GetModel() == "models/bots/engineer/bot_engineer.mdl"
 				|| ply:GetModel() == "models/bots/sniper/bot_sniper.mdl"
 				|| ply:GetModel() == "models/bots/spy/bot_spy.mdl") then
+				if (ply:GetModel() == "models/player/scout.mdl" || ply:GetModel() == "models/player/hwm/scout.mdl" || ply:GetModel() == "models/pf2/player/scout.mdl" || ply:GetModel() == "models/bots/scout/bot_scout.mdl") then
+					ply:SetWalkSpeed(400)
+					ply:SetRunSpeed(400)
+				elseif (ply:GetModel() == "models/player/engineer.mdl" || ply:GetModel() == "models/player/hwm/engineer.mdl" || ply:GetModel() == "models/pf2/player/engineer.mdl" 
+					|| ply:GetModel() == "models/player/sniper.mdl" || ply:GetModel() == "models/player/hwm/sniper.mdl" || ply:GetModel() == "models/pf2/player/sniper.mdl" 
+					|| ply:GetModel() == "models/bots/engineer/bot_engineer.mdl"
+					|| ply:GetModel() == "models/bots/sniper/bot_sniper.mdl") then
+					ply:SetWalkSpeed(300)
+					ply:SetRunSpeed(300)
+				elseif (ply:GetModel() == "models/player/spy.mdl" || ply:GetModel() == "models/player/hwm/spy.mdl" || ply:GetModel() == "models/pf2/player/spy.mdl" 
+					|| ply:GetModel() == "models/bots/spy/bot_spy.mdl") then
+					ply:SetWalkSpeed(320)
+					ply:SetRunSpeed(320)
+				end
 				ply:SetHealth(125)
 				ply:SetMaxHealth(125)
 			elseif (ply:GetModel() == "models/player/soldier.mdl" || ply:GetModel() == "models/player/hwm/soldier.mdl" || ply:GetModel() == "models/pf2/player/soldier.mdl" || ply:GetModel() == "models/player/civilian.mdl" || ply:GetModel() == "models/pf2/player/civilian.mdl"
 				|| ply:GetModel() == "models/bots/soldier/bot_soldier.mdl") then
+				ply:SetWalkSpeed(240)
+				ply:SetRunSpeed(240)
 				ply:SetHealth(200)
 				ply:SetMaxHealth(200)
 			elseif (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl" || ply:GetModel() == "models/pf2/player/pyro.mdl"
 					|| ply:GetModel() == "models/player/demo.mdl" || ply:GetModel() == "models/player/hwm/demo.mdl" || ply:GetModel() == "models/pf2/player/demo.mdl"
 					|| ply:GetModel() == "models/bots/demo/bot_demo.mdl" || ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
+				if (ply:GetModel() == "models/player/pyro.mdl" || ply:GetModel() == "models/player/hwm/pyro.mdl" || ply:GetModel() == "models/pf2/player/pyro.mdl"
+				|| ply:GetModel() == "models/bots/pyro/bot_pyro.mdl") then
+					ply:SetWalkSpeed(300)
+					ply:SetRunSpeed(300)
+				else
+					ply:SetWalkSpeed(280)
+					ply:SetRunSpeed(280)
+				end
 				ply:SetHealth(175)
 				ply:SetMaxHealth(175)
 			elseif (ply:GetModel() == "models/player/heavy.mdl" || ply:GetModel() == "models/player/hwm/heavy.mdl" || ply:GetModel() == "models/pf2/player/heavy.mdl"
 				|| ply:GetModel() == "models/bots/heavy/bot_heavy.mdl") then
+					ply:SetWalkSpeed(230)
+					ply:SetRunSpeed(230)
 				ply:SetHealth(300)
 				ply:SetMaxHealth(300)
 			elseif (ply:GetModel() == "models/player/medic.mdl" || ply:GetModel() == "models/player/hwm/medic.mdl" || ply:GetModel() == "models/pf2/player/medic.mdl" 
@@ -5441,9 +5470,72 @@ hook.Add("PlayerSpawn", "TF2BotModels", function(ply)
 				|| ply:GetModel() == "models/player/merc_deathmatch.mdl" 
 				|| ply:GetModel() == "models/player/robotdm/robotdm.mdl"
 				|| ply:GetModel() == "models/bots/medic/bot_medic.mdl") then
+				ply:SetWalkSpeed(320)
+				ply:SetRunSpeed(320)
 				ply:SetHealth(150)
 				ply:SetMaxHealth(150)
 			end
 		end)
+	end
+end)
+
+
+hook.Add("PlayerStepSoundTime", "FootTime", function(ply, iType, iWalking)
+	if (((string.find(ply:GetModel(),"models/player") || string.find(ply:GetModel(),"models/pf2/player") || string.find(ply:GetModel(),"models/bots/")) and ply:LookupBone("bip_head") != -1)) then
+		if (iType == STEPSOUNDTIME_ON_LADDER) then
+			local speed = 350
+			return speed
+		end
+		if (iType == STEPSOUNDTIME_NORMAL || iType == STEPSOUNDTIME_WATER_FOOT) then
+			if (ply:GetMoveType() == MOVETYPE_LADDER) then
+				local speed = math.Remap(ply:GetMaxSpeed(), 200, 450, 400, 200) + 100
+				return speed
+			else
+				if (ply:Crouching()) then
+					local speed = math.Remap(ply:GetMaxSpeed(), 200, 450, 400, 200) + 100 + ply:GetVelocity():Length2D() / (ply:GetMaxSpeed() * 0.8)
+					return speed
+				else
+					if (ply:GetWalkSpeed() > 450) then
+					
+						local speed = 200 + ply:GetVelocity():Length2D() / (ply:GetMaxSpeed() * 0.8)
+						return speed
+						
+					else
+						if (ply:GetWalkSpeed() < 229 and !ply:KeyDown(IN_SPEED)) then
+						
+							local speed = 400 + ply:GetVelocity():Length2D() / (ply:GetMaxSpeed() * 0.8)
+							return speed 
+							
+						else
+							local speed = math.Remap(ply:GetMaxSpeed(), 200, 450, 400, 200) + ply:GetVelocity():Length2D() / (ply:GetMaxSpeed() * 0.8)
+							return speed
+						end
+					end
+				end
+			end
+		end
+		if (iType == STEPSOUNDTIME_WATER_KNEE) then
+			if (ply:Crouching()) then
+				local speed = math.Remap(ply:GetMaxSpeed(), 200, 450, 600, 200) + 100
+				return speed
+			else
+				if (ply:GetWalkSpeed() > 450) then
+				
+					local speed = 200
+					return speed
+					
+				else
+					if (ply:GetWalkSpeed() < 229 and !ply:KeyDown(IN_SPEED)) then
+						
+						local speed = 400
+						return speed 
+							
+					else
+						local speed = math.Remap(ply:GetMaxSpeed(), 200, 450, 600, 200)
+						return speed
+					end
+				end
+			end
+		end
 	end
 end)
