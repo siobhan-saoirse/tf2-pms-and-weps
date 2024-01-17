@@ -53,7 +53,7 @@ SWEP.Primary.Damage = 6
 SWEP.Primary.Spread = 0.0675 * 2
 SWEP.Primary.TakeAmmo = 1
 SWEP.Primary.NumberofShots = 10 * 2
-SWEP.Primary.Delay = 0.625
+SWEP.Primary.Delay = 0.3
 SWEP.Primary.Force = 1
 
 
