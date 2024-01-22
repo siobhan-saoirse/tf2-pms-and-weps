@@ -33,6 +33,11 @@ function ENT:Think()
 if SERVER then
 self.RocketTrail:SetPos( self:GetPos() )
 self.RocketTrail:SetAngles( self:GetAngles() + Angle( 180, 0, 0 ) )
+for k,v in ipairs(ents.FindInSphere(self:GetPos(),90)) do 
+    if (v:IsNextBot() and v.Team != self:GetOwner().Team) then
+        self:PhysicsCollide()
+    end
+end
 end
 end
 
